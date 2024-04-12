@@ -1,0 +1,61 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package DAO;
+
+import DTO.HoadonDTO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Hoadon_DAO {
+    private  ConnectDataBase mySQL  ;
+    public Hoadon_DAO(){
+     mySQL = new ConnectDataBase();
+   }
+    
+    public ArrayList<HoadonDTO> list()
+    {
+        ArrayList<HoadonDTO> dshd = new ArrayList<>();
+        try {
+            mySQL.connect();
+            String sql = "SELECT * FROM hoadon WHERE 1";
+            try (ResultSet rs = mySQL.executeQuery(sql)) {
+                while(rs.next())
+                {
+                    String maHD = rs.getString("SOHD");System.out.println(maHD);
+                    String ngayHD = rs.getTimestamp("NGAYHD").toString();System.out.println(ngayHD);
+                    String maKH = rs.getString("MAKH");System.out.println(maKH);
+                    String maNV = rs.getString("MANV");System.out.println(maNV);
+                    int tongtien = rs.getInt("TONGTIEN");System.out.println(tongtien);
+                    
+                    HoadonDTO hd;
+                    hd = new HoadonDTO(maHD, ngayHD, maKH, maNV, tongtien);
+                    dshd.add(hd);
+                }
+            }
+             mySQL.disconnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(Hoadon_DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return dshd;
+    }
+    
+     public void add(HoadonDTO item){
+        mySQL.connect();
+        String query= "INSERT INTO hoadon VALUES ('" + item.getMaHD() +"','"+ item.getNgayHD() +"','" +item.getMaKH() +"','" +item.getMaNV() +"','" +item.getTongTien()+");";
+        mySQL.executeUpdate(query);
+        System.out.println("Them Hoa don thanh cong");
+        mySQL.disconnect();
+    }
+    
+     
+//     public static void main (String[] args){
+//        Hoadon_DAO hd = new Hoadon_DAO();
+//        hd.list();
+//    }
+}
