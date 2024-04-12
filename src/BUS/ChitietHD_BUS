@@ -1,0 +1,33 @@
+
+package BUS;
+
+import DAO.ChitietHD_DAO;
+import DTO.ChitietHD_DTO;
+import java.util.ArrayList;
+public class ChitietHD_BUS {
+    public ArrayList<ChitietHD_DTO> dsChiTietHD;
+
+    public ChitietHD_BUS() {
+        list(); 
+    }
+
+    public void list() {
+        ChitietHD_DAO ctD = new ChitietHD_DAO();
+        dsChiTietHD = ctD.list();
+    }
+    
+
+   public void printInvoiceList() {
+        System.out.println("Danh sách hóa đơn:");
+        System.out.println("MaHD \t MaSP \t Masize \t Sl");
+        for (ChitietHD_DTO ct : dsChiTietHD) {
+            System.out.println(ct.getMaHD() + "  \t" + ct.getMaSP() + "  \t" + ct.getMaSize()+ "      \t" + ct.getSl());
+        }
+    }
+
+
+//    public static void main(String[] args) {
+//        ChitietHD_BUS cthd = new ChitietHD_BUS();
+//        cthd.printInvoiceList();
+//    }
+}
