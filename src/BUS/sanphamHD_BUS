@@ -1,0 +1,24 @@
+
+package BUS;
+
+import DTO.sanphamHD_DTO;
+import DAO.sanphamHD_DAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public final class sanphamHD_BUS {
+    public ArrayList<sanphamHD_DTO> spHD;
+
+    public sanphamHD_BUS(String maHD) throws SQLException {
+        list(maHD); 
+    }
+
+    public void list(String maHD) throws SQLException {
+        sanphamHD_DAO listsphd = new sanphamHD_DAO();
+        spHD = listsphd.list(maHD);
+    }
+    
+//         public static void main (String[] args) throws SQLException{
+//        sanphamHD_BUS hd = new sanphamHD_BUS("HD002");
+//    }
+}
