@@ -53,44 +53,6 @@ class SignUp extends JFrame {
                 left.setBackground(Cacthuoctinh_phuongthuc_chung.darkness_blue); // Sử dụng constructor của Color để tạo màu mới
                 left.setPreferredSize(new Dimension(300, 0));
                 left.setLayout(new GridLayout(2,1));
-                // ------ AVT ------
-                  /*  imageIcon = new ImageIcon("vvv.jpg");
-                    imageLabel = new JLabel() {
-                        @Override
-                            protected void paintComponent(Graphics gr) {
-                            // Vẽ hình ảnh ban đầu
-                            super.paintComponent(gr);
-                            // tạo khunh ảnh tròn
-                            Graphics2D g = (Graphics2D) gr.create();
-                            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            int diameter = Math.min(160, getHeight()); // set đường kính
-                            int x = (getWidth() - diameter) / 2; // Tọa độ x của hình tròn
-                            int y = (getHeight() - diameter) / 2; // Tọa độ y của hình tròn
-                            g.fillOval(x, y, diameter, diameter); // Vẽ hình tròn
-
-                            // Set hình ảnh vào hình tròn
-                            Image scaledImage = imageIcon.getImage().getScaledInstance(diameter, diameter, Image.SCALE_SMOOTH);
-                            g.setClip(new Ellipse2D.Float(x, y, diameter, diameter));
-                            g.drawImage(scaledImage, x, y, null);
-                            g.dispose();
-                        }
-                    };*/
-//------------- XỬ LÝ SỰ KIỆN THAY ĐỔI AVT ( NẾU CÓ )
-//        imageLabel.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                JFileChooser fileChooser = new JFileChooser();
-//                int result = fileChooser.showOpenDialog(null);
-//                if (result == JFileChooser.APPROVE_OPTION) {
-//                    // Lấy đường dẫn của hình ảnh mới
-//                    String imagePath = fileChooser.getSelectedFile().getPath();
-//                    // Cập nhật hình ảnh mới
-//                    imageIcon = new ImageIcon(imagePath);
-//                    // Vẽ lại nhãn
-//                    imageLabel.repaint();
-//                }
-//            }
-//        });
         
                 //----------STORE LOGO-------------
                     imageLabel = new JLabel(new ImageIcon("./src/images/store_logo.png"));
@@ -101,7 +63,7 @@ class SignUp extends JFrame {
                     namestore.setForeground(Color.white);
        
 
-        // -------------------------- FORM ĐĂNG KÝ -----------------------------
+       // -------------------------- FORM ĐĂNG KÝ -----------------------------
             right.setPreferredSize(new Dimension(400, 0));
             right.setBackground(Cacthuoctinh_phuongthuc_chung.sky_blue); 
             right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
@@ -113,7 +75,7 @@ class SignUp extends JFrame {
                 // RETURN
                     JLabel re = new JLabel(Cacthuoctinh_phuongthuc_chung.return_icon, JLabel.LEFT);
                     re.setBounds(10,5,60,20);
-                    re.setPreferredSize(new Dimension(180, 30));
+                    re.setPreferredSize(new Dimension(180, 20));
                     re.addMouseListener(new MouseAdapter() {
                         
                         @Override
@@ -143,25 +105,7 @@ class SignUp extends JFrame {
                             x.repaint();
                         }
                     });
-                    // ------- thay thế lệnh return bằng icon ------------
-//        String imagePath1 = "C:/Users/jofob/Downloads/re.png";
-//        ImageIcon icon1 = new ImageIcon(imagePath1);
-//        if (icon1.getImage() == null) {
-//            System.err.println("Không thể tìm thấy hình ảnh: " + imagePath1);
-//            return;
-//        }
-//        BufferedImage image1 = new BufferedImage(icon1.getIconWidth(), icon1.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-//        Graphics g1 = image1.createGraphics();
-//        icon1.paintIcon(null, g, 0, 0);
-//        g1.dispose();
-//        // Tùy chỉnh kích thước của hình ảnh
-//        int scaledWidth1 = 40;
-//        int scaledHeight1 = 60; 
-//        Image scaledImage1 = image1.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-//        // Tạo mới ImageIcon từ hình ảnh đã thu nhỏ
-//        ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
-//        // Thiết lập icon từ hình ảnh đã thu nhỏ
-//        re.setIcon(scaledIcon1);
+                    
 
                 //EXIT
                     JLabel e = new JLabel(Cacthuoctinh_phuongthuc_chung.exit_icon,JLabel.RIGHT );
@@ -193,25 +137,7 @@ class SignUp extends JFrame {
                             x.repaint();
                         }
                     });
-                        // ------- thay thế lệnh exit bằng icon ------------
-//        String imagePath2 = "C:/Users/jofob/Downloads/re.png";
-//        ImageIcon icon2 = new ImageIcon(imagePath2);
-//        if (icon2.getImage() == null) {
-//            System.err.println("Không thể tìm thấy hình ảnh: " + imagePath);
-//            return;
-//        }
-//        BufferedImage image2 = new BufferedImage(icon2.getIconWidth(), icon2.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-//        Graphics g2 = image.createGraphics();
-//        icon2.paintIcon(null, g, 0, 0);
-//        g2.dispose();
-//        // Tùy chỉnh kích thước của hình ảnh
-//        int scaledWidth = 40;
-//        int scaledHeight = 60; 
-//        Image scaledImage2 = image2.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-//        // Tạo mới ImageIcon từ hình ảnh đã thu nhỏ
-//        ImageIcon scaledIcon2 = new ImageIcon(scaledImage2);
-//        // Thiết lập icon từ hình ảnh đã thu nhỏ
-//        e.setIcon(scaledIcon2);
+                        
 
                     p1.add(re);
                     p1.add(e);
@@ -225,8 +151,8 @@ class SignUp extends JFrame {
                     signup.setAlignmentX(Component.CENTER_ALIGNMENT);
                     signup.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family, Font.BOLD, 30));
                     signup.setForeground(Cacthuoctinh_phuongthuc_chung.darkness_blue);
-                    Component verticalStrut1 = Box.createVerticalStrut(40);
-                    Component verticalStrut2 = Box.createVerticalStrut(30);
+                    Component verticalStrut1 = Box.createVerticalStrut(20);
+                    Component verticalStrut2 = Box.createVerticalStrut(10);
                     p2.add( verticalStrut2 ); 
                     p2.add(signup);
                     p2.add( verticalStrut1 );
@@ -359,14 +285,5 @@ class SignUp extends JFrame {
         MainPanel.add(right); 
         this.add(MainPanel);
         this.setVisible(true);
-    }
-
- 
-    public SignUp() {
-        init();
-    }
-        
-    public static void main(String []args){
-    SignUp s= new SignUp();
     }
 }
