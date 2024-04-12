@@ -1,0 +1,23 @@
+
+package BUS;
+
+import DTO.HoadonDTO;
+import DAO.Hoadon_DAO;
+import java.util.ArrayList;
+
+public final class Hoadon_BUS {
+    public ArrayList<HoadonDTO> dshoadon;
+    public Hoadon_BUS(){
+        list();
+    }
+    
+    public void list(){
+        Hoadon_DAO dshd = new Hoadon_DAO();
+        dshoadon = dshd.list();
+    }
+//    
+//     public static void main(String[] args) {
+//        Hoadon_BUS cthd = new Hoadon_BUS();
+//        cthd.list();
+//    }
+}
