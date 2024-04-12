@@ -252,7 +252,9 @@ public class MenuChucNangStore extends JPanel implements MouseListener{
         int ccao=(int)wrap.getPreferredSize().getHeight();
         wrap.removeAll();
         TrangLichsuHD lshd = new TrangLichsuHD(crong,600);
-        wrap.add(lshd);
+        JScrollPane scrollPane = new JScrollPane(lshd);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        wrap.add(scrollPane);
         wrap.revalidate(); 
         wrap.repaint();
     }
