@@ -1,0 +1,62 @@
+
+package DAO;
+
+import DTO.ChitietHD_DTO;
+import DTO.sanphamHD_DTO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+
+public class ChitietHD_DAO {
+    public ConnectDataBase mySQL; 
+    public ChitietHD_DAO() {
+    mySQL = new ConnectDataBase();
+    }
+    public ArrayList<ChitietHD_DTO> list()
+    {
+        ArrayList<ChitietHD_DTO> dscthd = new ArrayList<>();
+        try {
+            mySQL.connect();
+            String sql = "SELECT * FROM chitiethoadon WHERE 1";
+            ResultSet rs = mySQL.executeQuery(sql);
+            while(rs.next())
+            {
+                String maHD = rs.getString("SOHD"); System.out.println(maHD);
+                String maSP = rs.getString("MASP");System.out.println(maSP);
+                String size = rs.getString("MASIZE");System.out.println(size);
+                int sl = rs.getInt("SOLUONG");System.out.println(sl);
+                ChitietHD_DTO ct = new ChitietHD_DTO (maHD, maSP, size,sl);
+                dscthd.add(ct);
+            }
+            rs.close();        
+           mySQL.disconnect();
+
+        }
+        catch (SQLException ex) {
+//            Logger.getLogger(ChitietHD_DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dscthd;   
+     
+    }
+    
+    
+     public void add(ChitietHD_DTO item) {
+        mySQL.connect();
+        String query= "INSERT INTO hoadon VALUES ('" + item.getMaHD() +"','"+ item.getMaSP() +"','" +item.getMaSize() +"','" +item.getSl()+");";
+        mySQL.executeUpdate(query);
+        System.out.println("Them chi tiet hoa don thanh cong!");
+        mySQL.disconnect();
+        sanphamHD_DAO sp = new sanphamHD_DAO();
+        ArrayList<sanphamHD_DTO> listpro = new ArrayList<>();
+        listpro = sp.list(item.getMaHD());
+        double sum =0;
+        for (sanphamHD_DTO s : listpro){
+            sum += s.getTt();
+        }
+    }
+    public static void main (String[] args){
+        ChitietHD_DAO cthd = new ChitietHD_DAO();
+        ArrayList<ChitietHD_DTO> list = cthd.list();
+    }
+}
