@@ -1,0 +1,53 @@
+package DAO;
+
+import DTO.sanphamHD_DTO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class sanphamHD_DAO {
+    private ConnectDataBase mySQL;
+    
+    public sanphamHD_DAO(){
+        mySQL = new ConnectDataBase();
+       
+    }
+    public ArrayList<sanphamHD_DTO> list(String maHD)
+    {
+        ArrayList<sanphamHD_DTO> dssphd = new ArrayList<>();
+       try {
+           mySQL.connect();
+           String sql = "SELECT sanpham.TENSP, size.TENSIZE, chitiethoadon.SOLUONG, sanpham.PRICE, (chitiethoadon.SOLUONG * sanpham.PRICE) as 'THANHTIEN' FROM `chitiethoadon`, `sanpham`, `size` WHERE  chitiethoadon.MASIZE = size.MASIZE and  chitiethoadon.MASP = sanpham.MASP AND chitiethoadon.SOHD = '" + maHD + "'";
+            try (ResultSet rs = mySQL.executeQuery(sql)) {
+                while (rs.next()) {
+                    String tensp = rs.getString("TENSP");
+                    System.out.println(tensp);
+                    String size = rs.getString("TENSIZE"); // Corrected column name
+                    System.out.println(size);
+                    int sl = rs.getInt("SOLUONG");
+                    System.out.println(sl);
+                    double gia = rs.getDouble("PRICE");
+                    System.out.println(gia);
+                    double tt = rs.getDouble("THANHTIEN"); // Corrected column name
+                    System.out.println(tt);
+                    
+                    sanphamHD_DTO sphd = new sanphamHD_DTO(tensp, size, sl, gia, tt);
+                    dssphd.add(sphd);
+                }  
+            }
+             mySQL.disconnect();
+} catch (SQLException ex) {
+    Logger.getLogger(sanphamHD_DAO.class.getName()).log(Level.SEVERE, null, ex);
+}
+ return dssphd;
+    }
+    
+    
+     public static void main (String[] args) throws SQLException{
+        sanphamHD_DAO hd = new sanphamHD_DAO();
+        hd.list("HD002");
+    }
+}
