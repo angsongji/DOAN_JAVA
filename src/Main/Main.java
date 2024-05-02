@@ -10,12 +10,11 @@ package Main;
  */
 
 import GUI.LoginUI;
-import javax.swing.SwingUtilities;
 
 public class Main {
     
     public static void main(String []args){
-        SwingUtilities.invokeLater(LoginUI::new);
+        LoginUI l = new LoginUI();
        
     }
 }

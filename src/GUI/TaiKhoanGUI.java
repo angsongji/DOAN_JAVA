@@ -48,6 +48,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     TaiKhoanBUS tkBUS = new TaiKhoanBUS();
     ArrayList<TaiKhoanDTO> dstk = new ArrayList<TaiKhoanDTO>();
     TaiKhoanDTO selectedTK = new TaiKhoanDTO();
+    int choiceThaoTacSua = 0; //kiểm tra xem đã chọn chức năng sửa chưa
 
     JPanel pnHead;
     JPanel pnContentParent;
@@ -112,7 +113,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             pnContent[i].setBorder(borderBottom);
             pnContent[i].setBackground(Color.decode("#FFFFFF"));
             pnContent[i].setOpaque(true);
-            
+
             JLabel[] lblContent = new JLabel[thuocTinh.length];
             String[] value;
 
@@ -208,7 +209,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     public void initPnThaoTacTK(int width, int height) {
         JPanel pnThaoTacTK = new JPanel();
         pnThaoTacTK.setLayout(new BorderLayout());
-        pnThaoTacTK.setPreferredSize(new Dimension(width,height));
+        pnThaoTacTK.setPreferredSize(new Dimension(width, height));
 
         pnHeaderThaoTac = new JPanel();
         pnHeaderThaoTac.setLayout(new BorderLayout());
@@ -265,8 +266,8 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             cbxMaNV.addItem(nv.listnv.get(i).getManv());
         }
         cbxMaNV.setSelectedIndex(0);
-        
-         // ----------Tạo ScrollPane cho combobox cbxMaNV -------//
+
+        // ----------Tạo ScrollPane cho combobox cbxMaNV -------//
         cbxMaNV.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -296,8 +297,8 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             cbxMaQuyen.addItem(quyen.getList().get(i).getMAQUYEN());
         }
         cbxMaQuyen.setSelectedIndex(0);
-        
-         // ----------Tạo ScrollPane cho combobox cbxMaQuyen -------//
+
+        // ----------Tạo ScrollPane cho combobox cbxMaQuyen -------//
         cbxMaQuyen.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -430,6 +431,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     }
 
     public void initSua() {
+        choiceThaoTacSua = 1;
         JLabel title = new JLabel("Cập nhật tài khoản", JLabel.CENTER);
         title.setFont(font_tieude);
         title.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -572,7 +574,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
 
     public void DeleteTK() {
         tkBUS.delete(selectedTK.getMaNV());
-        selectedTK = null;
+        selectedTK = new TaiKhoanDTO();
         refresh();
     }
 
@@ -640,10 +642,15 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             for (int i = 0; i < dstk.size(); i++) {
                 if (pn == pnContent[i]) {
                     selectedTK = dstk.get(i);
-                    setTT();
-                    pn.setBackground(hover);
-                    pn.setOpaque(true);
+                    pnContent[i].setBackground(hover);
+                    pnContent[i].setOpaque(true);
+                    if(choiceThaoTacSua==1){
+                        setTT();
+                    }
                     clear(i);
+                    pnContent[i].repaint();
+                    pnContent[i].revalidate();
+
                 }
             }
         } else {
@@ -652,6 +659,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
                 //exit
                 this.remove(pnThaoTacTK_main);
                 clear(-1);
+                selectedTK = new TaiKhoanDTO();
                 this.revalidate(); // Cập nhật lại container
                 this.repaint();
             }
@@ -690,9 +698,10 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
 
     public static void main(String[] args) {
         TaiKhoanGUI t = new TaiKhoanGUI(1000, 500);
-        t.initPnThaoTacTK(400, 500);
+//        t.initPnThaoTacTK(400, 500);
 //        t.initThem();
-        t.initSua();
+//        t.initSua();
+//        setTT();
 //        t.SearchTK("", 2);
         JFrame f = new JFrame();
         f.add(t);

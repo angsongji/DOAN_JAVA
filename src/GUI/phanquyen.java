@@ -226,7 +226,14 @@ public class phanquyen extends JPanel implements MouseListener {
         for (chucnangDTO i : listChucnang) {
             data = new Vector();
             data.add(i.getTENCHUCNANG());
-            
+            if (i.getMACHUCNANG().equals("NULLThK")) {
+                if (ctqBUS.search(new chitietquyenDTO(startQuyen.getMAQUYEN(), i.getMACHUCNANG(), "Xem"))) {
+                    data.add(true);
+                } else {
+                    data.add(false);
+                }
+
+            } else {
                 for (String hd : columnNames) {
                     if (!hd.equals("")) {
                         if (ctqBUS.search(new chitietquyenDTO(startQuyen.getMAQUYEN(), i.getMACHUCNANG(), hd))) {
@@ -236,7 +243,7 @@ public class phanquyen extends JPanel implements MouseListener {
                         }
                     }
                 }
-            
+            }
 
             tableModel.addRow(data);
         }
@@ -277,16 +284,11 @@ public class phanquyen extends JPanel implements MouseListener {
     }
 
     public void updateTENQUYEN(quyenDTO qDTO, int status) {
-        System.out.println("Quyen dang xet "+qDTO.toString());
         Component[] JP_childNameQuyen = JP_listNameQuyen.getComponents();
         for (int i = 0; i < JP_childNameQuyen.length; i++) {
             JPanel p = (JPanel) JP_childNameQuyen[i];
-            quyenDTO duyet = new quyenDTO(p.getName());
-           System.out.println("Quyen dang duyet "+duyet.toString());
-           System.out.println("Quyen dang duyet co giong "+duyet.getMAQUYEN().equals(qDTO.getMAQUYEN()));
-           
-            if (duyet.getMAQUYEN().equals(qDTO.getMAQUYEN())) {
-                
+            if (p.getName().equals(qDTO.toString())) {
+
                 switch (status) {
                     case 0:
 
@@ -330,14 +332,12 @@ public class phanquyen extends JPanel implements MouseListener {
     }
 
     public ArrayList<chitietquyenDTO> getListUpdateCtqTheoMAUQYEN() {
-     
         ArrayList<chitietquyenDTO> listCtqTheoMAQUYEN = new ArrayList<>();
 
         String q = currentQuyen.getMAQUYEN();
 
         TableModel model = table.getModel();
         for (int i = 0; i < listChucnang.size(); i++) {
-            
             for (int j = 1; j < columnNames.length; j++) {
 
                 if (model.getValueAt(i, j).equals(true)) {
@@ -349,7 +349,6 @@ public class phanquyen extends JPanel implements MouseListener {
 
             }
         }
-     
         return listCtqTheoMAQUYEN;
     }
 public void thaydoiJTable(){

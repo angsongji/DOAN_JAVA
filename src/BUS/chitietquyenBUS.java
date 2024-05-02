@@ -54,7 +54,6 @@ public class chitietquyenBUS {
 
     public void updateChitietquyen(ArrayList<chitietquyenDTO> listCtqNEW,String maquyen) {
         //them nhung chi tiet quyen luc sau vao luc dau
-       
 ArrayList<chitietquyenDTO> listCtqTheoMAQUYENbandau = getListCtqTheoMAQUYEN(maquyen);
             chitietquyenDAO ctqDAO = new chitietquyenDAO();
             for (chitietquyenDTO i : listCtqTheoMAQUYENbandau) {

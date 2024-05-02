@@ -97,7 +97,7 @@ if(i.getMACHUCNANG().equals(cnDTO.getMACHUCNANG())){
         switch (cnDTO.getMACHUCNANG()) {
             case "NULLHD":
                 ShoppingCartUI p = new ShoppingCartUI();
-                p.setPreferredSize(new Dimension(crong,heightJP_content));
+                p.setPreferredSize(new Dimension(crong-20,heightJP_content-20));
                 JP_contentCuaNameChucnangCon.add(p);
                 break;
             case "HD":

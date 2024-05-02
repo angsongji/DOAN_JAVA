@@ -57,8 +57,8 @@ public class SanPhamBUS {
         String t[] = {"b.jpg", "p.jpg", "o.jpg"};
         SanPhamDTO m = new SanPhamDTO("maSP2", "maloai01", "name01", 12450, t, 1);
        
-//        n.add(m);
-        n.delete("maSP2");
+        n.add(m);
+//        n.delete("maSP2");
          System.out.println(n.dsSP.size());
         
     }
