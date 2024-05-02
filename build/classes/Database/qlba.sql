@@ -31,7 +31,9 @@ CREATE TABLE `chitiethoadon` (
   `SOHD` varchar(10) NOT NULL,
   `MASP` varchar(10) NOT NULL,
   `MASIZE` varchar(10) NOT NULL,
-  `SOLUONG` int(11) NOT NULL
+  `SOLUONG` int(11) NOT NULL,
+  `DONGIA` double NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -229,7 +231,7 @@ CREATE TABLE `taikhoan` (
    PRIMARY KEY (USERNAME)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `chitiethoadon` VALUES ('HD001','AH001','SIZE5',4),('HD002','AL002','SIZE5',1);
+INSERT INTO `chitiethoadon` VALUES ('HD001','AH001','SIZE5',4,340000),('HD002','AL002','SIZE5',1,270000);
 INSERT INTO `chitietphieunhap` VALUES ('PN001','ASM002',1,4000000,4000000,'SIZE2'),('PN002','AF001',6,8500000,51000000,'SIZE5'),('PN003','AF002',2,6400000,12800000,'SIZE5'),('PN004','AF002',2,6400000,12800000,'SIZE5'),('PN005','AF003',3,2500000,7500000,'SIZE5'),('PN006','AH001',3,200000,600000,'SIZE5'),('PN006','AK001',3,2000000,6000000,'SIZE1'),('PN006','AK001',3,2000000,6000000,'SIZE2'),('PN006','AK001',3,2000000,6000000,'SIZE3'),('PN006','AL001',5,1500000,7500000,'SIZE5'),('PN006','AL002',9,170000,1530000,'SIZE5');
 INSERT INTO `quyen` VALUES ('QNV','Quyền nhân viên'),('QQLBH','Quyền quản lí bán hàng'),('QQLHT','Quyền quản lí hệ thống'),('QQLK','Quyền quản lí kho');
 
@@ -243,7 +245,8 @@ INSERT INTO `chucnang` VALUES
 ('NCC','Nhà cung cấp'),
 ('LOAI','Loại'),
 ('SIZE','Size'),
-('HD','Hoá đơn');
+('HD','Hoá đơn'),
+('NULLThK','Thống kê');
 
 
 INSERT INTO `chitietquyen` VALUES
@@ -272,12 +275,12 @@ INSERT INTO `chitietquyen` VALUES
 ('QQLK','NV','Xem'),
 ('QQLK','KH','Xem'),
 ('QQLK','PN','Export Excel'),
-('QQLK','PN','In PDF'),
 ('QQLK','PN','Sửa'),
 ('QQLK','PN','Thêm'),
 ('QQLK','PN','Xem'),
 ('QQLK','PN','Xóa'),
 ('QQLK','HD','Xem'),
+('QQLHT','NULLThK','Xem'),
 ('QQLHT','KH','Sửa'),
 ('QQLHT','KH','Xem'),
 ('QQLHT','KH','Xóa'),
@@ -289,7 +292,6 @@ INSERT INTO `chitietquyen` VALUES
 ('QQLHT','NCC','Sửa'),
 ('QQLHT','NCC','Xóa'),
 ('QQLHT','NCC','Thêm'),
-('QQLHT','NCC','Import Excel'),
 ('QQLHT','PN','Export Excel'),
 ('QQLHT','PN','Sửa'),
 ('QQLHT','PN','Thêm'),
@@ -303,7 +305,6 @@ INSERT INTO `chitietquyen` VALUES
 ('QQLHT','HD','Xóa'),
 ('QQLHT','HD','Thêm'),
 ('QQLHT','HD','Sửa'),
-('QQLHT','HD','In PDF'),
 ('QQLHT','TK','Xem'),
 ('QQLHT','TK','Sửa'),
 ('QQLHT','TK','Xóa'),

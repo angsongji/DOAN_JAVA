@@ -1,6 +1,12 @@
 package GUI;
 
+import BUS.SanPhamBUS;
+import BUS.loaiSPBUS;
 import BUS.nhacungcapBUS;
+import BUS.quyenBUS;
+import DTO.SanPhamDTO;
+import DTO.loaiSP;
+import DTO.quyenDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,12 +18,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.awt.Cursor;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -27,7 +39,7 @@ import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
 
 //import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-public class SearchInStore extends JPanel implements MouseListener { //implements MouseListener{
+public class SearchInStore extends JPanel implements MouseListener {
 
     private JTextField name;
     private JTextField cheapestPrice;
@@ -43,12 +55,24 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
     private Font font_title;
     private String MACHUCNANG;
     private ArrayList<String> listTitle;
-    private Component pageContent;
+    private ArrayList<Component> listComponentTimkiem;
+    private JPanel pageContent;
+    private int thongkeloai = 0;
 
     // private String[] titleTimkiem={"Theo tên"};
     public SearchInStore(String MACHUCNANG, Component pageContent) {
-        this.pageContent = pageContent;
+        this.pageContent =(JPanel) pageContent;
         this.MACHUCNANG = MACHUCNANG;
+        listComponentTimkiem = new ArrayList<>();
+        init();
+
+    }
+
+    public SearchInStore(String MACHUCNANG, Component pageContent, int thongkeloai) {
+        this.pageContent =(JPanel) pageContent;
+        this.MACHUCNANG = MACHUCNANG;
+        this.thongkeloai = thongkeloai;
+        listComponentTimkiem = new ArrayList<>();
         init();
 
     }
@@ -78,54 +102,105 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
         }
         switch (titleInput) {
             case "Theo tên":
-            case "Theo tên hoặc MANCC":
-            case "Theo tên sản phẩm":
-            case "Theo USERNAME":
+            case "Tất cả":
+            case "Theo tên sản phẩm, theo MASP":
+            case "Theo mã nhân viên, theo USERNAME, theo mã quyền":
             case "Theo tên hoặc MAKH":
-            case "Theo tên hoặc MANV":
+            case "Theo tên nhân viên, theo MANV, theo SĐT":
             case "Theo MAPN":
-            case "Theo MAHD":
-            case "Theo tên hoặc MALOAI":
+            case "Theo MAHD, theo MAKH, theo MANV":
+            case "Theo tên loại hoặc MALOAI":
                 name = new JTextField();
-
+                
+                listComponentTimkiem.add(name);
                 wrap.add(name);
                 break;
             case "Giá thấp nhất":
                 cheapestPrice = new JTextField();
+                listComponentTimkiem.add(cheapestPrice);
                 wrap.add(cheapestPrice);
                 break;
             case "Giá cao nhất":
 
                 highestPrice = new JTextField();
+                listComponentTimkiem.add(highestPrice);
                 wrap.add(highestPrice);
                 break;
-            case "Tình trạng":
-                typeTrangthai = new JComboBox<>(new String[]{"Tất cả", "Đang hoạt động", "Đã khóa"});
+            case "Tình trạng": {
+                switch (MACHUCNANG) {
+                    case "TK":
+                        typeTrangthai = new JComboBox<>(new String[]{"Tất cả", "Đang hoạt động", "Đã khóa"});
+                        break;
+                    case "LOAI":
+                        typeTrangthai = new JComboBox<>(new String[]{"Tất cả", "Đang bán", "Ngừng bán"});
+                        break;
+                }
+                listComponentTimkiem.add(typeTrangthai);
                 wrap.add(typeTrangthai);
                 wrap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 break;
-            case "Theo chức vụ":
-                typeChucvu = new JComboBox<>(new String[]{"Tất cả", "...", "...", ".."});
+            }
+
+            case "Theo chức vụ": {
+                quyenBUS qBUS = new quyenBUS();
+                ArrayList<quyenDTO> listChucvu = qBUS.getList();
+                Vector chucvu = new Vector();
+                chucvu.add("Tât cả");
+
+                for (quyenDTO q : listChucvu) {
+                    chucvu.add(q.getTENQUYEN());
+                }
+                typeChucvu = new JComboBox<>(chucvu);
+                listComponentTimkiem.add(typeChucvu);
                 wrap.add(typeChucvu);
                 wrap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 break;
+            }
 
             case "Điểm tích lũy":
                 sortPoint = new JComboBox<>(new String[]{"Ngẫu nhiên", "Thấp đến cao", "Cao đến thấp"});
+                listComponentTimkiem.add(sortPoint);
                 wrap.add(sortPoint);
                 wrap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 break;
-            case "Theo loại":
-                typeShirt = new JComboBox<>(new String[]{"Tất cả", "..", "..", ".."});
+            case "Theo loại": {
+                loaiSPBUS loaiBUS = new loaiSPBUS();
+                ArrayList<loaiSP> listLoai = loaiBUS.getList();
+                Vector loai = new Vector();
+                loai.add("Tât cả");
+
+                for (loaiSP q : listLoai) {
+                    if(loaiBUS.checkTINHTRANG(q.getMALOAI()))
+                        loai.add(q.getTENLOAI());
+                }
+                typeShirt = new JComboBox<>(loai);
+                listComponentTimkiem.add(typeShirt);
                 wrap.add(typeShirt);
                 wrap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 break;
+            }
+            case "Top": {
+                SanPhamBUS spBUS = new SanPhamBUS();
+                ArrayList<SanPhamDTO> listLoai = spBUS.getDsSP();
+                Vector top = new Vector();
+                for (int i = 1; i <= listLoai.size(); i++) {
+                    top.add(i);
+                }
+
+                typeShirt = new JComboBox<>(top);
+                listComponentTimkiem.add(typeShirt);
+                wrap.add(typeShirt);
+                wrap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                break;
+            }
+
             case "Ngày bắt đầu":
             case "Ngày tạo TK":
             case "Theo ngày nhập": {
                 startDate = new JSpinner(new SpinnerDateModel());
                 JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(startDate, "dd/MM/yyyy");
                 startDate.setEditor(dateEditor);
+                listComponentTimkiem.add(startDate);
                 wrap.add(startDate);
                 break;
             }
@@ -133,6 +208,7 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
                 endDate = new JSpinner(new SpinnerDateModel());
                 JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(endDate, "dd/MM/yyyy");
                 endDate.setEditor(dateEditor);
+                listComponentTimkiem.add(endDate);
                 wrap.add(endDate);
                 break;
             }
@@ -168,13 +244,13 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
 
         listTitle = new ArrayList<>();
         switch (MACHUCNANG) {
-            
+
             case "NULLTK": {
                 String[] list = {};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
-                        case "NULLHD": {
+            case "NULLHD": {
                 String[] list = {};
                 listTitle.addAll(Arrays.asList(list));
                 break;
@@ -186,8 +262,7 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
             }
             //={"Theo tên","Giá thấp nhất","đến","Giá cao nhất","Theo loại",}
             case "NCC": {
-                System.out.println("Nha cung cap");
-                String[] list = {"Theo tên hoặc MANCC"};
+                String[] list = {"Tất cả"};
                 listTitle.addAll(Arrays.asList(list));
                 //submit.setName(TENCHUCNANG);
                 break;
@@ -199,12 +274,12 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
 //                break;
 //            }
             case "SP": {
-                String[] list = {"Theo tên sản phẩm", "Theo loại"};
+                String[] list = {"Theo tên sản phẩm, theo MASP", "Theo loại"};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
             case "TK": {
-                String[] list = {"Theo USERNAME", "Tình trạng"};
+                String[] list = {"Theo mã nhân viên, theo USERNAME, theo mã quyền", "Tình trạng"};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
@@ -220,7 +295,7 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
 //                break;
 //            }
             case "NV": {
-                String[] list = {"Theo tên hoặc MANV","Theo chức vụ"};
+                String[] list = {"Theo tên nhân viên, theo MANV, theo SĐT", "Theo chức vụ"};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
@@ -230,20 +305,29 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
                 break;
             }
             case "NULLThK": {
-                String[] list = {"Ngày bắt đầu", "đến", "Ngày kết thúc", "Theo loại"};
-                listTitle.addAll(Arrays.asList(list));
+
+                switch (thongkeloai) {
+                    case 0:
+                        String[] list1 = {"Ngày bắt đầu", "đến", "Ngày kết thúc", "Theo loại"};
+                        listTitle.addAll(Arrays.asList(list1));
+                        break;
+                    case 1:
+                        String[] list2 = {"Ngày bắt đầu", "đến", "Ngày kết thúc", "Top"};
+                        listTitle.addAll(Arrays.asList(list2));
+                        break;
+                }
+
                 break;
             }
 
             case "HD": {
-                System.out.println("LA TAI SAOOOOOOO");
 
-                String[] list = {"Theo MAHD", "Ngày bắt đầu", "đến", "Ngày kết thúc"};
+                String[] list = {"Theo MAHD, theo MAKH, theo MANV", "Ngày bắt đầu", "đến", "Ngày kết thúc"};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
             case "LOAI": {
-                String[] list = {"Theo tên hoặc MALOAI"};
+                String[] list = {"Theo tên loại hoặc MALOAI", "Tình trạng"};
                 listTitle.addAll(Arrays.asList(list));
                 break;
             }
@@ -255,8 +339,6 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
 
         }
         if (!listTitle.isEmpty()) {
-            System.out.println("heheheheheheheh");
-//            setPreferredSize(new Dimension(chieurong, 117));
 
             JPanel jp_title = new JPanel();
             jp_title.setLayout(new BorderLayout());
@@ -299,33 +381,104 @@ public class SearchInStore extends JPanel implements MouseListener { //implement
         }
 
     }
+    
+    public void searchOfChucnang(ArrayList<String> data_filter){
+        Component[] components = pageContent.getComponents();
+        switch(MACHUCNANG){
+            case "NCC":{
+                nhacungcapBUS nccBUS = new nhacungcapBUS();
+                nhacungcapGUI nccGUI = (nhacungcapGUI)components[0];
+               
+                
+               nccGUI.addDataInTable(nccBUS.search(data_filter));
+                nccGUI.repaint();
+                nccGUI.validate();
+              
+                 break;
+            }
+              case "LOAI":{
+                loaiSPBUS loaiBUS = new loaiSPBUS();
+                loaiSPGUI loaiGUI = (loaiSPGUI)components[0];
+                  System.out.println("Du lieu tim kiem"+data_filter.toString());
+                
+               loaiGUI.addDataInTable(loaiBUS.search(data_filter));
+                loaiGUI.repaint();
+                loaiGUI.validate();
+              
+                 break;
+            }  
+               
+        }
+    }
+    public void resetOfChucnang(){
+         ArrayList<String> data_filter = new ArrayList<>();
+        switch(MACHUCNANG){
+            case "NCC":{
+               
+                data_filter.add("");
+               
+                break;
+            }
+             case "LOAI":{
+                data_filter.add("");
+                 data_filter.add("Tất cả");
+                break;
+            }
+        }
+         searchOfChucnang(data_filter);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-//        try {
-//            JPanel btn_click = (JPanel) e.getSource();
-//            String chucnang = btn_click.getName();
-//            ArrayList<String> data_filter = new ArrayList<>();
-//            if (!name.getText().equals("")) {
-//                data_filter.add(name.getText());
-//            }
-//            switch (chucnang) {
-//                case "Nhà cung cấp":
-//                    nhacungcapBUS nccBUS = new nhacungcapBUS();
-//                    nhacungcapGUI nccGUI = (nhacungcapGUI) pageContent;
-//                    nccGUI.addDataInTable(nccBUS.search(data_filter));
-//                    break;
-//            }
-//        } catch (Exception ex) {
-//
-//        }
+        ArrayList<String> data_filter = new ArrayList<>();
         JButton btn = (JButton) e.getSource();
         if (btn == submit) {
 //            TaiKhoanGUI tk = new TaiKhoanGUI((int)pageContent.getPreferredSize().getWidth(),(int)pageContent.getPreferredSize().getHeight());
-            TaiKhoanGUI tk = new TaiKhoanGUI(500, 500);
-            tk.SearchTK(name.getText(), typeTrangthai.getSelectedIndex());
-        }
+//            TaiKhoanGUI tk = new TaiKhoanGUI(500, 500);
+//            tk.SearchTK(name.getText(), typeTrangthai.getSelectedIndex());
+            for (Component c : listComponentTimkiem) {
+                if (c instanceof JTextField) {
+                    JTextField text = (JTextField) c;
+                    data_filter.add(text.getText());
 
+                } else if (c instanceof JComboBox<?>) {
+                    JComboBox<String> comboBox = (JComboBox<String>) c;
+                    String selectedItem = (String) comboBox.getSelectedItem();
+
+                    data_filter.add(selectedItem);
+
+                } else {
+                    JSpinner date = (JSpinner) c;
+                    Date selectedDate = (Date) date.getValue();
+                    // Định dạng ngày tháng năm thành chuỗi
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String dateString = dateFormat.format(selectedDate);
+                    // In ra giá trị đã chọn dưới dạng chuỗi
+                    data_filter.add(dateString);
+                }
+            }
+            searchOfChucnang(data_filter);
+        } else {
+            for (Component c : listComponentTimkiem) {
+                if (c instanceof JTextField) {
+                    JTextField text = (JTextField) c;
+                    text.setText("");
+                } else if (c instanceof JComboBox<?>) {
+                    JComboBox<String> comboBox = (JComboBox<String>) c;
+                    comboBox.setSelectedItem("Tất cả");
+                } else {
+
+                    JSpinner date = (JSpinner) c;
+
+                    date.setModel(new SpinnerDateModel());
+
+                    JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(date, "dd/MM/yyyy");
+                    date.setEditor(dateEditor);
+                }
+            }
+            resetOfChucnang();
+        }
+        
     }
 
     @Override

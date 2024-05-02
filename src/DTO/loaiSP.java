@@ -55,6 +55,8 @@ public class loaiSP {
      public int getTINHTRANG(){
          return TINHTRANG;
      }
- 
+ public  String toString(){
+     return MALOAI+" "+TENLOAI+" "+((TINHTRANG==0)?"Ngừng bán":"Đang bán");
+ }
    
 }
