@@ -19,25 +19,6 @@ public class TaiKhoanBUS {
         dsTK = tkDAO.list();
     }
     
-    public boolean checkUSERNAME(String t) {
-        //Username không chứa số và các kí tự đặc biệt
-        String regex = "^[\\p{L}0-9]+$";
-        return t.matches(regex);
-    }
-    
-     public boolean checkPASSWORD(String t) {
-        //password co the chua chu so, chu cai hoa va thuong, ki tu !, ki tu @
-        String regex = "[a-zA-Z0-9!@]+$";
-        return t.matches(regex);
-    }
-     public TaiKhoanDTO searchTaikhoanDTO(String USERNAME, String PASSWORD){
-         for(TaiKhoanDTO t : dsTK){
-             if(t.getUsername().equals(USERNAME) && t.getPassword().equals(PASSWORD))
-                 return t;
-         }
-         return null;
-     }
-    
     public void add(TaiKhoanDTO tk){
         dsTK.add(tk);
         TaiKhoanDAO tkDAO = new TaiKhoanDAO();

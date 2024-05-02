@@ -35,18 +35,19 @@ public class Nhanvien_DAO {
                 Nhanvien_DTO nv = new Nhanvien_DTO (manv, tennv, chucvu, sdt, diachi, email );
                 dsnv.add(nv);
             }
-            System.out.println("Lay danh sach nhan vien thanh cong");
+            System.out.println("Lay danh sach chuc nang thanh cong");
             rs.close();        
            mySQL.disconnect();
         }
         catch (SQLException ex) {
-            System.out.println("Lay danh sach nhan vien that bai");
+            System.out.println("Lay danh sach chuc nang that bai");
         }
-            return dsnv;
+        return dsnv;   
+     
     }
     
-        
-   public void add(Nhanvien_DTO item) {
+    
+    public void add(Nhanvien_DTO item) {
             try {
                 mySQL.connect();
                 String query= "INSERT INTO nhanvien VALUES ('" + item.getManv() +"','"+ item.getTennv() +"','" +item.getChucvu() +"','" +item.getSdt() + "','" +item.getDiachi() +"','" +item.getEmail()+");";
@@ -58,31 +59,6 @@ public class Nhanvien_DAO {
             }
       
     }
-    
-     public void update(Nhanvien_DTO item) {
-            try {
-                mySQL.connect();
-                String query= "UPDATE nhanvien set TENNV = '" + item.getTennv()+"', CHUCVU='"+ item.getChucvu()+ "', SDT=" + item.getSdt() + "', DIACHI=" + item.getDiachi()+ "', EMAIL=" + item.getEmail() + " WHERE MANV='" + item.getManv() + "'";
-                mySQL.executeUpdate(query);
-                System.out.println("Cap nhat thong tin nhan vien thanh cong!");
-                mySQL.disconnect();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-      
-    }
-     
-      public void delete(String m) {
-            try {
-                mySQL.connect();
-                String query= "DELETE FROM nhanvien WHERE MANV = '" + m +"';";
-                mySQL.executeUpdate(query);
-                System.out.println("Xoa nhan vien thanh cong!");
-                mySQL.disconnect();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-      }
     public static void main (String[] args){
         Nhanvien_DAO nv = new Nhanvien_DAO();
         ArrayList<Nhanvien_DTO> list = nv.list();

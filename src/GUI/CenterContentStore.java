@@ -225,10 +225,12 @@ public class CenterContentStore extends JPanel {
                 
            
             case "SIZE":{
-                SizeGUI sizeGUI = new SizeGUI(widthPageContent, heightPageContent);
-                ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, sizeGUI);
+                  JPanel size = new JPanel();
+                size.setPreferredSize(new Dimension(widthPageContent, heightPageContent));
+                size.add(new JLabel("Đây là trang size"));
+                ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, size);
                 showThaotac(JP_thaotac);
-                showPageContent(sizeGUI);
+                showPageContent(size);
                 break;
             }
                 

@@ -52,7 +52,8 @@ public class ThongKeGUI extends JPanel {
         } catch (SQLException e) {
             System.out.println("That bai");
         }
-        data("2023-01-01", "2023-08-22", "ALL");
+//        doanhThu("2023-01-01", "2023-08-22", "ALL");
+        banChay("2023-01-01", "2023-08-22", 10);
         tinhDoanhThu();
         init(width, height);
     }
@@ -65,7 +66,7 @@ public class ThongKeGUI extends JPanel {
         this.doanhThu = sum;
     }
 
-    public void data(String tuNgay, String denNgay, String select) {
+    public void doanhThu(String tuNgay, String denNgay, String loai) {
         ds = new ArrayList<>();
         String query = "SELECT * FROM"
                 + "("
@@ -78,9 +79,48 @@ public class ThongKeGUI extends JPanel {
                 + "    GROUP BY sp.MASP, sp.MALOAI, sp.TENSP, sp.PRICE"
                 + ")"
                 + "AS subquery ";
-        if (!select.equalsIgnoreCase("ALL")) {
-            query += "where subquery.maloai ='" + select + "'";
+        if (!loai.equalsIgnoreCase("ALL")) {
+            query += "where subquery.maloai ='" + loai + "'";
         }
+        System.out.println(query);
+        try {
+            mySQL.connect();
+            ResultSet rs = mySQL.executeQuery(query);
+            while (rs.next()) {
+                String maSP = rs.getString("MASP");
+                String maLoai = rs.getString("MALOAI");
+                String tenSP = rs.getString("TENSP");
+                int soLuong = rs.getInt("SL");
+                double donGia = rs.getDouble("PRICE");
+                double thanhTien = rs.getDouble("TT");
+                ThongKeDTO thongKe = new ThongKeDTO(maSP, maLoai, tenSP, soLuong, donGia, thanhTien);
+                ds.add(thongKe);
+            }
+            rs.close();
+            mySQL.disconnect();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ThongKeGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void banChay(String tuNgay, String denNgay, int top) {
+        ds = new ArrayList<>();
+        String query = "SELECT * FROM"
+                + "("
+                + "    SELECT sp.MASP, sp.MALOAI, sp.TENSP, SUM(cthd.SOLUONG) AS SL,"
+                + "           sp.PRICE, sp.PRICE * SUM(cthd.SOLUONG) AS TT"
+                + "    FROM hoadon hd"
+                + "    INNER JOIN chitiethoadon cthd ON hd.SOHD = cthd.SOHD"
+                + "    INNER JOIN sanpham sp ON sp.MASP = cthd.MASP"
+                + "    WHERE hd.NGAYHD BETWEEN '" + tuNgay + "' AND '" + denNgay + "'"
+                + "    GROUP BY sp.MASP, sp.MALOAI, sp.TENSP, sp.PRICE"
+                + ")"
+                + " AS subquery ";
+
+        // Sắp xếp theo số lượng sản phẩm bán ra (SL) và giới hạn top 10
+        query += "ORDER BY subquery.SL DESC LIMIT " + top;
+
         System.out.println(query);
         try {
             mySQL.connect();
@@ -110,13 +150,12 @@ public class ThongKeGUI extends JPanel {
         //Header
         pnHeader = new JPanel();
         pnHeader.setLayout(new FlowLayout());
-        pnHeader.setBorder(new EmptyBorder(20, 0, 20, 0)); 
+        pnHeader.setBorder(new EmptyBorder(20, 0, 20, 0));
         JLabel lblHeader = new JLabel("THỐNG KÊ DOANH THU", JLabel.CENTER);
         lblHeader.setFont(fontHeader);
         pnHeader.add(lblHeader);
         this.add(pnHeader, BorderLayout.NORTH);
-        
-        
+
         //tạo bảng thống kê
         table = new JTable();
         table.setRowHeight(30); //thiết lập chiều cao các cột

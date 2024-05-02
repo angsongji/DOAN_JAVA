@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Study/DOAN_JAVA/src/GUI/CenterContentStore.java</file>
-            <file>file:/C:/Study/DOAN_JAVA/src/GUI/nhacungcapGUI.java</file>
-            <file>file:/C:/Study/DOAN_JAVA/src/BUS/SizeBUS.java</file>
-            <file>file:/C:/Study/DOAN_JAVA/src/Main/Main.java</file>
-            <file>file:/C:/Study/DOAN_JAVA/src/GUI/SizeGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/ThongKeGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/ChucNangSanPhamGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/ThaotacInStore.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/addNhacungcapGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/TaiKhoanGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/nhacungcapGUI.java</file>
+            <file>file:/C:/Users/ADMIN/Documents/GitHub/DOAN_JAVA-main/src/GUI/SanPhamGUI.java</file>
         </group>
     </open-files>
 </project-private>

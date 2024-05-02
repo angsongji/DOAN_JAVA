@@ -1,6 +1,6 @@
 package GUI;
 
-import BUS.Nhanvien_BUS;
+import BUS.SanPhamBUS;
 import BUS.TaiKhoanBUS;
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -46,12 +46,12 @@ public class ThaotacInStore extends JPanel implements MouseListener {
     private String MACHUCNANG;
     private String MAQUYEN;
     private Component pageContent;
- private StoreScreen s;
+    private StoreScreen s;
     //kích thước trang tai khoan
     int widthTK;
     int heightTK;
-    
-    public ThaotacInStore(String MACHUCNANG, String MAQUYEN, Component pageContent,StoreScreen s) {
+
+    public ThaotacInStore(String MACHUCNANG, String MAQUYEN, Component pageContent, StoreScreen s) {
         this.s = s;
         this.pageContent = pageContent;
         this.MACHUCNANG = MACHUCNANG;
@@ -143,8 +143,12 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 }
             }
         }
-      if(MACHUCNANG.equals("HD")) hanhdong.add(new chitietquyenDTO(MAQUYEN, MACHUCNANG, "In PDF"));
-      if(MACHUCNANG.equals("NCC"))  hanhdong.add(new chitietquyenDTO(MAQUYEN, MACHUCNANG, "Import Excel"));
+        if (MACHUCNANG.equals("HD")) {
+            hanhdong.add(new chitietquyenDTO(MAQUYEN, MACHUCNANG, "In PDF"));
+        }
+        if (MACHUCNANG.equals("NCC")) {
+            hanhdong.add(new chitietquyenDTO(MAQUYEN, MACHUCNANG, "Import Excel"));
+        }
         return hanhdong;
     }
 
@@ -209,7 +213,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                                 cntk_p.JP_contentCuaNameChucnangCon.repaint();
                                 cntk_p.tkGUI = b;
                                 JOptionPane.showMessageDialog(null,
-                                    "Bạn đã xoá tài khoản thành công!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                                        "Bạn đã xoá tài khoản thành công!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                             }
                         }
                         break;
@@ -229,9 +233,8 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 thaotacLOAI(ctqDTO.getHANHDONG(), itemClicked);
                 break;
             }
-                case "NV": {
-                thaotacNV(ctqDTO.getHANHDONG(), itemClicked);
-                break;
+            case "SP": {
+                thaotacSP(ctqDTO.getHANHDONG(), itemClicked);
             }
         }
         // TODO Auto-generated method stub
@@ -278,10 +281,46 @@ public class ThaotacInStore extends JPanel implements MouseListener {
         }
     }
 
+    public void thaotacSP(String hanhdong, hanhdongGUI itemClicked) {
+        SanPhamGUI spGUI = (SanPhamGUI) pageContent;
+        SanPhamBUS spBUS = new SanPhamBUS();
+        switch (hanhdong) {
+            case "Sửa": {
+                ChucNangSanPhamGUI sp = new ChucNangSanPhamGUI(spGUI, 500, 600);
+                sp.initThem();
+                break;
+            }
+            case "Xóa": {
+                System.out.println(spGUI.selectedSP.getMaSP());
+                if (spGUI.selectedSP.getMaSP() == null) {
+                    JOptionPane.showMessageDialog(null,
+                            "Xin vui lòng chọn sản phẩm cần xoá !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    int result = JOptionPane.showConfirmDialog(
+                            null,
+                            "Bạn có chắc chắn muốn xoá sản phẩm này ?", // Nội dung thông báo
+                            "Xác nhận xoá", // Tiêu đề
+                            JOptionPane.YES_NO_OPTION, // Tùy chọn Yes/No
+                            JOptionPane.QUESTION_MESSAGE // Biểu tượng dấu hỏi
+                    );
+
+                    // Xử lý kết quả
+                    if (result == JOptionPane.YES_OPTION) {
+                        spGUI.DeleteSP();
+                        JOptionPane.showMessageDialog(null,
+                                "Bạn đã xoá sản phẩm thành công!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                break;
+            }
+
+        }
+    }
+
     public void thaotacPQ(String hanhdong, hanhdongGUI itemClicked) {
         phanquyen pq = (phanquyen) pageContent;
         quyenBUS qBUS = new quyenBUS();
-        chitietquyenBUS ctqBUS =new chitietquyenBUS();
+        chitietquyenBUS ctqBUS = new chitietquyenBUS();
         switch (hanhdong) {
             case "Thêm":
                 addQuyen addquyen = new addQuyen(pq);
@@ -293,9 +332,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                         JOptionPane.showMessageDialog(null, "Bạn đang thực hiện chỉnh sửa quyền\nẤn Lưu/Thoát khi đã hoàn tất chỉnh sửa!");
                         itemClicked.title.setText("Lưu/Thoát");
                         itemClicked.icon = new JLabel(new ImageIcon("./src/images/finish_icon.png"));
-                       
                         pq.updateTENQUYEN(pq.currentQuyen, 0);
-                         
                         pq.isEditingEnabled = true;
                         break;
                     case "Lưu/Thoát":
@@ -303,15 +340,15 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                         if (r2 == JOptionPane.YES_OPTION) {
                             itemClicked.title.setText("Sửa");
                             itemClicked.icon = new JLabel(new ImageIcon("./src/images/edit_icon.png"));
-                            
+                            System.out.println("Quyen truoc khi sua" + pq.currentQuyen.toString());
                             pq.updateTENQUYEN(pq.currentQuyen, 1);
-                            
+                            System.out.println("Quyen sau khi sua" + pq.currentQuyen.toString());
                             qBUS.updateTENQUYEN(pq.currentQuyen);
-                            ctqBUS.updateChitietquyen(pq.getListUpdateCtqTheoMAUQYEN(),pq.currentQuyen.getMAQUYEN());
+                            ctqBUS.updateChitietquyen(pq.getListUpdateCtqTheoMAUQYEN(), pq.currentQuyen.getMAQUYEN());
                             pq.isEditingEnabled = false;
-                            JOptionPane.showMessageDialog(null,"Lưu chỉnh sửa thành công!\nĐăng nhập lại để xem những thay đổi vừa lưu!");
+                            JOptionPane.showMessageDialog(null, "Lưu chỉnh sửa thành công!\nĐăng nhập lại để xem những thay đổi vừa lưu!");
                             s.dispose();
-                             LoginUI l = new LoginUI();
+                            LoginUI l = new LoginUI();
                         } else {
                             int r2_1 = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục chỉnh sửa?", "Sửa quyền ", JOptionPane.YES_NO_OPTION);
                             if (r2_1 == JOptionPane.NO_OPTION) {
@@ -321,7 +358,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                                     itemClicked.title.setText("Sửa");
                                     itemClicked.icon = new JLabel(new ImageIcon("./src/images/edit_icon.png"));
                                     pq.updateTENQUYEN(pq.currentQuyen, 2);
-                                    
+
                                     pq.isEditingEnabled = false;
                                 }
                             }
@@ -528,20 +565,5 @@ public class ThaotacInStore extends JPanel implements MouseListener {
             }
         }
     }
-public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) {
-        Trangnhanvien_GUI nvGUI = (Trangnhanvien_GUI) pageContent;
-        Nhanvien_BUS loaiBUS = new Nhanvien_BUS();
-        switch (hanhdong) {
-            case "Thêm": {
-                addNhanvienGUI addnv = new addNhanvienGUI(nvGUI);
-                break;
-            }
-            case "Sửa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên");
-                        break;}
-            case "Xóa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần Xóa nhân viên");
-                        break;}        
-        }
-}
+
 }

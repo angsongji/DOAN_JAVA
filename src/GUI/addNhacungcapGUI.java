@@ -134,7 +134,6 @@ public class addNhacungcapGUI extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
         try {
             JPanel btn = (JPanel) e.getSource();
             switch (btn.getName()) {

@@ -1,7 +1,5 @@
 package GUI;
 
-import BUS.quyenBUS;
-import DTO.TaiKhoanDTO;
 import DTO.quyenDTO;
 import javax.swing.ImageIcon;
 import javax.swing.GroupLayout;
@@ -27,21 +25,10 @@ public class StoreScreen extends JFrame{
     private JLabel exitStore;
     private MenuChucNangStore menu;
     protected CenterContentStore centerContent;
-  
-public TaiKhoanDTO tkUSER ;
-  public quyenDTO quyenUser;
-     public StoreScreen(TaiKhoanDTO tkUSER){
-         this.tkUSER = tkUSER;
-         quyenBUS qBUS  = new quyenBUS();
-         quyenUser = qBUS.searchquyenDTO(tkUSER.getMaQuyen());
-        chieurong=(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        chieucao=(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-40;
-       init();
-    }
+    private String MAQUYEN = "QQLHT";
+
+    public quyenDTO quyenUser=new quyenDTO("QQLHT","Quyền quản lí hệ thống");
     public StoreScreen(){
-        tkUSER =new TaiKhoanDTO("NV012", "hoa", "1234", "2016-09-03", "QQLHT", 1);
-        quyenBUS qBUS  = new quyenBUS();
-         quyenUser = qBUS.searchquyenDTO(tkUSER.getMaQuyen());
         chieurong=(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         chieucao=(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-40;
        init();
@@ -107,7 +94,7 @@ public TaiKhoanDTO tkUSER ;
       
         
         
-        menu= new MenuChucNangStore(tkUSER.getMaQuyen(),(int)chieurong/7,chieucao,this);
+        menu= new MenuChucNangStore(MAQUYEN,(int)chieurong/7,chieucao,this);
         
         centerContent= new CenterContentStore(chieurong-(int)menu.getPreferredSize().getWidth()-20, chieucao-20-(int)title_bar.getPreferredSize().getHeight(), this);
         //end
