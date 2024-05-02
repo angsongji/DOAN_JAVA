@@ -86,9 +86,14 @@ public class nhacungcapBUS {
         ArrayList<nhacungcapDTO> re = new ArrayList<>();
         for(String i : data_filter){
             for(nhacungcapDTO j : listNhacungcap){
-                if(j.getMANCC().equals(i) || j.getTENNCC().equalsIgnoreCase(i))
+                boolean cond = true;
+                if(!data_filter.get(0).equals(""))
+                    cond = j.getMANCC().toLowerCase().contains(i.toLowerCase()) || j.getTENNCC().toLowerCase().contains(i.toLowerCase()) || String.valueOf("0"+j.getSDT()).contains(i);
+                if(cond)
                     re.add(j);
-                    
+                       
+                   
+                     
             }
             
         

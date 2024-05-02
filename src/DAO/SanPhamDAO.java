@@ -53,7 +53,7 @@ public class SanPhamDAO {
         } catch (SQLException ex) {
             Logger.getLogger(SanPhamDTO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println("danh sách = "+dssp.size());
         return dssp;
     }
 

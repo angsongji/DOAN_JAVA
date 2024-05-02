@@ -183,7 +183,7 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
     }
 
     public ArrayList<chucnangDTO> lístChucnang(String MAQUYEN) {
-        String sql = "SELECT * FROM chitietquyen WHERE MAQUYEN='" + MAQUYEN + "'";
+        String sql = "SELECT * FROM chitietquyen WHERE MAQUYEN='" + MAQUYEN + "' AND HANHDONG='Xem'";
         chitietquyenDAO ctqDAO = new chitietquyenDAO();
         ArrayList<chitietquyenDTO> listChitietQuyen = ctqDAO.executeQuery(sql);
         ArrayList<chucnangDTO> listChucnang = new ArrayList<>();
@@ -202,13 +202,12 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
                 listChucnang.add(k);
             }
         }
-        listChucnang.add(new chucnangDTO("NULLThK", "Thống kê"));
         listChucnang.add(new chucnangDTO("NULLDX", "Đăng xuất"));
         return listChucnang;
     }
 
     public ArrayList<String> lístNameChucnang(String MAQUYEN) {
-        String sql = "SELECT * FROM chitietquyen WHERE MAQUYEN='" + MAQUYEN + "'";
+        String sql = "SELECT * FROM chitietquyen WHERE MAQUYEN='" + MAQUYEN + "'  AND HANHDONG='Xem'";
         chitietquyenDAO ctqDAO = new chitietquyenDAO();
         ArrayList<chitietquyenDTO> listChitietQuyen = ctqDAO.executeQuery(sql);
         ArrayList<String> listNameChucnang = new ArrayList<>();
@@ -220,7 +219,6 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
                 listNameChucnang.add(name);
             }
         }
-        listNameChucnang.add("Thống kê");
         listNameChucnang.add("Đăng xuất");
         return listNameChucnang;
     }

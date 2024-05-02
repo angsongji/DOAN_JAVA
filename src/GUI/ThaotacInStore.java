@@ -1,5 +1,6 @@
 package GUI;
 
+import BUS.Nhanvien_BUS;
 import BUS.TaiKhoanBUS;
 import java.awt.Font;
 import java.awt.BorderLayout;
@@ -45,10 +46,21 @@ public class ThaotacInStore extends JPanel implements MouseListener {
     private String MACHUCNANG;
     private String MAQUYEN;
     private Component pageContent;
-
+ private StoreScreen s;
     //kích thước trang tai khoan
     int widthTK;
     int heightTK;
+    
+    public ThaotacInStore(String MACHUCNANG, String MAQUYEN, Component pageContent,StoreScreen s) {
+        this.s = s;
+        this.pageContent = pageContent;
+        this.MACHUCNANG = MACHUCNANG;
+        this.MAQUYEN = MAQUYEN;
+        listHanhdong = new ArrayList<>();
+        font_title = new Font("Tahoma", Font.PLAIN, 14);
+        init();
+
+    }
 
     public ThaotacInStore(String MACHUCNANG, String MAQUYEN, Component pageContent) {
         this.pageContent = pageContent;
@@ -58,10 +70,6 @@ public class ThaotacInStore extends JPanel implements MouseListener {
         font_title = new Font("Tahoma", Font.PLAIN, 14);
         init();
 
-        //Lay kich thuoc của trang tai khoan 
-//        chucnangTaikhoan cntk = (chucnangTaikhoan) pageContent;
-//        widthTK = (int)cntk.JP_contentCuaNameChucnangCon.getPreferredSize().getWidth();
-//        heightTK = (int) cntk.JP_contentCuaNameChucnangCon.getPreferredSize().getHeight();
     }
 
     private void init() {
@@ -221,6 +229,10 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 thaotacLOAI(ctqDTO.getHANHDONG(), itemClicked);
                 break;
             }
+                case "NV": {
+                thaotacNV(ctqDTO.getHANHDONG(), itemClicked);
+                break;
+            }
         }
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
@@ -281,7 +293,9 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                         JOptionPane.showMessageDialog(null, "Bạn đang thực hiện chỉnh sửa quyền\nẤn Lưu/Thoát khi đã hoàn tất chỉnh sửa!");
                         itemClicked.title.setText("Lưu/Thoát");
                         itemClicked.icon = new JLabel(new ImageIcon("./src/images/finish_icon.png"));
+                       
                         pq.updateTENQUYEN(pq.currentQuyen, 0);
+                         
                         pq.isEditingEnabled = true;
                         break;
                     case "Lưu/Thoát":
@@ -289,13 +303,15 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                         if (r2 == JOptionPane.YES_OPTION) {
                             itemClicked.title.setText("Sửa");
                             itemClicked.icon = new JLabel(new ImageIcon("./src/images/edit_icon.png"));
-                            System.out.println("Quyen truoc khi sua"+pq.currentQuyen.toString());
+                            
                             pq.updateTENQUYEN(pq.currentQuyen, 1);
-                            System.out.println("Quyen sau khi sua"+pq.currentQuyen.toString());
+                            
                             qBUS.updateTENQUYEN(pq.currentQuyen);
                             ctqBUS.updateChitietquyen(pq.getListUpdateCtqTheoMAUQYEN(),pq.currentQuyen.getMAQUYEN());
                             pq.isEditingEnabled = false;
-                            JOptionPane.showMessageDialog(null,"Lưu chỉnh sửa thành công!");
+                            JOptionPane.showMessageDialog(null,"Lưu chỉnh sửa thành công!\nĐăng nhập lại để xem những thay đổi vừa lưu!");
+                            s.dispose();
+                             LoginUI l = new LoginUI();
                         } else {
                             int r2_1 = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục chỉnh sửa?", "Sửa quyền ", JOptionPane.YES_NO_OPTION);
                             if (r2_1 == JOptionPane.NO_OPTION) {
@@ -512,5 +528,20 @@ public class ThaotacInStore extends JPanel implements MouseListener {
             }
         }
     }
-
+public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) {
+        Trangnhanvien_GUI nvGUI = (Trangnhanvien_GUI) pageContent;
+        Nhanvien_BUS loaiBUS = new Nhanvien_BUS();
+        switch (hanhdong) {
+            case "Thêm": {
+                addNhanvienGUI addnv = new addNhanvienGUI(nvGUI);
+                break;
+            }
+            case "Sửa": {
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên");
+                        break;}
+            case "Xóa": {
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần Xóa nhân viên");
+                        break;}        
+        }
+}
 }

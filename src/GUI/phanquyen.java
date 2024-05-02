@@ -222,23 +222,25 @@ public class phanquyen extends JPanel implements MouseListener {
         Vector data;
         tableModel.setRowCount(0);
 
-        
-        
         chitietquyenBUS ctqBUS = new chitietquyenBUS();
         for (chucnangDTO i : listChucnang) {
             data = new Vector();
             data.add(i.getTENCHUCNANG());
-            for (String hd : columnNames) {
-                if (!hd.equals("")) {
-                    if (ctqBUS.search(new chitietquyenDTO(startQuyen.getMAQUYEN(), i.getMACHUCNANG(), hd))) {
-                        data.add(true);
-                    } else {
-                        data.add(false);
+            
+                for (String hd : columnNames) {
+                    if (!hd.equals("")) {
+                        if (ctqBUS.search(new chitietquyenDTO(startQuyen.getMAQUYEN(), i.getMACHUCNANG(), hd))) {
+                            data.add(true);
+                        } else {
+                            data.add(false);
+                        }
                     }
                 }
-            }
+            
+
             tableModel.addRow(data);
         }
+
         table.setModel(tableModel);
     }
 
@@ -246,7 +248,7 @@ public class phanquyen extends JPanel implements MouseListener {
         quyenDTO new_quyen = new quyenDTO(mq);
         currentQuyen.setMAQUYEN(new_quyen.getMAQUYEN());
         currentQuyen.setTENQUYEN(new_quyen.getTENQUYEN());
-         chitietquyenBUS ctqBUS = new chitietquyenBUS();
+        chitietquyenBUS ctqBUS = new chitietquyenBUS();
         TableModel model = table.getModel();
         for (int i = 0; i < listChucnang.size(); i++) {
             for (int j = 1; j < columnNames.length; j++) {
@@ -275,11 +277,16 @@ public class phanquyen extends JPanel implements MouseListener {
     }
 
     public void updateTENQUYEN(quyenDTO qDTO, int status) {
+        System.out.println("Quyen dang xet "+qDTO.toString());
         Component[] JP_childNameQuyen = JP_listNameQuyen.getComponents();
         for (int i = 0; i < JP_childNameQuyen.length; i++) {
             JPanel p = (JPanel) JP_childNameQuyen[i];
-            if (p.getName().equals(qDTO.toString())) {
-
+            quyenDTO duyet = new quyenDTO(p.getName());
+           System.out.println("Quyen dang duyet "+duyet.toString());
+           System.out.println("Quyen dang duyet co giong "+duyet.getMAQUYEN().equals(qDTO.getMAQUYEN()));
+           
+            if (duyet.getMAQUYEN().equals(qDTO.getMAQUYEN())) {
+                
                 switch (status) {
                     case 0:
 
@@ -321,40 +328,34 @@ public class phanquyen extends JPanel implements MouseListener {
         JP_listNameQuyen.revalidate(); // Cập nhật layout
         JP_listNameQuyen.repaint();
     }
-    
-    public ArrayList<chitietquyenDTO> getListUpdateCtqTheoMAUQYEN(){
+
+    public ArrayList<chitietquyenDTO> getListUpdateCtqTheoMAUQYEN() {
+     
         ArrayList<chitietquyenDTO> listCtqTheoMAQUYEN = new ArrayList<>();
-        
+
         String q = currentQuyen.getMAQUYEN();
 
         TableModel model = table.getModel();
         for (int i = 0; i < listChucnang.size(); i++) {
+            
             for (int j = 1; j < columnNames.length; j++) {
-              
-                  if( model.getValueAt(i, j).equals(true)){
-                      
-                      chitietquyenDTO ctqNew = new chitietquyenDTO(q,  listChucnang.get(i).getMACHUCNANG(),columnNames[j] );
-                    
-                     
-                      listCtqTheoMAQUYEN.add(ctqNew);
-                  } 
-                
+
+                if (model.getValueAt(i, j).equals(true)) {
+
+                    chitietquyenDTO ctqNew = new chitietquyenDTO(q, listChucnang.get(i).getMACHUCNANG(), columnNames[j]);
+
+                    listCtqTheoMAQUYEN.add(ctqNew);
+                }
+
             }
         }
+     
         return listCtqTheoMAQUYEN;
     }
-//
-//    public static void main(String[] args) {
-//        int cao = 600, rong = 1000;
-//        phanquyen h = new phanquyen(rong, cao);
-//        JFrame frame = new JFrame("JTable Example");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLayout(new BorderLayout());
-//
-//        frame.add(h, BorderLayout.CENTER);
-//
-//        frame.setVisible(true);
-//    }
+public void thaydoiJTable(){
+    isEditingEnabled = true;
+    
+}
 
     @Override
     public void mouseClicked(MouseEvent e) {

@@ -93,7 +93,6 @@ public class nhacungcapGUI extends JPanel {
     }
 
     public void addDataInTable(ArrayList<nhacungcapDTO> list) {
-        System.out.println("size"+list.size());
         Vector data;
         tableModel.setRowCount(0);
         for (nhacungcapDTO n : list) {

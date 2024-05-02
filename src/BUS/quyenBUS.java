@@ -107,5 +107,13 @@ public class quyenBUS {
          quyenDAO qDAO = new quyenDAO();
          qDAO.update(qNEW);
      }
+     
+     public quyenDTO searchquyenDTO(String MAQUYEN){
+         for(quyenDTO t : list){
+             if(t.getMAQUYEN().equals(MAQUYEN))
+                 return t;
+         }
+         return null;
+     }
     
 }

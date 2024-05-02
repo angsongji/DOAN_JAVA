@@ -12,6 +12,7 @@ import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -317,5 +318,12 @@ public class view_chi_tiet_san_pham extends JPanel implements MouseListener {
         }
 
     }
-
+    public static void main(String[] args) {
+        view_chi_tiet_san_pham v = new view_chi_tiet_san_pham(600, 400);
+        JFrame f = new JFrame();
+        f.add(v);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+        
+    }
 }

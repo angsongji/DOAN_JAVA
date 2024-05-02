@@ -1,6 +1,8 @@
 package GUI;
 
 
+import BUS.TaiKhoanBUS;
+import DTO.TaiKhoanDTO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -12,11 +14,12 @@ public class LoginUI {
     private JPanel mainPanel;
     private JPanel storePanel;
     private JPanel loginPanel;
+    private boolean flag_username, flag_password;
 
     public LoginUI() {
         frame = new JFrame("Đăng nhập");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400); 
+        frame.setSize(600, 350); 
         frame.setLocationRelativeTo(null); 
         frame.setBackground(new Color(10, 61, 98));
         frame.setUndecorated(true);
@@ -93,57 +96,36 @@ public class LoginUI {
         loginPanel.add(usernameLabel);
 
         JLabel passwordLabel = new JLabel("Mật khẩu:");
-        passwordLabel.setBounds(55, 175, 120, 30);
+        passwordLabel.setBounds(55, 180, 120, 30);
         passwordLabel.setForeground(new Color(10, 61, 98));
         passwordLabel.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family,Font.BOLD,14));
         loginPanel.add(passwordLabel);
 
-        JTextField usernameField = new JTextField(15);
-        usernameField.setBounds(55, 110, 180, 30);
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(55, 115, 180, 30);
         loginPanel.add(usernameField);        
 
 
-        JPasswordField passwordField = new JPasswordField(15);
-        passwordField.setBounds(55, 205, 180, 30);
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(55, 215, 180, 30);
         loginPanel.add(passwordField);
 
-        JLabel noBlank1 = new JLabel("*Không được để trống!");
-        noBlank1.setBounds(55, 140, 180, 30);
+        JLabel noBlank1 = new JLabel();
+        noBlank1.setBounds(55, 145, 180, 30);
         noBlank1.setForeground(Cacthuoctinh_phuongthuc_chung.error);
         noBlank1.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family,Font.PLAIN,13));
         loginPanel.add(noBlank1);
-        JLabel noBlank2 = new JLabel("*Không được để trống!");
-        noBlank2.setBounds(55, 235, 180, 30);
+        JLabel noBlank2 = new JLabel();
+        noBlank2.setBounds(55, 245, 200, 30);
         noBlank2.setForeground(Cacthuoctinh_phuongthuc_chung.error);
         noBlank2.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family,Font.PLAIN,13));
         loginPanel.add(noBlank2);
 
-        // Tạo label "Bạn chưa có tài khoản?" có gạch chân và đặt vị trí
-        JLabel registerLabel = new JLabel("<html><u>Bạn chưa có tài khoản?</u></html>");
-       // registerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        registerLabel.setBounds(30, 280, 150, 30); 
-        loginPanel.add(registerLabel);
-
-        // Tạo nút đăng ký và đặt vị trí
-        JButton registerButton = new JButton("Đăng ký");
-        registerButton.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family,Font.PLAIN,13));
-        registerButton.setBounds(180, 285, 80, 25);
-        registerButton.setBackground(new Color(10, 61, 98));
-        registerButton.setForeground(Color.WHITE);
-        registerButton.setFocusPainted(false);
-        registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        loginPanel.add(registerButton);
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                SignUp s = new SignUp();
-            }
-        });
+      
 
         // Tạo nút đăng nhập và đặt vị trí
         JButton loginButton = new JButton("XÁC NHẬN");
-        loginButton.setBounds(100, 335, 100, 35);
+        loginButton.setBounds(100, 305, 100, 35);
         loginButton.setFont(new Font(Cacthuoctinh_phuongthuc_chung.font_family,Font.PLAIN,13));
         loginButton.setBackground(new Color(10, 61, 98));
         loginButton.setForeground(Color.WHITE);
@@ -153,9 +135,55 @@ public class LoginUI {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                flag_username = flag_password = false;
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                System.out.println("user "+username +" pass "+password);
+                TaiKhoanBUS tkBUS = new TaiKhoanBUS();
+                 if (username.equals("")) {
+                        noBlank1.setText("*Không được để trống");
+                    } else if (!tkBUS.checkUSERNAME(username)) {
+                       noBlank1.setText("Tên chỉ chứa chữ cái và chữ số");
+                    } else {
+                        flag_username = true;
+                        noBlank1.setText("");
+                    }
+                    if (password.equals("")) {
+                        noBlank2.setText("Không được để trống");
+                    } else if (!tkBUS.checkPASSWORD(password)) {
+                         
+                        noBlank2.setText("<html>Chỉ được chứa kí tự số, chữ hoa<br>Chữ thường, kí tự đặc biệt: !, @</html>");
+                       
+                    } else {
+                        flag_password = true;
+                        noBlank2.setText("");
+                    }
+                    if (flag_username && flag_password) {
+                                      
+                                      TaiKhoanDTO tkUSER = tkBUS.searchTaikhoanDTO(username, password);
+                                      System.out.println("tkUSE"+tkUSER);
+                                      if(tkUSER==null){
+                                          usernameField.setText("");
+                                          passwordField.setText("");
+                                          JOptionPane.showMessageDialog(null, "Đăng nhập thất bại!\nDo mật khẩu không chính xác hoặc tài khoản chưa tồn tại!");
+                                      }else{
+                                          if(tkUSER.getState()!=0){
+                                              frame.dispose();
+                                                StoreScreen s = new StoreScreen(tkUSER);
+                                          }else{
+                                              usernameField.setText("");
+                                          passwordField.setText("");
+                                              JOptionPane.showMessageDialog(null, "Đăng nhập thất bại!\nDo tài khoản bị khóa");
+                                          }
+                                          
+                                      }
+                                          
+                  
+                                      
+                    }
+
                 //Lay duoc doi tuong TaikhoanDTO sau do khoi tao StoreScreen voi tham so la TaikhoanDTO do
-                StoreScreen s = new StoreScreen();
+
             }
         });
 
