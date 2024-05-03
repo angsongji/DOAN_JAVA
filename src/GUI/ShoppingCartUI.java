@@ -30,32 +30,36 @@ public class ShoppingCartUI extends JPanel {
     private ArrayList<SanPhamDTO> dsSP2 = new ArrayList<SanPhamDTO>();
     private double totalPrice = 0.0; // Tổng tiền
     private JLabel totalPriceLabel, titleLabel;
-    private int ccao, crong;
     //int sl=1;
 
 
 
-    public ShoppingCartUI() {
-        // this.crong = crong;
-        // this.heightJP_content = heightJP_content;
+    public ShoppingCartUI(int crong, int ccao) {
+        // this.chucnang = chucnang;
+        // int crong = chucnang.getCrong();
+        // int heightJP_content = chucnang.getHeightJPContent();
 
 //        setTitle("Giỏ hàng");
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(1300, 700));
+        setPreferredSize(new Dimension(crong, ccao));
         setBackground(new Color(255, 255, 255));
-        setLayout(null); // Sử dụng null layout để có thể đặt vị trí và kích thước bằng tọa độ tuyệt đối
+        setLayout(new BorderLayout()); // Sử dụng null layout để có thể đặt vị trí và kích thước bằng tọa độ tuyệt đối
 
         //headerPanel
         headerPanel = new JPanel();
-        headerPanel.setLayout(null);
-        headerPanel.setBounds(0, 0, 1300, 70);
+        headerPanel.setLayout(new BorderLayout());
+        headerPanel.setPreferredSize(new Dimension(100, 100));
         headerPanel.setBackground(new Color(96, 163, 188));
 
         titleLabel = new JLabel("Giỏ Hàng");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        titleLabel.setBounds(500, 0, 250, 50);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        // titleLabel.setPreferredSize(new Dimension(crong - 500, 10));
+        // titleLabel.setBounds(50, 50, 50, 50);
+        titleLabel.setPreferredSize(new Dimension(200, 100));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setVerticalAlignment(JLabel.CENTER);
         titleLabel.setForeground(new Color(10, 61, 98));
-        headerPanel.add(titleLabel);
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
 
         // closeButton = new JLabel("X");
         // closeButton.setFont(new Font("Arial", Font.BOLD, 30));
@@ -69,41 +73,43 @@ public class ShoppingCartUI extends JPanel {
         //     }
         // });
 
-        add(headerPanel);
+        add(headerPanel, BorderLayout.NORTH);
 
         //cartPanel
         cartPanel = new JPanel();
         cartPanel.setLayout(new GridBagLayout());
         cartPanel.setBackground(new Color(255, 255, 255));
+        // cartPanel.setPreferredSize(new Dimension(crong -200, ccao));
         Border cartBorder = BorderFactory.createLineBorder(new Color(10, 61, 98), 3);
         cartPanel.setBorder(cartBorder);
         JScrollPane scrollPane = new JScrollPane(cartPanel);
-        scrollPane.setBounds(150, 70, 1000, 500);
+        scrollPane.setPreferredSize(new Dimension(crong - 500, 500));
         // scrollPane.setBackground(new Color(10, 61, 98));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        add(scrollPane);
+        // scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        add(scrollPane, BorderLayout.CENTER);
 
         //endPanel
         endPanel = new JPanel();
         endPanel.setLayout(null);
-        endPanel.setBounds(0, 70, 1300, 700);
+        endPanel.setPreferredSize(new Dimension(200, 200));
         endPanel.setBackground(new Color(96, 163, 188));
-        add(endPanel);
+        add(endPanel, BorderLayout.SOUTH);
 
         // Mã giảm giá
         JLabel discountCodeLabel = new JLabel("Mã giảm giá:");
-        discountCodeLabel.setBounds(150, 510, 150, 30);
+        discountCodeLabel.setBounds(50 ,20, 150, 30);
         discountCodeLabel.setForeground(new Color(10, 61, 98));
         discountCodeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         endPanel.add(discountCodeLabel);
 
         JTextField discountCodeField = new JTextField();
-        discountCodeField.setBounds(150, 540, 200, 30);
+        discountCodeField.setBounds(200, 20, 200, 30);
         discountCodeField.setFont(new Font("Arial", Font.PLAIN, 20));
         endPanel.add(discountCodeField);
 
         JButton applyDiscountButton = new JButton("Áp dụng");
-        applyDiscountButton.setBounds(370, 540, 100, 30);
+        applyDiscountButton.setBounds(430, 20, 100, 30);
         applyDiscountButton.setForeground(new Color(96, 163, 188));
         applyDiscountButton.setBackground(new Color(10, 61, 98));
         applyDiscountButton.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -111,13 +117,13 @@ public class ShoppingCartUI extends JPanel {
         endPanel.add(applyDiscountButton);
 
         JLabel CustomerCodeLabel = new JLabel("Mã khách hàng:");
-        CustomerCodeLabel.setBounds(800, 510, 150, 30);
+        CustomerCodeLabel.setBounds(800, 20, 150, 30);
         CustomerCodeLabel.setForeground(new Color(10, 61, 98));
         CustomerCodeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         endPanel.add(CustomerCodeLabel);
 
         JTextField CustomerCodeField = new JTextField();
-        CustomerCodeField.setBounds(800, 540, 200, 30);
+        CustomerCodeField.setBounds(1000, 20, 200, 30);
         CustomerCodeField.setFont(new Font("Arial", Font.PLAIN, 20));
         endPanel.add(CustomerCodeField);
 
@@ -133,14 +139,14 @@ public class ShoppingCartUI extends JPanel {
 
         // Tổng tiền
         totalPriceLabel = new JLabel("Tổng tiền:" + totalPrice);
-        totalPriceLabel.setBounds(500, 530, 500, 50);
+        totalPriceLabel.setBounds(50, 110, 500, 50);
         totalPriceLabel.setForeground(new Color(10, 61, 98));
         totalPriceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         endPanel.add(totalPriceLabel);
 
         // Thanh toán
         JButton payButton = new JButton("Thanh toán");
-        payButton.setBounds(1050, 520, 150, 50);
+        payButton.setBounds(430, 110, 150, 50);
         payButton.setForeground(new Color(96, 163, 188));
         payButton.setBackground(new Color(10, 61, 98));
         payButton.setFont(new Font("Arial", Font.PLAIN, 20));

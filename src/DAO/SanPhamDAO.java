@@ -24,28 +24,28 @@ public class SanPhamDAO {
         try {
             mySQL.connect();
             String query = "SELECT s.MASP, s.MALOAI, s.PRICE, s.TENSP, s.TRANGTHAI, GROUP_CONCAT(h.TENHINH) AS TENHINH "
-                    + "FROM sanpham s "
+                    + "FROM SanPham s "
                     + "LEFT JOIN hinh h ON s.MASP = h.MASP "
                     + "GROUP BY s.MASP";
             ResultSet rs = mySQL.executeQuery(query);
             while (rs.next()) {
-                SanPhamDTO sanPham = new SanPhamDTO();
-                sanPham.setMaSP(rs.getString("MASP"));
-                sanPham.setMaLoai(rs.getString("MALOAI"));
-                sanPham.setPrice(rs.getDouble("PRICE"));
-                sanPham.setTenSP(rs.getString("TENSP"));
-                sanPham.setTrangThai(rs.getInt("TRANGTHAI"));
+                SanPhamDTO SanPham = new SanPhamDTO();
+                SanPham.setMaSP(rs.getString("MASP"));
+                SanPham.setMaLoai(rs.getString("MALOAI"));
+                SanPham.setPrice(rs.getDouble("PRICE"));
+                SanPham.setTenSP(rs.getString("TENSP"));
+                SanPham.setTrangThai(rs.getInt("TRANGTHAI"));
 
                 // Truy cập vào mảng tenHinh chỉ khi có dữ liệu
                 if (rs.getString("TENHINH") != null) {
                     String[] tenHinh = rs.getString("TENHINH").split(",");
-                    sanPham.setTenHinh(tenHinh);
+                    SanPham.setTenHinh(tenHinh);
                 } else {
                     // Xử lý trường hợp không có hình ảnh
-                    sanPham.setTenHinh(new String[0]); // Gán mảng rỗng cho trường tenHinh
+                    SanPham.setTenHinh(new String[0]); // Gán mảng rỗng cho trường tenHinh
                 }
 
-                dssp.add(sanPham);
+                dssp.add(SanPham);
             }
             rs.close();
             mySQL.disconnect();
@@ -60,7 +60,7 @@ public class SanPhamDAO {
     public void add(SanPhamDTO sp) {
         try {
             mySQL.connect();
-            String query = "INSERT INTO sanpham VALUES ('"
+            String query = "INSERT INTO SanPham VALUES ('"
                     + sp.getMaSP() + "', '"
                     + sp.getMaLoai() + "', '"
                     + sp.getPrice() + "', '"
@@ -84,7 +84,7 @@ public class SanPhamDAO {
     public void set(SanPhamDTO sp) {
         try {
             mySQL.connect();
-            String query = "UPDATE sanpham SET "
+            String query = "UPDATE SanPham SET "
                     + "MALOAI='" + sp.getMaLoai() + "', "
                     + "PRICE='" + sp.getPrice() + "', "
                     + "TENSP='" + sp.getTenSP() + "', "
@@ -117,7 +117,7 @@ public class SanPhamDAO {
     public void delete(String maSP){
         try {
             mySQL.connect();
-            String query = "UPDATE sanpham SET "
+            String query = "UPDATE SanPham SET "
                     + "TRANGTHAI='0' "
                     + "WHERE MASP='" + maSP + "'";
             System.out.println(query);
@@ -133,13 +133,13 @@ public class SanPhamDAO {
         ArrayList<SanPhamDTO> d = new ArrayList<>();
         d = sp.list();
         for (int i = 0; i < d.size(); i++) {
-            SanPhamDTO sanPham = d.get(i);
-            System.out.println("Mã sản phẩm: " + sanPham.getMaSP());
-            System.out.println("Mã loại: " + sanPham.getMaLoai());
-            System.out.println("Tên sản phẩm: " + sanPham.getTenSP());
-            System.out.println("Giá: " + sanPham.getPrice());
-            System.out.println("Trang thai: "+ sanPham.getTrangThai());
-            String[] tenHinh = sanPham.getTenHinh();
+            SanPhamDTO SanPham = d.get(i);
+            System.out.println("Mã sản phẩm: " + SanPham.getMaSP());
+            System.out.println("Mã loại: " + SanPham.getMaLoai());
+            System.out.println("Tên sản phẩm: " + SanPham.getTenSP());
+            System.out.println("Giá: " + SanPham.getPrice());
+            System.out.println("Trang thai: "+ SanPham.getTrangThai());
+            String[] tenHinh = SanPham.getTenHinh();
             System.out.println("Danh sách hình ảnh:");
             for (String ten : tenHinh) {
                 System.out.println(ten);
