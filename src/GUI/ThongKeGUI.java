@@ -1,5 +1,6 @@
 package GUI;
 
+import BUS.loaiSPBUS;
 import DAO.ConnectDataBase;
 import DTO.ThongKeDTO;
 import java.awt.BorderLayout;
@@ -37,9 +38,10 @@ public class ThongKeGUI extends JPanel {
     JTable table;
     String[] header = {"Mã sản phẩm", "Mã loại", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành Tiền"};
     ArrayList<ThongKeDTO> ds;
-DefaultTableModel df;
+    DefaultTableModel df;
     Font fontHeader = new Font("Tahoma", Font.BOLD, 20);
     Font font = new Font("Tahoma", Font.BOLD, 13);
+    int width, height;
 
     // Định dạng sử dụng dấu phân cách hàng nghìn
     DecimalFormat FormatInt = new DecimalFormat("#,###");
@@ -48,29 +50,23 @@ DefaultTableModel df;
     DecimalFormat FormatDouble = new DecimalFormat("#,###.##");
 
     public ThongKeGUI(int width, int height) {
-
+        this.width = width;
+        this.height = height;
+        
         try {
             mySQL = new ConnectDataBase();
         } catch (SQLException e) {
             System.out.println("That bai");
         }
-        
+
         LocalDate ngayHienTai = LocalDate.now();
-        
+
         // Định dạng ngày theo định dạng dd/MM/yyyy
         DateTimeFormatter dinhDang = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String ngayDinhDang = ngayHienTai.format(dinhDang);
-        
-//        ArrayList<String> currentday = new ArrayList<>();
-//        currentday.add("2023/01/01");
-//        currentday.add("2024/05/04");
-//        currentday.add("Tất cả");
+
         init(width, height);
-//       ShowdoanhThu(currentday);
-//       ShowdoanhThu(currentday);
-//      ShowbanChay("2023/01/01", "2024/05/04", 10);
-//        tinhDoanhThu();
-        
+
     }
 
     public void tinhDoanhThu() {
@@ -82,9 +78,15 @@ DefaultTableModel df;
     }
 
     public void ShowdoanhThu(ArrayList<String> data_filters) {
-        String tuNgay=data_filters.get(0); 
-        String denNgay=data_filters.get(1); 
-        String loai=data_filters.get(2); 
+        String tuNgay = data_filters.get(0);
+        String denNgay = data_filters.get(1);
+        String loai = data_filters.get(2);
+        loaiSPBUS loaiBUS = new loaiSPBUS();
+        for(int i=0; i<loaiBUS.getList().size(); i++){
+            if(loaiBUS.getList().get(i).getTENLOAI().equals(loai)){
+                loai = loaiBUS.getList().get(i).getMALOAI();
+            }
+        }
         df.setRowCount(0);
         ds = new ArrayList<>();
         String query = "SELECT * FROM"
@@ -121,7 +123,7 @@ DefaultTableModel df;
         } catch (SQLException ex) {
             Logger.getLogger(ThongKeGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("danh sach thong ke "+ds.size());
+        System.out.println("danh sach thong ke " + ds.size());
         for (ThongKeDTO row : ds) {
             //gọi lại hàm format cho cách hiện thị cho các số có giá trị quá lớn hoặc nhở
             String donGia = FormatDouble.format(row.getDonGia());
@@ -132,12 +134,22 @@ DefaultTableModel df;
         }
         table.setModel(df);
         df.fireTableDataChanged();
+        //Doanh thu
+        pnDoanhThu = new JPanel();
+        pnDoanhThu.setLayout(new FlowLayout());
+        pnDoanhThu.setPreferredSize(new Dimension(width, 100));
+        String dt = FormatDouble.format(doanhThu); //format cách hiện thị của số doanh thu
+        JLabel lblDoanhThu = new JLabel();
+        lblDoanhThu.setText("Tổng doanh thu :  " + dt + " VNĐ");
+        lblDoanhThu.setFont(font);
+        pnDoanhThu.add(lblDoanhThu);
+        this.add(pnDoanhThu, BorderLayout.SOUTH);
     }
 
     public void ShowbanChay(ArrayList<String> data_filters) {
-        String tuNgay=data_filters.get(0); 
-        String denNgay=data_filters.get(1); 
-        int top=Integer.parseInt(data_filters.get(2)); 
+        String tuNgay = data_filters.get(0);
+        String denNgay = data_filters.get(1);
+        int top = Integer.parseInt(data_filters.get(2));
         df.setRowCount(0);
         ds = new ArrayList<>();
         String query = "SELECT * FROM"
@@ -184,7 +196,7 @@ DefaultTableModel df;
             df.addRow(data);
         }
         table.setModel(df);
-        df.fireTableDataChanged();
+        df.fireTableDataChanged();      
     }
 
     public void init(int width, int height) {
@@ -205,10 +217,10 @@ DefaultTableModel df;
         table.setRowHeight(30); //thiết lập chiều cao các cột
 
         // Thiết lập dữ liệu cho JTable
-         df= new DefaultTableModel(header, 0);
-        
+        df = new DefaultTableModel(header, 0);
+
         table.setModel(df);
-        
+
         // Canh giữa nội dung trong mỗi ô trong cột
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -248,17 +260,6 @@ DefaultTableModel df;
 
         JScrollPane jp = new JScrollPane(table);
         this.add(jp, BorderLayout.CENTER);
-
-        //Doanh thu
-        pnDoanhThu = new JPanel();
-        pnDoanhThu.setLayout(new FlowLayout());
-        pnDoanhThu.setPreferredSize(new Dimension(width, 100));
-        String dt = FormatDouble.format(doanhThu); //format cách hiện thị của số doanh thu
-        JLabel lblDoanhThu = new JLabel();
-        lblDoanhThu.setText("Tổng doanh thu :  " + dt + " VNĐ");
-        lblDoanhThu.setFont(font);
-        pnDoanhThu.add(lblDoanhThu);
-        this.add(pnDoanhThu, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args) {

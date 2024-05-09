@@ -11,7 +11,11 @@ import java.util.logging.Logger;
 public class Nhanvien_DAO {
         public ConnectDataBase mySQL; 
     public Nhanvien_DAO() {
-        mySQL = new ConnectDataBase();
+            try {
+                mySQL = new ConnectDataBase();
+            } catch (SQLException ex) {
+                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     public ArrayList<Nhanvien_DTO> list()
     {
@@ -69,7 +73,11 @@ public class Nhanvien_DAO {
     
     public boolean add(Nhanvien_DTO item) {
     boolean success = false;
-    mySQL.connect();
+            try {
+                mySQL.connect();
+            } catch (SQLException ex) {
+                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
     String query= "INSERT INTO nhanvien VALUES ('" + item.getManv() +"','"+ item.getTennv() +"','" +item.getChucvu() +"','" +item.getSdt() + "','" +item.getDiachi() +"','" +item.getEmail()+"');";
     boolean result = mySQL.executeUpdate(query);
     if(result) {
@@ -85,7 +93,11 @@ public class Nhanvien_DAO {
   
     public boolean update(Nhanvien_DTO item) {
     boolean success = false;
-    mySQL.connect();
+            try {
+                mySQL.connect();
+            } catch (SQLException ex) {
+                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
     String query= "UPDATE nhanvien set TENNV = '" + item.getTennv()+"', CHUCVU='"+ item.getChucvu()+ "', SDT='" + item.getSdt() + "', DIACHI='" + item.getDiachi()+ "', EMAIL='" + item.getEmail() + "' WHERE MANV='" + item.getManv() + "'";
     boolean result = mySQL.executeUpdate(query);
     if(result) {
@@ -100,7 +112,11 @@ public class Nhanvien_DAO {
 
  public boolean delete(String m) {
     boolean success = false;
-    mySQL.connect();
+            try {
+                mySQL.connect();
+            } catch (SQLException ex) {
+                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
     String query= "DELETE FROM hoadon WHERE MANV = '" + m +"';";
     boolean result = mySQL.executeUpdate(query);
     if(result) {

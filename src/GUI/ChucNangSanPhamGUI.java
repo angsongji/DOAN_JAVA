@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,26 +38,25 @@ import javax.swing.plaf.basic.BasicComboPopup;
 
 public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
 
-    private JPanel pnHeader, pnContent;
-    JPanel pnThaoTac;
+    private JPanel pnHeader, pnContent, pnThaoTac, pnDsAnh;
     private JLabel exit, lblThem, lblHuy, lblLuu;
-    private JPanel anhSP;
-    private JLabel imageLabel; //chứa ảnh
-    private String imageName; // tên ảnh đã chọn
-    JComboBox<String> cbxTenLoai;
-    JTextField txtMaSP, txtTenSP, txtDonGia;
-    SanPhamGUI spGUI;
+    private JTextField txtMaSP, txtTenSP, txtDonGia;
+    private JComboBox<String> cbxTenLoai;
+    private SanPhamGUI spGUI;
+    private ArrayList<String> imageName; // tên ảnh đã chọn
+    private JLabel imageNameLabel; //hien thi ten anh chon
+    JPanel imagePanelDefault; //khi chưa chọn ảnh
 
-    int width, height;
-    int height_row = 30;
+    private int width, height;
+    private int height_row = 30;
 
     private Color normal = Color.decode("#0A3D62");
-    Color hover = Color.decode("#60A3BC");
-    Color tieude = Color.decode("#60A3BC");
-    Color chu = Color.decode("#FFFFFF"); //mau chu cua 2 nút huy, them
-    Font font_tieude = new Font("Tahoma", Font.BOLD, 18);
-    Font font = new Font("Tahoma", Font.BOLD, 13);
-    Font font_family = new Font("Tahoma", Font.PLAIN, 12);
+    private Color hover = Color.decode("#60A3BC");
+    private Color tieude = Color.decode("#60A3BC");
+    private Color chu = Color.decode("#FFFFFF");
+    private Font font_tieude = new Font("Tahoma", Font.BOLD, 18);
+    private Font font = new Font("Tahoma", Font.BOLD, 13);
+    private Font font_family = new Font("Tahoma", Font.PLAIN, 12);
 
     public ChucNangSanPhamGUI(SanPhamGUI spGUI, int width, int height) {
         this.spGUI = spGUI;
@@ -67,22 +67,13 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         initContent();
     }
 
-    public ChucNangSanPhamGUI(int width, int height) {
-        this.width = width;
-        this.height = height;
-        init();
-        initPnHead();
-        initContent();
-    }
-
     public void init() {
-        this.setSize(width, height);
-        this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(width, height);
+        setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
-        this.setVisible(true);
-        this.setLocationRelativeTo(null);
-
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     public void initPnHead() {
@@ -101,67 +92,68 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         exit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         pnHeader.add(exit, BorderLayout.EAST);
-        this.add(pnHeader, BorderLayout.NORTH);
+        add(pnHeader, BorderLayout.NORTH);
     }
 
     private void initContent() {
-        // Tạo panel chính và đặt bố cục theo chiều dọc (Y_AXIS)
         pnContent = new JPanel();
         pnContent.setLayout(new BoxLayout(pnContent, BoxLayout.Y_AXIS));
-        pnContent.setPreferredSize(new Dimension(width, height)); // Kích thước cố định cho panel chính
-        pnContent.add(Box.createRigidArea(new Dimension(0, 10))); // Tạo khoảng cách giữa các hàng
+        pnContent.setPreferredSize(new Dimension(width, height));
+        pnContent.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Tạo JPanel để hiển thị hình ảnh
-        anhSP = new JPanel();
-        anhSP.setMinimumSize(new Dimension(200, 250));
-        anhSP.setPreferredSize(new Dimension(200, 250)); // Đặt kích thước cố định cho panel ảnh
-        anhSP.setMaximumSize(new Dimension(200, 250));
-        anhSP.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Tạo viền
-        imageLabel = new JLabel(); // Để hiển thị hình ảnh
-        anhSP.add(imageLabel); // Thêm vào panel
+        pnDsAnh = new JPanel();
+        pnDsAnh.setLayout(new FlowLayout(FlowLayout.CENTER));
+        pnDsAnh.setMinimumSize(new Dimension(200, 250));
+        pnDsAnh.setPreferredSize(new Dimension(200, 250));
+        pnDsAnh.setMaximumSize(new Dimension(600, 500));
+
+        imageName = new ArrayList<>();
+        ImageIcon icon = new ImageIcon("./src/images/t-shirt.png");
+        Image scaledImage = icon.getImage().getScaledInstance(174, 210, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(scaledImage);
+        JLabel label = new JLabel(resizedIcon, JLabel.CENTER);
+        imagePanelDefault = new JPanel();
+        imagePanelDefault.setLayout(new BorderLayout());
+        imagePanelDefault.setPreferredSize(new Dimension(174, 230));
+        imagePanelDefault.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        imagePanelDefault.add(label);
+        pnDsAnh.add(imagePanelDefault);
 
         // Tạo JLabel để hiển thị tên hình ảnh đã chọn
-        JLabel imageNameLabel = new JLabel("No image selected", JLabel.CENTER); // Mặc định là không có hình ảnh được chọn
+        imageNameLabel = new JLabel("No image selected", JLabel.CENTER); // Mặc định là không có hình ảnh được chọn
+        imageNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         imageNameLabel.setPreferredSize(new Dimension(200, 30)); // Đặt kích thước cố định để tránh bị dịch chuyển
 
-        // Tạo JButton để chọn hình ảnh
         JButton chooseImageButton = new JButton("Choose File");
-        chooseImageButton.setPreferredSize(new Dimension(100, 30)); // Đặt kích thước cố định cho nút
+        chooseImageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        chooseImageButton.setPreferredSize(new Dimension(100, 30));
         chooseImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                pnDsAnh.remove(imagePanelDefault);
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setAcceptAllFileFilterUsed(false); // Không chấp nhận tất cả các loại tệp
+                fileChooser.setMultiSelectionEnabled(true); // Cho phép chọn nhiều tệp
+                fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image Files", "jpg", "png", "gif"));
 
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    imageName = selectedFile.getName();
-                    imageNameLabel.setText("Selected Image: " + imageName); // Hiển thị tên tệp
+                    File[] selectedFiles = fileChooser.getSelectedFiles();
 
-                    // Tạo ImageIcon từ tệp và đặt kích thước phù hợp
-                    ImageIcon icon = new ImageIcon(selectedFile.getPath());
-                    Image scaledImage = icon.getImage().getScaledInstance(174, 210, Image.SCALE_SMOOTH); // Đặt kích thước cố định
-                    imageLabel.setIcon(new ImageIcon(scaledImage)); // Đặt hình ảnh vào JLabel
+                    for (File selectedFile : selectedFiles) {
+                        imageName.add(selectedFile.getName());
+                        imageNameLabel.setText("Selected Image: " + imageName); // Hiển thị tên tệp
 
-                    // Cập nhật giao diện
-                    revalidate();
-                    repaint();
+                        addImage(selectedFile); // Thêm hình ảnh vào pnDsAnh
+                    }
                 }
             }
         });
 
-        // Thiết lập alignment
-        anhSP.setAlignmentX(Component.CENTER_ALIGNMENT);
-        imageNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        chooseImageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Thêm các thành phần vào pnContent
-        pnContent.add(anhSP);
-        pnContent.add(Box.createRigidArea(new Dimension(0, 5))); // Khoảng cách giữa các thành phần
+        pnContent.add(pnDsAnh);
+        pnContent.add(Box.createRigidArea(new Dimension(0, 5)));
         pnContent.add(imageNameLabel);
-        pnContent.add(Box.createRigidArea(new Dimension(0, 5))); // Khoảng cách
+        pnContent.add(Box.createRigidArea(new Dimension(0, 5)));
         pnContent.add(chooseImageButton);
         pnContent.add(Box.createRigidArea(new Dimension(0, 20))); // Tạo khoảng cách giữa các hàng
 
@@ -270,6 +262,45 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         lblHuy.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
+    private void addImage(File file) {
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BorderLayout());
+        imagePanel.setPreferredSize(new Dimension(174, 230));
+        imagePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        JLabel imageLabel = new JLabel();
+        imageLabel.setPreferredSize(new Dimension(174, 210));
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
+
+        JButton deleteButton = new JButton("X");
+        deleteButton.setPreferredSize(new Dimension(20, 20));
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pnDsAnh.remove(imagePanel); // Xóa panel hình ảnh
+                imageName.remove(file.getName());
+                if (imageName.isEmpty()) {
+                    pnDsAnh.add(imagePanelDefault);
+                    imageNameLabel.setText("No image selected");
+
+                } else {
+                    imageNameLabel.setText("Selected Image: " + imageName);
+                }
+                revalidate();
+                repaint();
+            }
+        });
+        imagePanel.add(deleteButton, BorderLayout.NORTH);
+
+        ImageIcon icon = new ImageIcon(file.getPath());
+        Image scaledImage = icon.getImage().getScaledInstance(174, 210, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(scaledImage));
+
+        pnDsAnh.add(imagePanel);
+        revalidate();
+        repaint();
+    }
+
     //--------------------- Thao tac ---------------------------------------
     public void initThem() {
         JLabel title = new JLabel("Thêm sản phẩm", JLabel.CENTER);
@@ -316,7 +347,6 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         title.setFont(font_tieude);
         title.setBorder(new EmptyBorder(0, 20, 0, 0));
         pnHeader.add(title, BorderLayout.WEST);
-//        setTT();
         lblLuu = new JLabel("Lưu", JLabel.CENTER);
         lblLuu.setPreferredSize(new Dimension(80, 30));
         lblLuu.setForeground(chu);
@@ -385,7 +415,8 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         }
         String maSP = txtMaSP.getText();
         String tenSP = txtTenSP.getText();
-        String[] tenHinh = {imageName};
+
+        String[] tenHinh = imageName.toArray(new String[imageName.size()]);
         String gia = txtDonGia.getText();
         SanPhamDTO sp = new SanPhamDTO(maSP, maLoai, tenSP, Double.parseDouble(gia), tenHinh, 1);
         if (check_TenSP(tenSP) && check_Gia(gia)) {
@@ -395,20 +426,35 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
             spGUI.EditSP(sp);
             revalidate();
             repaint();
-            
+
         }
     }
 
     // Đổ dữ liệu sản phẩm đã chọn
     public void setTT() {
-        cbxTenLoai.setSelectedItem(spGUI.selectedSP.getMaLoai());
+        loaiSPBUS loaiBUS = new loaiSPBUS();
+        String tenLoai ="";
+        for(int i=0; i<loaiBUS.getList().size(); i++){
+            if(loaiBUS.getList().get(i).getMALOAI().equals(spGUI.selectedSP.getMaLoai())){
+                tenLoai = loaiBUS.getList().get(i).getTENLOAI();
+            }
+        }
+        cbxTenLoai.setSelectedItem(tenLoai);
         txtMaSP.setText(spGUI.selectedSP.getMaSP());
         txtTenSP.setText(spGUI.selectedSP.getTenSP());
         txtDonGia.setText(spGUI.selectedSP.getPrice() + "");
-        // Tạo ImageIcon từ tệp và đặt kích thước phù hợp
-        ImageIcon icon = new ImageIcon("./src/images/" + spGUI.selectedSP.tenHinh[0]);
-        Image scaledImage = icon.getImage().getScaledInstance(174, 210, Image.SCALE_SMOOTH);
-        imageLabel.setIcon(new ImageIcon(scaledImage));
+        pnDsAnh.removeAll();
+        if (spGUI.selectedSP.tenHinh.length == 0) {
+            imageNameLabel.setText("No image selected");
+            pnDsAnh.add(imagePanelDefault);
+        } else {
+            for (int i = 0; i < spGUI.selectedSP.tenHinh.length; i++) {
+                imageName.add(spGUI.selectedSP.tenHinh[i]);
+                File file = new File("./src/images/" + spGUI.selectedSP.tenHinh[i]);
+                addImage(file);
+            }
+            imageNameLabel.setText("Selected Image: " + imageName);
+        }
         revalidate();
         repaint();
     }
@@ -425,7 +471,7 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         }
         String maSP = txtMaSP.getText();
         String tenSP = txtTenSP.getText();
-        String[] tenHinh = {imageName};
+        String[] tenHinh = imageName.toArray(new String[imageName.size()]);
         SanPhamDTO sp = new SanPhamDTO(maSP, maLoai, tenSP, 0, tenHinh, 1);
         if (check_TenSP(tenSP)) {
             this.dispose();
@@ -452,7 +498,6 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
             spGUI.clear(-1);
         }
         if (lbl == lblLuu) {
-//            setTT();
             EditSP();
             spGUI.selectedSP = new SanPhamDTO();
             spGUI.clear(-1);

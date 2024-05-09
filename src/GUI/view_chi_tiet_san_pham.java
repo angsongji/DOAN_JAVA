@@ -26,6 +26,7 @@ import BUS.chitietsanpham_BUS;
 
 import DTO.SanPhamDTO;
 import java.awt.Image;
+import java.text.DecimalFormat;
 import javax.swing.JFrame;
 
 public class view_chi_tiet_san_pham extends JPanel implements MouseListener {
@@ -42,6 +43,9 @@ public class view_chi_tiet_san_pham extends JPanel implements MouseListener {
     private frame_chitietsanpham j;
     public static ArrayList<SanPhamDTO> dssptt = new ArrayList<SanPhamDTO>();
     ImageIcon h0, h1, h2;
+    
+    // Định dạng sử dụng dấu phân cách hàng nghìn
+    DecimalFormat FormatInt = new DecimalFormat("#,###"); //phuong them
 
     public view_chi_tiet_san_pham(SanPhamDTO sanpham_DTO, frame_chitietsanpham j) {
         soluong = 1;
@@ -257,9 +261,9 @@ public class view_chi_tiet_san_pham extends JPanel implements MouseListener {
         pc2[4].add(jlc2[6]);
         pc2[4].add(jlc2[7]);
 
-        /////////////////////////////////////////// giá
-        /////////////////////////////////////////// ///////////////////////////////////
-        jlc2[4] = new JLabel(this.sanpham_DTO.getPrice() * soluong + "");
+        /////////////////////////////////////////// giá ///////////////////////////
+        String gia = FormatInt.format(this.sanpham_DTO.getPrice() * soluong);
+        jlc2[4] = new JLabel(gia + "");
         jlc2[4].setFont(tensp);
         pc2[5].add(jlc2[4]);
 
@@ -374,12 +378,14 @@ public class view_chi_tiet_san_pham extends JPanel implements MouseListener {
         }
         if (e.getSource() == jlc2[5]) {
             jlc2[6].setText(this.giam_sl() + "");
-            jlc2[4].setText(this.sanpham_DTO.getPrice() * this.soluong + "");
+           String gia = FormatInt.format(this.sanpham_DTO.getPrice() * soluong);
+            jlc2[4].setText(gia + "");
 
         }
         if (e.getSource() == jlc2[7]) {
             jlc2[6].setText(this.tang_sl() + "");
-            jlc2[4].setText(this.sanpham_DTO.getPrice() * this.soluong + "");
+            String gia = FormatInt.format(this.sanpham_DTO.getPrice() * soluong);
+            jlc2[4].setText(gia+ "");
         }
         if (e.getSource() == jlc1[1]) {
             Image scaledImage_be2 = h1.getImage().getScaledInstance(190, 250, Image.SCALE_SMOOTH);

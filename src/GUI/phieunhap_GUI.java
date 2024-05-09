@@ -79,7 +79,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		 jtngay = new  JTextField[2];
 		 
 		 
-		 
+		 int o = (w-100)/8;
 		 
 		 
 		jp3 = new JPanel[5];
@@ -99,9 +99,9 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		
 		/////////// dòng tìm kiếm ////////////////
-		jp[0] = new JPanel();jp[0].setPreferredSize(new Dimension(w,30));
+		jp[0] = new JPanel();jp[0].setPreferredSize(new Dimension(w-100,30));
 		jl[0] = new JLabel("TÌM KIẾM",JLabel.LEFT);
-		jp[0].setLayout(new FlowLayout(0,20,0));
+		jp[0].setLayout(new FlowLayout(0,10,0));
 		jp[0].add(jl[0]);
 		
 		
@@ -120,44 +120,48 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		/////////// tìm kiếm theo mã phiếu nhập //////////////
 		
 		jl1[0] = new JLabel("Mã phiếu nhập",JLabel.CENTER);
-		jl1[0].setPreferredSize(new Dimension(140,40));
+		jl1[0].setPreferredSize(new Dimension((w-100)/8,40));
 		jl1[0].setBorder(BorderFactory.createEmptyBorder(0, 0, 22, 0));
+                
 		
 		
 		option_mapn = new JComboBox<String>(option_kitu);
 		option_mapn.setEditable(true);
-		option_mapn.setPreferredSize(new Dimension(115,20));
+		option_mapn.setPreferredSize(new Dimension(o-o/5,20));
 		
 		
-		jp1[0] = new JPanel();jp1[0].setPreferredSize(new Dimension(140,80));
+		jp1[0] = new JPanel();jp1[0].setPreferredSize(new Dimension(o,80));
 		jp1[0].add(jl1[0]);
 		jp1[0].add(option_mapn);
+                
 		
 		/////////// tìm kiếm theo mã nhân viên /////////////
 		
 		
 		jl1[1] = new JLabel("Mã Nhân Viên",JLabel.CENTER);
-		jl1[1].setPreferredSize(new Dimension(150,40));
+		jl1[1].setPreferredSize(new Dimension((w-100)/8,40));
 		jl1[1].setBorder(BorderFactory.createEmptyBorder(0,0,22,0));
+             
 		
 		option_manv = new JComboBox<String>(option_kitu);
 		option_manv.setEditable(true);
-		option_manv.setPreferredSize(new Dimension(115,20));
+		option_manv.setPreferredSize(new Dimension(o - o/5,20));
 		
-		jp1[1] = new JPanel();jp1[1].setPreferredSize(new Dimension(140,80));
+		jp1[1] = new JPanel();jp1[1].setPreferredSize(new Dimension((w-100)/8,80));
 		jp1[1].add(jl1[1]);
 		jp1[1].add(option_manv);
 		
+                
 		////////// tìm kiếm theo ngày nhập///////////////
 		
 		
 		jl1[2] = new JLabel("Ngày nhập hàng",JLabel.CENTER);
-		jl1[2].setPreferredSize(new Dimension(300,40));
+		jl1[2].setPreferredSize(new Dimension(2*o,40));
 		jl1[2].setBorder(BorderFactory.createEmptyBorder(0, 0, 22, 0));
 		
 		jtngay[0] = new JTextField("YYYY-MM-DD");
 		jtngay[0].setForeground(Color.GRAY);
-		jtngay[0].setPreferredSize(new Dimension(115,20));
+		jtngay[0].setPreferredSize(new Dimension(o-o/5,20));
 		jtngay[0].addFocusListener(new FocusListener() {
 			
 			@Override
@@ -182,7 +186,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		jtngay[1] = new JTextField(LocalDate.now()+"");
 		jtngay[1].setForeground(Color.GRAY);
-		jtngay[1].setPreferredSize(new Dimension(115,20));
+		jtngay[1].setPreferredSize(new Dimension(o - o/5,20));
 		jtngay[1].addFocusListener(new FocusListener() {
 			
 			@Override
@@ -208,7 +212,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		JLabel den = new JLabel("đến",JLabel.CENTER);
 		den.setPreferredSize(new Dimension(30,20));
 		
-		jp1[2] = new JPanel();jp1[2].setPreferredSize(new Dimension(290,80));
+		jp1[2] = new JPanel();jp1[2].setPreferredSize(new Dimension(2*o,80));
 		jp1[2].add(jl1[2]);
 		jp1[2].add(jtngay[0]);
 		jp1[2].add(den);
@@ -220,11 +224,11 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		
 		jl1[3] = new JLabel("Tổng tiền nhập hàng",JLabel.CENTER);
-		jl1[3].setPreferredSize(new Dimension(290,40));
+		jl1[3].setPreferredSize(new Dimension(2*o,40));
 		jl1[3].setBorder(BorderFactory.createEmptyBorder(0, 0, 22, 0));
 		
 		jt_tien[0] = new JTextField("0");
-		jt_tien[0].setPreferredSize(new Dimension(115,22));
+		jt_tien[0].setPreferredSize(new Dimension(o-o/5,22));
 		jt_tien[0].addFocusListener(new FocusListener() {
 			
 			@Override
@@ -257,7 +261,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		
 		jt_tien[1] = new JTextField("10000000000000");
-		jt_tien[1].setPreferredSize(new Dimension(115,22));
+		jt_tien[1].setPreferredSize(new Dimension(o-o/5,22));
 		
 		jt_tien[1].addFocusListener(new FocusListener() {
 			
@@ -289,11 +293,12 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		JLabel denn = new JLabel("đến");
 		
-		jp1[3] = new JPanel();jp1[3].setPreferredSize(new Dimension(290,80));
+		jp1[3] = new JPanel();jp1[3].setPreferredSize(new Dimension(2*o,80));
 		jp1[3].add(jl1[3]); 
 		jp1[3].add(jt_tien[0]);
 		jp1[3].add(denn);
 		jp1[3].add(jt_tien[1]);
+               
 		
 		///////////// tìm kiếm theo mã nhà cung cấp //////////
 		
@@ -308,15 +313,15 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		
 		jl1[4]= new JLabel("Mã Nhà cung cấp",JLabel.CENTER);
-		jl1[4].setPreferredSize(new Dimension(150,40));
+		jl1[4].setPreferredSize(new Dimension(o,40));
 		jl1[4].setBorder(BorderFactory.createEmptyBorder(0, 0, 22, 0));
 		
 		
 		option_mancc = new JComboBox<String>(option_MANCC);
-		option_mancc.setPreferredSize(new Dimension(120,20));
+		option_mancc.setPreferredSize(new Dimension(o-o/5,20));
 //		option_mancc.setEditable(true);
 		
-		jp1[4] = new JPanel();jp1[4].setPreferredSize(new Dimension(140,80));
+		jp1[4] = new JPanel();jp1[4].setPreferredSize(new Dimension(o,80));
 		
 		
 		jp1[4].add(jl1[4]);
@@ -327,18 +332,18 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		/////////////// SUBMIT va REFRESH /////////////////
 		
 		submit = new JLabel("SUBMIT",JLabel.CENTER);submit.setForeground(Color.white);
-		submit.setPreferredSize(new Dimension(80,25));
+		submit.setPreferredSize(new Dimension(o-o/5,25));
 		
 		submit.setBackground(Color.decode("#0A3D62"));submit.setOpaque(true);
 		submit.addMouseListener(this);
 		
 		refresh = new JLabel("REFRESH", JLabel.CENTER);refresh.setForeground(Color.white);
-		refresh.setPreferredSize(new Dimension(80,25));
+		refresh.setPreferredSize(new Dimension(o-o/5,25));
 		
 		refresh.setBackground(Color.decode("#0A3D62")); refresh.setOpaque(true);
 		refresh.addMouseListener(this);
 		
-		jp1[5] = new JPanel();jp1[5].setPreferredSize(new Dimension(97,80));
+		jp1[5] = new JPanel();jp1[5].setPreferredSize(new Dimension(o,80));
 		jp1[5].setLayout(new FlowLayout(1,0,10));
 		jp1[5].add(submit);
 		jp1[5].add(refresh);

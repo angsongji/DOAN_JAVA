@@ -62,6 +62,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
 
     public TaiKhoanGUI() {
         dstk = tkBUS.getDsTK();//truyen du lieu vao lop GUI
+        init();
     }
 
     public TaiKhoanGUI(int width, int height) {
@@ -70,12 +71,14 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
 
         dstk = tkBUS.getDsTK();//truyen du lieu vao lop GUI
 
-        init(width, height);
+        init();
 
     }
 
-    public void init(int width, int height) {
+    public void init() {
         this.setPreferredSize(new Dimension(width, height));
+        this.setMaximumSize(new Dimension(width, height));
+        this.setMinimumSize(new Dimension(width, height));
         this.setLayout(new BorderLayout());
         JPanel mainPanel = initPnContentParent(dstk);
         pnThaoTacTK_main = new JPanel();
@@ -210,6 +213,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         JPanel pnThaoTacTK = new JPanel();
         pnThaoTacTK.setLayout(new BorderLayout());
         pnThaoTacTK.setPreferredSize(new Dimension(width, height));
+        pnThaoTacTK.setMaximumSize(new Dimension(width, height));
 
         pnHeaderThaoTac = new JPanel();
         pnHeaderThaoTac.setLayout(new BorderLayout());
@@ -239,7 +243,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         txtUsername.setBorder(new EmptyBorder(0, 5, 0, 5));
         txtUsername.setPreferredSize(new Dimension(150, 20));
         initContentThaoTac();
-        
+
         pnChucNangThaoTac = new JPanel();
         pnChucNangThaoTac.setLayout(new FlowLayout(1, 20, 20));
         pnChucNangThaoTac.setPreferredSize(new Dimension(width, 50));
@@ -537,7 +541,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
                 this.revalidate(); // Cập nhật lại giao diện
                 this.repaint(); // Vẽ lại giao diện
                 JOptionPane.showMessageDialog(null,
-                            "Bạn đã thêm tài khoản thành công !", "Thông báo", JOptionPane.DEFAULT_OPTION);
+                        "Bạn đã thêm tài khoản thành công !", "Thông báo", JOptionPane.DEFAULT_OPTION);
             }
         }
     }
@@ -573,7 +577,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             }
         }
         JOptionPane.showMessageDialog(null,
-                            "Bạn đã lưu tài khoản thành công !", "Thông báo", JOptionPane.DEFAULT_OPTION);
+                "Bạn đã lưu tài khoản thành công !", "Thông báo", JOptionPane.DEFAULT_OPTION);
     }
 
     public void DeleteTK() {
@@ -582,19 +586,21 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         refresh();
     }
 
-    public void SearchTK(String username, int state) {
+    public void SearchTK(ArrayList<String> data_filter) {
+        String timkiem = data_filter.get(0);
+        String state = data_filter.get(1);
         ArrayList<TaiKhoanDTO> ds = new ArrayList<>();
         //trường hợp username rỗng
-        if (username.isEmpty()) {
+        if (timkiem.isEmpty()) {
             switch (state) {
-                case 1:
+                case "Đang hoạt động":
                     for (int i = 0; i < dstk.size(); i++) {
                         if (dstk.get(i).getState() == 1) {
                             ds.add(dstk.get(i));
                         }
                     }
                     break;
-                case 2:
+                case "Đã khóa":
                     for (int i = 0; i < dstk.size(); i++) {
                         if (dstk.get(i).getState() == 0) {
                             ds.add(dstk.get(i));
@@ -607,34 +613,46 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             }
         } else {
             //trường hợp username khác rỗng
+            ArrayList<TaiKhoanDTO> newDS = new ArrayList<>();
+            for (int i = 0; i < dstk.size(); i++) {
+                String username = dstk.get(i).getUsername().toLowerCase();
+                String maNV = dstk.get(i).getMaNV().toLowerCase();
+                String maQuyen = dstk.get(i).getMaQuyen().toLowerCase();
+                timkiem = timkiem.toLowerCase();
+                if (username.contains(timkiem)|| maNV.contains(timkiem)
+                        || maQuyen.contains(timkiem)) {
+                    newDS.add(dstk.get(i));
+                }
+            }
+            
             switch (state) {
-                case 1:
-                    for (int i = 0; i < dstk.size(); i++) {
-                        if (dstk.get(i).getState() == 1 && dstk.get(i).getUsername().equals(username)) {
-                            ds.add(dstk.get(i));
+                case "Đang hoạt động":
+                    for (int i = 0; i < newDS.size(); i++) {
+                        if (newDS.get(i).getState() == 1) {
+                            ds.add(newDS.get(i));
                         }
                     }
                     break;
-                case 2:
-                    for (int i = 0; i < dstk.size(); i++) {
-                        if (dstk.get(i).getState() == 0 && dstk.get(i).getUsername().equals(username)) {
-                            ds.add(dstk.get(i));
+                case "Đã khóa":
+                    for (int i = 0; i < newDS.size(); i++) {
+                        if (newDS.get(i).getState() == 0) {
+                            ds.add(newDS.get(i));
                         }
                     }
                     break;
                 default:
-                    for (int i = 0; i < dstk.size(); i++) {
-                        if (dstk.get(i).getUsername().equals(username)) {
-                            ds.add(dstk.get(i));
-                        }
-                    }
+                    ds = newDS;
                     break;
             }
         }
+
         this.removeAll(); // Xóa tất cả các thành phần hiện tại
         JPanel mainPanel = initPnContentParent(ds); // Tạo lại JPanel chính
+
         this.add(mainPanel, BorderLayout.CENTER); // Thêm lại JPanel chính
+
         this.revalidate(); // Cập nhật lại giao diện
+
         this.repaint(); // Vẽ lại giao diện
     }
 
@@ -643,7 +661,9 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         if (e.getSource().getClass() == JPanel.class) {
             // Xử lý các dòng tài khoản
             JPanel pn = (JPanel) e.getSource();
-            for (int i = 0; i < dstk.size(); i++) {
+            for (int i = 0;
+                    i < dstk.size();
+                    i++) {
                 if (pn == pnContent[i]) {
                     selectedTK = dstk.get(i);
                     pn.setBackground(hover);
@@ -691,6 +711,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     public void mouseEntered(MouseEvent e) {
         if (e.getSource().getClass() == JPanel.class) {
             JPanel pn = (JPanel) e.getSource();
+
             pn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
     }
@@ -700,11 +721,16 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     }
 
     public static void main(String[] args) {
+        ArrayList<String> data_filter = new ArrayList<>();
+        data_filter.add("");
+        data_filter.add("Đã khoá");
+
         TaiKhoanGUI t = new TaiKhoanGUI(1000, 500);
         t.initPnThaoTacTK(400, 500);
         t.initThem();
 //        t.initSua();
-//        t.SearchTK("", 2);
+
+        t.SearchTK(data_filter);
         JFrame f = new JFrame();
         f.add(t);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
