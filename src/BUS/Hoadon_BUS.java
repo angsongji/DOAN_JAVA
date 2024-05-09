@@ -4,6 +4,8 @@ package BUS;
 import DTO.Hoadon_DTO;
 import DAO.Hoadon_DAO;
 import java.util.ArrayList;
+import DTO.chitietsanpham_DTO;
+import java.sql.SQLException;
 
 public final class Hoadon_BUS {
     public ArrayList<Hoadon_DTO> dshoadon;
