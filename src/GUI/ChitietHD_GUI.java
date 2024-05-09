@@ -139,7 +139,7 @@ public final class ChitietHD_GUI extends JPanel{
                         p.setPreferredSize(new Dimension((chieurong*2/3), 200));
                         p.setBackground(Color.white);
                     dscthd = new ChitietHD_BUS(maHD);
-                        for (ChitietHD_DTO sp : dscthd.dsChiTietHD) {
+                        for (ChitietHD_DTO sp : dscthd.list) {
                             JPanel panel = new JPanel();
                                 panel.setLayout(new FlowLayout(0,5,0));
                                 panel.setPreferredSize(new Dimension((chieurong*2/3), 40));
