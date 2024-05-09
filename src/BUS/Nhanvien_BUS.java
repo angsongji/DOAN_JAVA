@@ -25,11 +25,7 @@ public class Nhanvien_BUS {
         String regex = "^[\\p{L} ]+$";
         return t.matches(regex);
     }
-//     public boolean checkCHUCVU(String date) {
-//        
-//        }
 
-    
     public boolean checkSDT(String t) {
         //tổng cộng 10 chữ số: bắt đầu là số 0
         String regex = "^0[0-9]{9}$";
@@ -47,53 +43,82 @@ public class Nhanvien_BUS {
         return matcher.matches();
     }
 
-    private String createMANV() {
-        int max =0;
-        for(int i=0;i<listnv.size();i++){
-            String MANVlast = listnv.get(i).getManv();
-            String so = MANVlast.replaceAll("[^0-9]","");
-        int stt = Integer.parseInt(so) + 1;
-        if(stt > max) max = stt;
+    
+    private int Maxid(String prefix) {
+        int maxNumber = 0;
+        for (int i = 0; i < listnv.size(); i++) {
+            String employeeId = listnv.get(i).getManv();
+            if (employeeId.startsWith(prefix)) {
+                String numberPart = employeeId.substring(2);
+                    int number = Integer.parseInt(numberPart);
+                    if (number > maxNumber) {
+                        maxNumber = number;
+                        System.out.println(maxNumber);
+                    }
+            }
         }
-        return "NV00" + max;
-      
-        
+            return maxNumber;
+       
     }
     
-     public Nhanvien_DTO update(Nhanvien_DTO nv) {
+    
+    
+    private String createidNV() {
+        int stt = Maxid("NV") + 1;
+        return   "NV00" + stt;
+    }
+    
+    private String createidQL() {
+        int stt = Maxid("QL") + 1;
+        return   "QL00" + stt;
+    }
+    
+    private String createidAD() {
+        int stt = Maxid("AD") + 1;
+        return   "AD00" + stt;
+    }
+    
+
+    public void add( String ten, String cv, int sdt, String dc,String e) {
+        if ( cv == "Nhân viên")
+        {
+        String id = createidNV();
+        Nhanvien_DTO nv = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
         listnv.add(nv);
         Nhanvien_DAO nvDAO = new Nhanvien_DAO();
         nvDAO.add(nv);
-        return nv;
+        }   
+        else{
+            if( cv == "Quản lý bán hàng" || cv == "Quản lý kho")
+            {
+                String id = createidQL();
+                Nhanvien_DTO ql = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
+                listnv.add(ql);
+                Nhanvien_DAO nvDAO = new Nhanvien_DAO();
+                nvDAO.add(ql);
+            }   
+            else{
+                String id = createidAD();
+                Nhanvien_DTO ad = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
+                listnv.add(ad);
+                Nhanvien_DAO nvDAO = new Nhanvien_DAO();
+                nvDAO.add(ad);
+            }
+        }
     }
-
-    public Nhanvien_DTO add(Nhanvien_DTO nv) {
-        nv.setManv(createMANV());
-        listnv.add(nv);
+   
+    
+    public void update(Nhanvien_DTO nv) {
         Nhanvien_DAO nvDAO = new Nhanvien_DAO();
-        nvDAO.add(nv);
-        return nv;
+        nvDAO.update(nv);
     }
-
-    public void deleteInSQL(String maDelete){
-        Nhanvien_DAO nvDAO = new  Nhanvien_DAO();
-        nvDAO.delete(maDelete);
-    }
+     
     
-    public void updateInSQL(){
-        Nhanvien_DAO nvDAO = new  Nhanvien_DAO();
-        for(Nhanvien_DTO nv : listnv){
-            nvDAO.update(nv);
-        }
+    public void delete(Nhanvien_DTO nv) {
+        Nhanvien_DAO nvDAO = new Nhanvien_DAO();
+        nvDAO.delete(nv.getManv());
     }
-    
-    public void delete(String MANCC){
-        for(int i=0;i<listnv.size();i++){
-            if(listnv.get(i).getManv().equals(MANCC))
-                listnv.remove(i);
-        }
-    }
-    
+     
     public ArrayList<Nhanvien_DTO> search(ArrayList<String> data_filter){
         ArrayList<Nhanvien_DTO> re = new ArrayList<>();
         for(String i : data_filter){
@@ -126,7 +151,10 @@ public class Nhanvien_BUS {
     }
     
          public static void main(String[] args) {
-        Nhanvien_BUS cthd = new Nhanvien_BUS();
-        cthd.list();
-    }
+        Nhanvien_BUS nv = new Nhanvien_BUS();
+        nv.add("haha","Nhân viên",987690009 ,"HCM","638ejn@gmail.com");
+//        Nhanvien_DTO n2 = new Nhanvien_DTO("NV005","kkkk","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com");
+//        nv.update(n2);
+//        nv.list(); 
+         };
 }
