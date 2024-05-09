@@ -1,17 +1,19 @@
 
 package GUI;
-
 import BUS.Nhanvien_BUS;
+import BUS.nhacungcapBUS;
 import DTO.Nhanvien_DTO;
+import DTO.nhacungcapDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
@@ -23,40 +25,37 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class UpdateNV_GUI extends JFrame implements MouseListener {
 
+public class addNhanvienGUI extends JFrame implements MouseListener {
 
-    private class setNhanvien extends JPanel {
+    private class addNhanvien extends JPanel {
+
         public JLabel[] error;
-        String id ="";
         public JTextField[] getData;
         private String[] title = {"Tên", "Số điện thoại","Địa chỉ","Email","Chức vụ"};
         private Font font_data = new Font("Tahoma", Font.PLAIN, 14);
         protected JPanel btn_exit;
         protected JPanel btn_submit;
         private JComboBox<String> comboBox;
-        public setNhanvien(int chieurong, int chieucao, Nhanvien_DTO nv) {
+        public addNhanvien(int chieurong, int chieucao) {
+            
             getData = new JTextField[title.length-1];
             error = new JLabel[title.length];
-            init(chieurong, chieucao, nv);
+            init(chieurong, chieucao);
         }
 
-        private void init(int chieurong, int chieucao, Nhanvien_DTO nv  ) {
+        private void init(int chieurong, int chieucao) {
 
             setLayout(new FlowLayout(3, 0, 0));
             setPreferredSize(new Dimension(chieurong+20, chieucao));
             JPanel titleGUI_wrap = new JPanel(new BorderLayout());
             titleGUI_wrap.setPreferredSize(new Dimension(chieurong, 40));
-            JLabel titleGUI = new JLabel("Sửa thông tin nhân viên".toUpperCase(), JLabel.CENTER);
+            JLabel titleGUI = new JLabel("Thêm nhân viên".toUpperCase(), JLabel.CENTER);
             titleGUI.setFont(Cacthuoctinh_phuongthuc_chung.font_header);
             titleGUI.setPreferredSize(new Dimension(chieurong, 40));
             titleGUI_wrap.add(titleGUI, BorderLayout.CENTER);
             add(titleGUI_wrap);
-            getData[0] = new JTextField(nv.getTennv());
-            getData[1] = new JTextField("0" + String.valueOf(nv.getSdt()));
-            getData[2] = new JTextField(nv.getDiachi());
-            getData[3] = new JTextField(nv.getEmail());
-            id = nv.getManv();
+            
             for (int i = 0; i < title.length; i++) {
                 JPanel item = new JPanel(new FlowLayout(3, 10, 0));
                 item.setPreferredSize(new Dimension(chieurong, 100));
@@ -66,14 +65,13 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
                 lb_title.setForeground(Cacthuoctinh_phuongthuc_chung.sky_blue);
                 item.add(lb_title);
                 if (i<= 3){
+                getData[i] = new JTextField();
                 getData[i].setPreferredSize(new Dimension(chieurong -10, 30));
-                
                 item.add(getData[i]);
                 }
                 else{
-                    String[] positions = {"Nhân viên", "Quản lý bán hàng", "Quản lý kho"};
+                    String[] positions = {"Nhân viên", "Quản lý bán hàng", "Quản lý kho","Quản lý ứng dụng"};
                         comboBox = new JComboBox<>(positions);
-                        comboBox.setSelectedItem(nv.getChucvu());
                         String selectedPosition = (String) comboBox.getSelectedItem();
                         item.add(comboBox);
                 }
@@ -86,7 +84,7 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
 
                 add(item);
             }
-           
+
             JPanel btn_wrap = new JPanel(new FlowLayout(2,10,0));
 
             btn_exit = new JPanel();
@@ -112,30 +110,31 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
         }
     }
     private int chieurong, chieucao;
-    private setNhanvien setNV;
+    private addNhanvien addNV;
+    private String manv = "";
     private boolean flag_ten, flag_sdt, flag_dc, flag_email, flag_cv;
     private Trangnhanvien_GUI nvGUI;
-    public UpdateNV_GUI(Trangnhanvien_GUI nvGUI, Nhanvien_DTO nv) {
+    public addNhanvienGUI(Trangnhanvien_GUI nvGUI) {
         this.nvGUI= nvGUI;
         chieurong  = 400;
         chieucao  = 600;
         flag_ten = flag_sdt = flag_dc = flag_email = flag_cv =  false;
-        init(nv);
+        init();
     }
 
-    private void init(Nhanvien_DTO nv) {
+    private void init() {
         setUndecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(chieurong, chieucao);
         setBackground(Color.WHITE);
-        setNV = new setNhanvien(getWidth(), getHeight(), nv);
-        setNV.btn_exit.addMouseListener(this);
-        setNV.btn_submit.addMouseListener(this);
-        add(setNV, BorderLayout.CENTER);
+        addNV = new addNhanvien(getWidth(), getHeight());
+        addNV.btn_exit.addMouseListener(this);
+        addNV.btn_submit.addMouseListener(this);
+        add(addNV, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
-        
+     
         setVisible(true);
     }
 
@@ -155,68 +154,63 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
 
                     break;
                 case "btn_submit":
-                    String ten = setNV.getData[0].getText();
-                    String sdt = setNV.getData[1].getText();
-                    String dchi = setNV.getData[2].getText();
-                    String email = setNV.getData[3].getText();
-                    String cv = ((String) setNV.comboBox.getSelectedItem());
-                
+                    String ten = addNV.getData[0].getText();
+                    String sdt = addNV.getData[1].getText();
+                    String dchi = addNV.getData[2].getText();
+                    String email = addNV.getData[3].getText();
+                    String cv = (String) addNV.comboBox.getSelectedItem();
                     
                     Nhanvien_BUS nvBUS = new Nhanvien_BUS();
                     
-                    if (!nvBUS.checkTENNV(ten)) {
-                        setNV.error[0].setText("Tên chỉ chứa chữ cái");
+                    if (ten.equals("")) {
+                        addNV.error[0].setText("Không được để trống");
+                    } else if (!nvBUS.checkTENNV(ten)) {
+                        addNV.error[0].setText("Tên chỉ chứa chữ cái");
                     } else {
                         flag_ten = true;
-                     if (flag_ten == true){
-                        setNV.error[1].setText("");
-                        System.out.println(ten);
-                        }                    }
-                    
-                    if (!nvBUS.checkSDT(sdt)) {
-                        setNV.error[1].setText("Chứa 10 kí tự số và bắt đầu là số 0");
-                    } else {
-                        flag_sdt = true;
-                        if (flag_sdt == true){
-                        setNV.error[1].setText("");
-                        System.out.println(sdt);
-                        }
+                        addNV.error[0].setText("");
                     }
                     
-                     if (!nvBUS.checkDCHI(dchi)) {
-                        setNV.error[2].setText("Địa chỉ không vượt quá 250 ký tự!");
+                    if (sdt.equals("")) {
+                        addNV.error[1].setText("Không được để trống");
+                    } else if (!nvBUS.checkSDT(sdt)) {
+                        addNV.error[1].setText("Chứa 10 kí tự số và bắt đầu là số 0");
+                    } else {
+                        flag_sdt = true;
+                        addNV.error[1].setText("");
+                    }
+                    
+                    if (dchi.equals("")) {
+                        addNV.error[2].setText("Không được để trống");
+                    } else if (!nvBUS.checkDCHI(dchi)) {
+                        addNV.error[2].setText("Địa chỉ không vượt quá 250 ký tự!");
                     } else {
                         flag_dc = true;
-                        if (flag_dc == true){
-                        setNV.error[1].setText("");
-                        System.out.println(dchi);
-                        }
+                        addNV.error[2].setText("");
                     } 
                     
-                     if (!nvBUS.checkEMAIL(email)) {
-                        setNV.error[3].setText("Địa chỉ email không hợp lệ!");
+                    if (email.equals("")) {
+                        addNV.error[3].setText("Không được để trống");
+                    } else if (!nvBUS.checkEMAIL(email)) {
+                        addNV.error[3].setText("Địa chỉ email không hợp lệ!");
                     } else {
                         flag_email = true;
-                      if (flag_email == true){
-                        setNV.error[1].setText("");
-                        System.out.println(email);
-                        }                    }
-                 
-                    if (cv != null) {
+                        addNV.error[3].setText("");
+                    }
+                    
+                    if (cv.equals("")) {
+                        addNV.error[4].setText("Mời chọn chức vụ");
+                    } else {
                         flag_cv = true;
-                       if (flag_cv == true){
-                        setNV.error[1].setText("");
-                        System.out.println(cv);
-                        }                     }
+                        addNV.error[4].setText("");
+                    }
                     
                     if (flag_ten && flag_sdt && flag_email && flag_dc && flag_cv  ) {
-                        int r2 = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với thông tin nhập vào?", "Sửa thông tin nhân viên ", JOptionPane.YES_NO_OPTION);
+                        int r2 = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với thông tin nhập vào?", "Thêm nhà cung cấp ", JOptionPane.YES_NO_OPTION);
                         if (r2 == JOptionPane.YES_OPTION) {
-                            System.out.println(setNV.id);
-                            Nhanvien_DTO new_nv = new Nhanvien_DTO(setNV.id,ten, cv,  Integer.parseInt(sdt), dchi, email);
-                            Nhanvien_DTO n = nvBUS.update(new_nv);
-                            nvGUI.addNV_gui(nvGUI,n);
-                            JOptionPane.showMessageDialog(null, "Sửa thông tin nhân viên thành công!");
+                            nvBUS.add(ten, cv,  Integer.parseInt(sdt), dchi, email);
+                            nvGUI.reloadPage();
+                            JOptionPane.showMessageDialog(null, "Thêm nhân viên mới thành công!");
                             dispose();
 
                         } else {
@@ -266,9 +260,8 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
     }
 
     public static void main(String[] args) throws SQLException {
-        Nhanvien_DTO nv = new Nhanvien_DTO("NV005","haha","Nhân viên",987666789 ,"329gyfejkdbsih","6383uyejn@gmail.com");
         Trangnhanvien_GUI nvGUI = new Trangnhanvien_GUI(1200,700);
-        UpdateNV_GUI k = new UpdateNV_GUI(nvGUI,nv);
+        addNhanvienGUI k = new addNhanvienGUI(nvGUI);
     }
 }
 
