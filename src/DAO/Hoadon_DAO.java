@@ -50,18 +50,24 @@ public class Hoadon_DAO {
         return dshd;
     }
     
-     public void add(Hoadon_DTO item){
-        try {
-            mySQL.connect();
-            String query= "INSERT INTO hoadon VALUES ('" + item.getMaHD() +"','"+ item.getNgayHD() +"','" +item.getMaKH() +"','" +item.getMaNV() +"','"  +item.getGiamgia() +"','"+item.getTongTien()+");";
-            mySQL.executeUpdate(query);
-            System.out.println("Them Hoa don thanh cong");
-            mySQL.disconnect();
-        } catch (SQLException ex) {
-            Logger.getLogger(Hoadon_DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+    // xóa hóa đơn
+    public boolean delete(String m) {
+    boolean success = false;
+    mySQL.connect();
+    String query= "DELETE FROM hoadon WHERE SOHD = '" + m +"';";
+    boolean result = mySQL.executeupdate(query);
+    if(result) {
+        if (result)
+        System.out.println("Xoa hoa don thanh cong!");
+        success = true;
+    } else {
+        System.out.println("Xoa hoa don that bai!");
     }
-     
+    mySQL.disconnect();
+    return success;
+}
+    
     
      
 //     public static void main (String[] args){
