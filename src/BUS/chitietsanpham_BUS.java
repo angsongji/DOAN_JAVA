@@ -12,7 +12,8 @@ public class chitietsanpham_BUS {
 	ArrayList<chitietsanpham_DTO> ds;
 	public chitietsanpham_BUS() {
 		newlist();
-	
+	public chitietsanpham_BUS() {
+        }
 		
 	}
 	public void newlist() {
@@ -38,7 +39,11 @@ public class chitietsanpham_BUS {
 		this.ds.add(d);
 		c.add(d);
 	}
-	
+	   
+        public void Restore_pro(chitietsanpham_DTO cp) {
+        DAO_chitietsanpham cpDAO = new DAO_chitietsanpham();
+        cpDAO.Restore_pro(cp);
+        }
 	public void update(chitietsanpham_DTO d) {
 		DAO_chitietsanpham c = new DAO_chitietsanpham();
 		c.update(d);
