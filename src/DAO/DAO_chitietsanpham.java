@@ -126,6 +126,19 @@ public class DAO_chitietsanpham {
 			e.printStackTrace();
 		}
 	}
+   
+   public void Restore_pro (chitietsanpham_DTO cp){
+        c.connect();
+        String query= "UPDATE chitietsanpham set SOLUONG = '" + cp.getSoluong() + "' WHERE MASP='" + cp.getMASP() + "' AND MASIZE='" + cp.getMASIZE()+"';";
+        boolean result = c.executeUpdate(query);
+        if(result) {
+            System.out.println("Phục hồi số lượng sản phẩm sau hủy hóa đơn thành công!");
+        } else {
+            System.out.println("Phục hồi số lượng sản phẩm sau hủy hóa đơn thất bại!");
+        }
+        c.disconnect();    
+      }
+    
 	public static void main(String[] args) {
 		SanPhamDTO m = new SanPhamDTO("SP8", null,null, 0, args, 0);
 		DAO_chitietsanpham c = new DAO_chitietsanpham();
