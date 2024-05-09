@@ -243,7 +243,9 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 break;
             }
                 case "NV": {
-                thaotacNV(ctqDTO.getHANHDONG(), itemClicked);
+                  try {
+                      thaotacNV(ctqDTO.getHANHDONG(), itemClicked);
+                     } catch (SQLException ex) {}
                 break;
                 }
             case "SP": {
