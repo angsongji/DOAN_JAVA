@@ -17,7 +17,14 @@ public class ChitietHD_BUS {
         ChitietHD_DAO listsphd = new ChitietHD_DAO();
         dsChiTietHD = listsphd.list(maHD);
     }
-    
+    public void delete(String maHD) {
+        ChitietHD_DAO cdDAO = new ChitietHD_DAO();
+        cdDAO.delete(maHD);
+    }
+    public ArrayList<chitietsanpham_DTO> listtorestore(String maHD) throws SQLException {
+        ChitietHD_DAO listsphd = new ChitietHD_DAO();
+        return listsphd.listtorestore(maHD);
+        
          public static void main (String[] args) throws SQLException{
         ChitietHD_BUS hd = new ChitietHD_BUS("HD002");
     }
