@@ -37,6 +37,7 @@ import DTO.TaiKhoanDTO;
 import DTO.loaiSP;
 import DTO.nhacungcapDTO;
 import java.awt.Container;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellEditor;
@@ -617,7 +618,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
             }
         }
     }
-public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) {
+public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) throws SQLException {
         Trangnhanvien_GUI nvGUI = (Trangnhanvien_GUI) pageContent;
         Nhanvien_BUS loaiBUS = new Nhanvien_BUS();
         switch (hanhdong) {
@@ -626,13 +627,16 @@ public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) {
                 break;
             }
             case "Sửa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên");
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên\n và bấm \"Hoàn tất\" khi hoàn thành thao tác!");
+                nvGUI.reloadPagecontrol();
                         break;}
             case "Xóa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần Xóa nhân viên");
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần xóa thông tin nhân viên\n và bấm \"Hoàn tất\" khi hoàn thành thao tác!");
+                nvGUI.reloadPagecontrol();
                         break;}        
         }
 }
+
 
 public void thaotacSIZE(String hanhdong, hanhdongGUI itemClicked) {
     
