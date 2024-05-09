@@ -249,6 +249,25 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 thaotacSP(ctqDTO.getHANHDONG(), itemClicked);
                 break;
             }
+              case "HD": {            
+                chucnangHoadon hdGUI = (chucnangHoadon) pageContent;
+                JPanel jp_content = hdGUI.JP_contentCuaNameChucnangCon;
+                Component[] jp_con = jp_content.getComponents();
+                TrangLichsuHD lshd = (TrangLichsuHD) jp_con[0];
+                switch (ctqDTO.getHANHDONG()) {
+                    case "Xóa":
+                        JOptionPane.showMessageDialog(null, "Click vào dòng cần xóa hóa đơn!");
+                        try {
+                            lshd.reloadPagecontrol();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ThaotacInStore.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    break;
+                    case "In PDF":
+                        
+                
+                
+                }   }
         }
     }
 
