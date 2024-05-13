@@ -1,41 +1,38 @@
 
 package DTO;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Hoadon_DTO {
     private String maHD,maNV;
-    private String ngayHD;
-    private String Thoigian;
-    private int  giamgia, maKH;
-    private double tongTien;
-    private ArrayList<ChitietHD_DTO> dsctHD;
+    private String ngayHD, thoigian;
+    private int maKH, giamgia, tongTien;
 
-    public Hoadon_DTO(String maHD, String ngayHD, int maKH, String maNV,  int giamgia, double tongTien, String Thoigian, ArrayList<ChitietHD_DTO> dsctHD) {
+    public Hoadon_DTO(String maHD, String ngayHD,String thoigian, int maKH, String maNV,  int giamgia, int tongTien) {
         this.maHD = maHD;
         this.maKH = maKH;
         this.maNV = maNV;
         this.ngayHD = ngayHD;
         this.giamgia = giamgia;
         this.tongTien = tongTien;
-        this.Thoigian = Thoigian;
-        this.dsctHD = dsctHD;
+        this.thoigian = thoigian;
     }
 
-    public ArrayList<ChitietHD_DTO> getDsctHD() {
-        return dsctHD;
+    public Hoadon_DTO(String maHD, String currentTimeStamp, int maKH, String string, int i, double totalPrice, String currentTime, ArrayList<ChitietHD_DTO> dscthd) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public void setDsctHD(ArrayList<ChitietHD_DTO> dsctHD) {
-        this.dsctHD = dsctHD;
+    public String getThoigian() {
+        return thoigian;
     }
 
     public String getMaHD() {
         return maHD;
     }
 
-
+    public void setThoigian(String thoigian) {
+        this.thoigian = thoigian;
+    }
 
     public String getMaNV() {
         return maNV;
@@ -49,7 +46,7 @@ public class Hoadon_DTO {
         return giamgia;
     }
 
-    public double getTongTien() {
+    public int getTongTien() {
         return tongTien;
     }
 
@@ -78,17 +75,11 @@ public class Hoadon_DTO {
         this.giamgia = giamgia;
     }
 
-    public void setTongTien(double tongTien) {
+    public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
     }
 
-    public String getThoigian() {
-        return Thoigian;
-    }
-
-    public void setThoigian(String thoigian) {
-        Thoigian = thoigian;
-    }
     
-
+    
+    
 }

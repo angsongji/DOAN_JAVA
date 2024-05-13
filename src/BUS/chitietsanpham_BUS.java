@@ -7,14 +7,16 @@ import DAO.DAO_chitietsanpham;
 import DTO.chitietsanpham_DTO;
 
 import DTO.SanPhamDTO;
+import java.sql.SQLException;
 
 public class chitietsanpham_BUS {
 	ArrayList<chitietsanpham_DTO> ds;
 	public chitietsanpham_BUS() {
 		newlist();
+        }
+        
 	
-		
-	}
+
 	public void newlist() {
 		DAO_chitietsanpham c = new DAO_chitietsanpham();
 		
@@ -49,6 +51,11 @@ public class chitietsanpham_BUS {
 		}
 	}
 	
+        public void Restore_pro(chitietsanpham_DTO cp) throws SQLException {
+        DAO_chitietsanpham nvDAO = new DAO_chitietsanpham();
+        nvDAO.Restore_pro(cp);
+        }
+        
 	
 	public int getSoLuong(String masp, String masize) {
 		int i = 0;

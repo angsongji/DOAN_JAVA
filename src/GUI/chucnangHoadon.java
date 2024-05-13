@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,10 +30,10 @@ public class chucnangHoadon extends JPanel implements MouseListener{
     private int ccao;
     private  JPanel JP_listNameChucnangConCuaHoadon;
     private ArrayList<chucnangDTO> listChucnangCon;
-    private JPanel JP_contentCuaNameChucnangCon;
+    JPanel JP_contentCuaNameChucnangCon;
     private CenterContentStore centerContent;
     private int crong, heightJP_content;
-    public chucnangHoadon(CenterContentStore centerContent,chucnangDTO cnDTO,String maquyen) {
+    public chucnangHoadon(CenterContentStore centerContent,chucnangDTO cnDTO,String maquyen) throws SQLException {
         this.centerContent=centerContent;
         ccao = (int)centerContent.pageContent.getPreferredSize().getHeight();
         crong = (int)centerContent.pageContent.getPreferredSize().getWidth();
@@ -49,7 +50,7 @@ public class chucnangHoadon extends JPanel implements MouseListener{
     }
 
     
-     private void init(chucnangDTO cnDTO,String maquyen) {
+     private void init(chucnangDTO cnDTO,String maquyen) throws SQLException {
          chitietquyenBUS ctqBUS = new chitietquyenBUS();
                if(ctqBUS.search(new chitietquyenDTO(maquyen,"HD","Thêm"))){
                    System.out.println("CO HAY KHONGGG");

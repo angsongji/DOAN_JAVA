@@ -10,35 +10,26 @@ import java.util.logging.Logger;
 
 public class Nhanvien_DAO {
         public ConnectDataBase mySQL; 
-    public Nhanvien_DAO() {
-            try {
-                mySQL = new ConnectDataBase();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public Nhanvien_DAO() throws SQLException {
+        mySQL = new ConnectDataBase();
     }
     public ArrayList<Nhanvien_DTO> list()
     {
         ArrayList<Nhanvien_DTO> dsnv = new ArrayList<>();
         try {
             mySQL.connect();
-            String sql = "SELECT * FROM nhanvien WHERE 1";
+            String sql = "SELECT * FROM nhanvien WHERE TRANGTHAI = 1";
             ResultSet rs = mySQL.executeQuery(sql);
             while(rs.next())
             {
                 String manv = rs.getString("MANV");
-                System.out.println(manv);
                 String tennv = rs.getString("TENNV");
-                System.out.println(tennv);
                 String chucvu = rs.getString("CHUCVU");
-                System.out.println(chucvu);
-                int sdt = rs.getInt("SDT");System.out.println(sdt);
-                System.out.println(sdt);
+                int sdt = rs.getInt("SDT");
                 String diachi = rs.getString("DIACHI");
-                System.out.println(diachi);
                 String email  = rs.getString("EMAIL");
-                System.out.println(email);
-                Nhanvien_DTO nv = new Nhanvien_DTO (manv, tennv, chucvu, sdt, diachi, email );
+                int tt = rs.getInt("TRANGTHAI");
+                Nhanvien_DTO nv = new Nhanvien_DTO (manv, tennv, chucvu, sdt, diachi, email,tt );
                 dsnv.add(nv);
             }
             System.out.println("Lay danh sach nhan vien thanh cong");
@@ -48,6 +39,7 @@ public class Nhanvien_DAO {
         catch (SQLException ex) {
             System.out.println("Lay danh sach nhan vien that bai");
         }
+         System.out.println("so luong nv dao"+ dsnv.size());
             return dsnv;
     }
     
@@ -61,8 +53,8 @@ public class Nhanvien_DAO {
                 int sdt = rs.getInt("SDT");System.out.println(sdt);
                 String diachi = rs.getString("DIACHI");
                 String email  = rs.getString("EMAIL");
-                Nhanvien_DTO nv = new Nhanvien_DTO (id, tennv, chucvu, sdt, diachi, email );
-        System.out.println("Lấy thông tin nhân viên thành công!");
+                int tt = rs.getInt("TRANGTHAI");
+                Nhanvien_DTO nv = new Nhanvien_DTO (id, tennv, chucvu, sdt, diachi, email,tt );        System.out.println("Lấy thông tin nhân viên thành công!");
         return nv;
      }
         catch (SQLException ex) {
@@ -71,72 +63,82 @@ public class Nhanvien_DAO {
             return null;
     }
     
-    public boolean add(Nhanvien_DTO item) {
-    boolean success = false;
-            try {
-                mySQL.connect();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    String query= "INSERT INTO nhanvien VALUES ('" + item.getManv() +"','"+ item.getTennv() +"','" +item.getChucvu() +"','" +item.getSdt() + "','" +item.getDiachi() +"','" +item.getEmail()+"');";
+    public void add(Nhanvien_DTO item) throws SQLException {
+    mySQL.connect();
+    String query= "INSERT INTO nhanvien VALUES ('" + item.getManv() +"','"+ item.getTennv() +"','" +item.getChucvu() +"','" +item.getSdt() + "','" +item.getDiachi() +"','" +item.getEmail()+"','" +item.getTrangthai()+"');";
     boolean result = mySQL.executeupdate(query);
     if(result) {
         System.out.println("Thêm nhân viên thành công!");
-        success = true;
     } else {
         System.out.println("Thêm nhân viên thất bại!");
     }
     mySQL.disconnect();
-    return success;
 }
 
   
-    public boolean update(Nhanvien_DTO item) {
-    boolean success = false;
-            try {
-                mySQL.connect();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public void update(Nhanvien_DTO item) throws SQLException {
+    mySQL.connect();
     String query= "UPDATE nhanvien set TENNV = '" + item.getTennv()+"', CHUCVU='"+ item.getChucvu()+ "', SDT='" + item.getSdt() + "', DIACHI='" + item.getDiachi()+ "', EMAIL='" + item.getEmail() + "' WHERE MANV='" + item.getManv() + "'";
     boolean result = mySQL.executeupdate(query);
     if(result) {
         System.out.println("Cập nhật thông tin nhân viên thành công!");
-        success = true;
     } else {
         System.out.println("Cập nhật thông tin nhân viên thất bại!");
     }
     mySQL.disconnect();
-    return success;
 }
-
- public boolean delete(String m) {
-    boolean success = false;
-            try {
-                mySQL.connect();
-            } catch (SQLException ex) {
-                Logger.getLogger(Nhanvien_DAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    String query= "DELETE FROM hoadon WHERE MANV = '" + m +"';";
+    
+    
+public void update_tt(Nhanvien_DTO item,int tt) throws SQLException {
+    mySQL.connect();
+    String query= "UPDATE nhanvien set TRANGTHAI = '" + tt + "' WHERE MANV='" + item.getManv() + "'";
+    boolean result = mySQL.executeupdate(query);
+    if(result) {
+        System.out.println("Đổi trạng thái nhân viên thành công!");
+    } else {
+        System.out.println("Đổi trạng thái nhân viên thất bại!");
+    }
+    mySQL.disconnect();
+}
+    
+public void delete(String m) throws SQLException {
+    mySQL.connect();
+    String query= "DELETE FROM nhanvien WHERE MANV = '" + m +"';";
     boolean result = mySQL.executeupdate(query);
     if(result) {
         System.out.println("Xóa nhân viên thành công!");
-        success = true;
     } else {
         System.out.println("Xóa nhân viên thất bại!");
     }
     mySQL.disconnect();
+}
+
+public boolean check_accNV(String id) throws SQLException {
+    boolean success = false; // Khởi tạo biến success với giá trị mặc định là false
+    mySQL.connect();
+    try {
+        String query = "SELECT *  FROM `qlba`.taikhoan WHERE MANV = '"+id+"';";
+        ResultSet rs = mySQL.executeQuery(query);
+        if (rs.next()) {
+                success = true; // Đặt success thành true nếu có ít nhất một dòng dữ liệu
+            }
+        }
+     catch (SQLException ex) {
+    } finally {
+        mySQL.disconnect(); // Đảm bảo rằng kết nối sẽ được đóng sau khi sử dụng
+    }
     return success;
 }
 
 
-    public static void main (String[] args){
+    public static void main (String[] args) throws SQLException{
         Nhanvien_DAO nv = new Nhanvien_DAO();
 //        Nhanvien_DTO n1 = new Nhanvien_DTO("NV005","haha","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com");
-//        nv.add(n1);
-//        Nhanvien_DTO n2 = new Nhanvien_DTO("NV005","UYEN","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com");
+        Nhanvien_DTO n2 = new Nhanvien_DTO("NV5","UYEN","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com",1);
 //        nv.update(n2);
-        nv.delete("NV005");
+        nv.add(n2);
+        boolean re = nv.check_accNV("QL4");
+        System.out.println(re);
         ArrayList<Nhanvien_DTO> list = nv.list();
         
     }

@@ -15,8 +15,7 @@ import DTO.SanPhamDTO;
 public class DAO_chitietsanpham {
 	private static ConnectDataBase mySQL;
 	private SanPhamDTO sanpham_DTO;
-	public DAO_chitietsanpham() {
-		
+	public DAO_chitietsanpham() {	
 		try {
 			mySQL = new ConnectDataBase();
 		} catch (SQLException e) {
@@ -24,7 +23,7 @@ public class DAO_chitietsanpham {
 			e.printStackTrace();
 		}
 	}
-
+        
 	private static void ConnectDataBase() {
         try {
             mySQL = new ConnectDataBase();
@@ -33,7 +32,6 @@ public class DAO_chitietsanpham {
         }
     }
 
-	
 	public static ArrayList<String> select_size(String maSP){
 		ArrayList<String> k = new ArrayList<String>();
 		try {
@@ -138,6 +136,18 @@ public class DAO_chitietsanpham {
 			e.printStackTrace();
 		}
 	}
+        
+        public void Restore_pro (chitietsanpham_DTO cp) throws SQLException{
+        mySQL.connect();
+        String query= "UPDATE chitietsanpham set SOLUONG = '" + cp.getSoluong() + "' WHERE MASP='" + cp.getMASP() + "' AND MASIZE='" + cp.getMASIZE()+"';";
+        boolean result = mySQL.executeupdate(query);
+        if(result) {
+            System.out.println("Phục hồi số lượng sản phẩm sau hủy hóa đơn thành công!");
+        } else {
+            System.out.println("Phục hồi số lượng sản phẩm sau hủy hóa đơn thất bại!");
+        }
+        mySQL.disconnect();    
+      }
 	// public static void main(String[] args) {
 	// 	SanPhamDTO m = new SanPhamDTO("SP8", null,null, 0, args, 0);
 	// 	DAO_chitietsanpham c = new DAO_chitietsanpham();

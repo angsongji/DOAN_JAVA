@@ -45,7 +45,7 @@ public class ConnectDataBase {
 
    public void connect() throws SQLException {
       try {
-        
+          System.out.println("tai sao");
          Class.forName(driver);
          conn = DriverManager.getConnection(url + dbName + "?sslMode=DISABLED", userName, password);
       } catch (ClassNotFoundException e) {

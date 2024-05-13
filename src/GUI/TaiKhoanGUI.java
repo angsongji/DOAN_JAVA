@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -209,7 +210,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     Color chu = Color.decode("#FFFFFF"); //mau chu cua 2 nút huy, them
     Font font_tieude = new Font("Tahoma", Font.BOLD, 18);
 
-    public void initPnThaoTacTK(int width, int height) {
+    public void initPnThaoTacTK(int width, int height) throws SQLException {
         JPanel pnThaoTacTK = new JPanel();
         pnThaoTacTK.setLayout(new BorderLayout());
         pnThaoTacTK.setPreferredSize(new Dimension(width, height));
@@ -262,7 +263,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         pnThaoTacTK_main.add(pnThaoTacTK);
     }
 
-    private void initContentThaoTac() {
+    private void initContentThaoTac() throws SQLException {
         //Mã nhân viên
         Nhanvien_BUS nv = new Nhanvien_BUS();
         cbxMaNV = new JComboBox<>();
@@ -720,7 +721,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         ArrayList<String> data_filter = new ArrayList<>();
         data_filter.add("");
         data_filter.add("Đã khoá");

@@ -205,7 +205,7 @@ public class UpdateNV_GUI extends JFrame implements MouseListener {
                         int r2 = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với thông tin nhập vào?", "Sửa thông tin nhân viên ", JOptionPane.YES_NO_OPTION);
                         if (r2 == JOptionPane.YES_OPTION) {
                             System.out.println(setNV.id);
-                            Nhanvien_DTO new_nv = new Nhanvien_DTO(setNV.id,ten, cv,  Integer.parseInt(sdt), dchi, email);
+                            Nhanvien_DTO new_nv = new Nhanvien_DTO(setNV.id,ten, cv,  Integer.parseInt(sdt), dchi, email,1);
                             nvBUS.update(new_nv);
                             nvGUI.reloadPagecontrol();                            
                             JOptionPane.showMessageDialog(null, "Sửa thông tin nhân viên thành công!");

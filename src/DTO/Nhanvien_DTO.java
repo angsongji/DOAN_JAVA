@@ -2,19 +2,21 @@
 package DTO;
 
 public class Nhanvien_DTO {
-        private String manv, tennv, chucvu, diachi, email;
-    private int sdt;
+    private String manv, tennv, chucvu, diachi, email;
+    private int sdt,trangthai;
 
     public Nhanvien_DTO() {
     }
-    
-    public Nhanvien_DTO(String manv, String tennv, String chucvu, int sdt, String diachi, String email) {
+
+    public Nhanvien_DTO(String manv, String tennv, String chucvu, int sdt, String diachi, String email,int tt) {
         this.manv = manv;
         this.tennv = tennv;
         this.chucvu = chucvu;
         this.diachi = diachi;
         this.email = email;
-        this.sdt = sdt;}
+        this.sdt = sdt;
+        trangthai = tt;
+    }
 
     public String getManv() {
         return manv;
@@ -62,6 +64,14 @@ public class Nhanvien_DTO {
 
     public void setSdt(int sdt) {
         this.sdt = sdt;
+    }
+
+    public int getTrangthai() {
+        return trangthai;
+    }
+
+    public void setTrangthai(int trangthai) {
+        this.trangthai = trangthai;
     }
     
 }
