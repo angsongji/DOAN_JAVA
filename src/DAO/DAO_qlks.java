@@ -200,36 +200,66 @@ public class DAO_qlks {
 //		Statement st = conn.createStatement();
 		
 		
-		String mkh = "",tenn="" ,dtll ="";
+		String mkh = "",tenn="" ,dtll ="",t="";
 		
 		if (ma_kh.equals("min-max") ) {
-			mkh = "asc";
+                        ma_kh = "";
+                        
+			mkh = " MAKH asc ";
 		} else if (ma_kh.equals("max-min")) {
-			mkh = "desc";
+                        ma_kh = "";
+			mkh = " MAKH desc ";
 		}
 		if (ten.equals("a-z") ) {
-			tenn = "asc";
+                        ten ="";
+                        if (mkh.isEmpty()){
+                            tenn = " TENKH ASC ";
+                        } else {
+                            tenn = " , TENKh asc ";
+                        }
+			
 		} else if (ten.equals("z-a")) {
-			tenn = "desc";
+                        ten = "";
+                        if (mkh.isEmpty()){
+                            tenn = " TENKH desc ";
+                        } else {
+                            tenn = " , TENKH desc ";
+                        }
+			
 		}
 		if (diem.equals("min-max") ) {
-			dtll = "asc";
+                        diem = "";
+                        if (mkh.isEmpty() && tenn.isEmpty()){
+                           dtll = " DIEMTICHLUY asc "; 
+                        } else {
+                            dtll = " , DIEMTICHLUY asc";
+                        }
+                    
+			
 		} else if (diem.equals("max-min")) {
-			dtll = "desc";
+                        diem = "";
+                        if (mkh.isEmpty() && tenn.isEmpty()){
+                            dtll = " DIEMTICHLUY desc ";
+                        } else {
+                            dtll = " , DIEMTICHLUY DESC ";
+                        }
+			
 		}
-		if (ten.equals("a-z") || ten.equals("z-a")) {
-			ten = "";
-		} 
-		if (ma_kh.equals("min-max") || ma_kh.equals("max-min")) {
-			ma_kh = "";
-		}
-		if (diem.equals("min-max") || diem.equals("max-min")) {
-			diem = "";
-		}
-		String sql = "select * from khachhang where TENKH like '%" + ten + "%' and SDT like '%" + sdt +"%' " +
-				"and MAKH like '%" + ma_kh +"%' "+ "and DIEMTICHLUY like '%" +diem+"%' "+ 
-				"order by MAKH " + mkh + " ,TENKH " + tenn + ", DIEMTICHLUY "+ dtll; 
+                if (!mkh.isEmpty() || !tenn.isEmpty() || !dtll.isEmpty()){
+                    t = " order by ";
+                }
 		
+                
+                
+                
+		String sql = "select * from khachhang where TENKH like '%" + ten + "%' and SDT like '%" + sdt +"%' " +
+				"and MAKH like '%" + ma_kh +"%' "+ "and DIEMTICHLUY like '%" +diem+"%' "+
+                        t + mkh + tenn + dtll;
+                
+                
+                
+				
+		          System.out.println(sql);
 		c.connect();
 		
 		ResultSet rs = c.executeQuery(sql);
@@ -295,10 +325,12 @@ public class DAO_qlks {
     }
 	 public static void main(String[] args) {
 		DAO_qlks c = new DAO_qlks();
-		String t = "QQLBH";
-		for (String m : c.select_hanhdong_qlkh("QQLBH")) {
-			System.out.println(m);
-		}
+                ArrayList<model_qlkh> ds = c.search("max-min", "a-z", "", "max-min");
+                        
+		for (model_qlkh h : ds){
+                    System.out.println(h.toString());
+                    
+                }
 	} 
 	
 }

@@ -163,6 +163,9 @@ public class Nhanvien_BUS {
         }
         return flag;
     }
+    public ArrayList<Nhanvien_DTO> getlist(){
+        return this.listnv;
+    }
     
          public static void main(String[] args) throws SQLException {
         Nhanvien_BUS nv = new Nhanvien_BUS();

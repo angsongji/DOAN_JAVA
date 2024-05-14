@@ -1,5 +1,6 @@
 package GUI;
 
+import BUS.Nhanvien_BUS;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,15 +31,19 @@ import BUS.chitietphieunhap_BUS;
 import BUS.nhacungcapBUS;
 import BUS.phieunhap_BUS;
 import DAO.DAO_phieunhap;
+import DTO.Nhanvien_DTO;
 import DTO.TaiKhoanDTO;
 import DTO.chitietphieunhap_DTO;
 import DTO.nhacungcapDTO;
 import DTO.phieunhap_DTO;
+import java.sql.SQLException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class phieunhap_GUI extends JPanel implements MouseListener{
 	private JPanel[] jp,jp1,jp3;
 	private JLabel[] jl,jl1,jl3,jlha;
-	private JTextField[] jt;
+	private JTextField jtmapn,jtmnv,jt[];
 	private JPanel panel_north,panel_dspn;
 	private JLabel submit,refresh;
 	private String [] option_so,option_kitu,thaotacc,images;
@@ -51,12 +56,16 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 	private phieunhap_BUS phieunhap_BUS;
 	private chitietphieunhap_BUS chitietphieunhap_BUS;
 	private frame_them_phieunhap frame_them_phieunhap;
+        private frame_thong_bao_phieunhap frame_thong_bao_phieunhap;
 	private panel_them_phieunhap panel_them_phieunhap;
 	private nhacungcapBUS nhacungcapBUS;
 	private TaiKhoanDTO taiKhoanDTO;
-	private boolean frame_them;
+        private int w;
+        private String MAPN,MANV,mancc,ngaydau,ngaysau;
+        private double giabe,gialon;
+        private Nhanvien_BUS nhanvien_BUS;
 	
-	public phieunhap_GUI(int w,int h,TaiKhoanDTO d) {
+	public phieunhap_GUI(int w,int h,TaiKhoanDTO d) throws SQLException {
 		jp1 = new JPanel[7];
 		jp = new JPanel[7];
 		jl = new JLabel[5];
@@ -65,32 +74,47 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		jt_tien = new JTextField[2];
 		 option_kitu = new String[] {"","a-z","z-a"};
 		 option_so = new String[] {"", "min-max" , "max-min"};
-		 thaotacc = new String[] {"Thêm","Sửa","Xóa","Export Excel"};
-		 images = new String[] {"./src/images/add_icon.png","./src/images/edit_icon.png","./src/images/remove_icon.png","./src/images/import_icon.png"};
+		 thaotacc = new String[] {"Thêm","Sửa","Xóa","Import Excel","Export excel","In PDF"};
+		 images = new String[] {"./src/images/add_icon.png","./src/images/edit_icon.png","./src/images/remove_icon.png","./src/images/import_icon.png","./src/images/export_icon.png","./src/images/pdf_icon.png"};
+                 
+                
+                 
 		 this.clickedchinhsua =false;
 		 this.clickedxoa = false;
 		 this.taiKhoanDTO = d;
-		 this.frame_them = false;
-                 
+		 this.frame_them_phieunhap = null;
+                 this.frame_thong_bao_phieunhap = null;
+                 MAPN= MANV=mancc= "";
+                 ngaydau="0000-00-00";
+                 ngaysau ="9999-12-30";
+                 giabe = 0;
+                 gialon = 1000000000;
 		 phieunhap_BUS = new phieunhap_BUS();
 		 nhacungcapBUS = new nhacungcapBUS();
 		 
 		 jtngay = new  JTextField[2];
 		 
-		 
+		 this.w = w;
 		 int o = (w-100)/8;
 		 
 		 
-		jp3 = new JPanel[5];
-		jl3= new JLabel[5];
-		jlha = new JLabel[5];
+		jp3 = new JPanel[6];
+		jl3= new JLabel[6];
+		jlha = new JLabel[6];
+		
+		nhanvien_BUS = new Nhanvien_BUS();
+                ArrayList<String> ds_nv = new ArrayList<>();
+                ds_nv.add("");
+                
+                for (Nhanvien_DTO hhh : nhanvien_BUS.getlist()){
+                    ds_nv.add(hhh.getManv());
+                }
+                String[] dsnv = ds_nv.toArray(new String[ds_nv.size()]);
 		
 		
 		
 		
-		
-		
-		 border_ttac = BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#60A3BC"));
+		border_ttac = BorderFactory.createMatteBorder(2, 0, 0, 0, Color.decode("#60A3BC"));
 		
 		panel_north = new JPanel();
 		panel_north.setLayout(new FlowLayout());
@@ -124,14 +148,34 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
                 
 		
 		
+                
 		option_mapn = new JComboBox<String>(option_kitu);
 		option_mapn.setEditable(true);
 		option_mapn.setPreferredSize(new Dimension(o-o/5,20));
-		
+                
+		jtmapn = new JTextField();
+                jtmapn.setPreferredSize(new Dimension(o-o/5,20));
+                
+                jtmapn.getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        MAPN = jtmapn.getText().trim();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        MAPN = jtmapn.getText().trim();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        MAPN = jtmapn.getText().trim();
+                    }
+                });
 		
 		jp1[0] = new JPanel();jp1[0].setPreferredSize(new Dimension(o,80));
 		jp1[0].add(jl1[0]);
-		jp1[0].add(option_mapn);
+		jp1[0].add(jtmapn);
                 
 		
 		/////////// tìm kiếm theo mã nhân viên /////////////
@@ -142,7 +186,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		jl1[1].setBorder(BorderFactory.createEmptyBorder(0,0,22,0));
              
 		
-		option_manv = new JComboBox<String>(option_kitu);
+		option_manv = new JComboBox<String>(dsnv);
 		option_manv.setEditable(true);
 		option_manv.setPreferredSize(new Dimension(o - o/5,20));
 		
@@ -183,7 +227,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		});
 		
 		
-		jtngay[1] = new JTextField(LocalDate.now()+"");
+		jtngay[1] = new JTextField("YYYY-MM-DD");
 		jtngay[1].setForeground(Color.GRAY);
 		jtngay[1].setPreferredSize(new Dimension(o - o/5,20));
 		jtngay[1].addFocusListener(new FocusListener() {
@@ -191,15 +235,16 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (jtngay[1].getText().equals("") ) {
-					jtngay[1].setText(LocalDate.now()+"");
+					jtngay[1].setText("YYYY-MM-DD");
 					jtngay[1].setForeground(Color.GRAY);
 				}
+                              
 				
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (jtngay[1].getText().equals(LocalDate.now()+"")  ) {
+				if (jtngay[1].getText().equals("YYYY-MM-DD")  ) {
 					jtngay[1].setText("");
 					jtngay[1].setForeground(Color.black);
 				} 
@@ -226,26 +271,37 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		jl1[3].setPreferredSize(new Dimension(2*o,40));
 		jl1[3].setBorder(BorderFactory.createEmptyBorder(0, 0, 22, 0));
 		
-		jt_tien[0] = new JTextField("0");
+		jt_tien[0] = new JTextField();
 		jt_tien[0].setPreferredSize(new Dimension(o-o/5,22));
-		jt_tien[0].addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (jt_tien[0].getText().equals("")) {
-					jt_tien[0].setText("0");
-				}
-				
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (jt_tien[0].getText().equals("0")) {
-					jt_tien[0].setText("");
-				}
-				
-			}
-		});
+		jt_tien[0].getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) { 
+                        if(jt_tien[0].getText().trim().equals("")){
+                            giabe = 0;
+                        } else {
+                            giabe = Double.parseDouble(jt_tien[0].getText().trim());
+                        }
+                        
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                         if(jt_tien[0].getText().trim().equals("")){
+                            giabe = 0;
+                        } else {
+                            giabe = Double.parseDouble(jt_tien[0].getText().trim());
+                        }
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                         if(jt_tien[0].getText().trim().equals("")){
+                            giabe = 0;
+                        } else {
+                            giabe = Double.parseDouble(jt_tien[0].getText().trim());
+                        }
+                    }
+                });
 		
 		
 		jt_tien[0].addKeyListener(new KeyAdapter() {
@@ -259,27 +315,36 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		
 		
-		jt_tien[1] = new JTextField("10000000000000");
+		jt_tien[1] = new JTextField();
 		jt_tien[1].setPreferredSize(new Dimension(o-o/5,22));
-		
-		jt_tien[1].addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (jt_tien[1].getText().equals("")) {
-					jt_tien[1].setText("0");
-				}
-				
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (jt_tien[1].getText().equals("0")) {
-					jt_tien[1].setText("");
-				}
-				
-			}
-		});
+                jt_tien[1].getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        if (jt_tien[1].getText().trim().equals("")){
+                            gialon = 1000000000;
+                        } else {
+                            gialon = Double.parseDouble(jt_tien[1].getText().trim());
+                        }
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        if (jt_tien[1].getText().trim().equals("")){
+                            gialon = 1000000000;
+                        } else {
+                            gialon = Double.parseDouble(jt_tien[1].getText().trim());
+                        }
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        if (jt_tien[1].getText().trim().equals("")){
+                            gialon = 1000000000;
+                        } else {
+                            gialon = Double.parseDouble(jt_tien[1].getText().trim());
+                        }
+                    }
+                });
 		
 		jt_tien[1].addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
@@ -289,6 +354,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 				}
 			}
 		});
+                
 		
 		JLabel denn = new JLabel("đến");
 		
@@ -330,13 +396,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		/////////////// SUBMIT va REFRESH /////////////////
 		
-		submit = new JLabel("SUBMIT",JLabel.CENTER);submit.setForeground(Color.white);
+		submit = new JLabel("Tìm kiếm",JLabel.CENTER);submit.setForeground(Color.white);
 		submit.setPreferredSize(new Dimension(o-o/5,25));
 		
 		submit.setBackground(Color.decode("#0A3D62"));submit.setOpaque(true);
 		submit.addMouseListener(this);
 		
-		refresh = new JLabel("REFRESH", JLabel.CENTER);refresh.setForeground(Color.white);
+		refresh = new JLabel("Làm mới", JLabel.CENTER);refresh.setForeground(Color.white);
 		refresh.setPreferredSize(new Dimension(o-o/5,25));
 		
 		refresh.setBackground(Color.decode("#0A3D62")); refresh.setOpaque(true);
@@ -377,7 +443,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		jp[3].setLayout(new FlowLayout(0,10,0));
 		jp[3].setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 6; i++) {
 			ImageIcon ttac = new ImageIcon(images[i]);
 			
 			jp3[i] = new JPanel();jp3[i].setPreferredSize(new Dimension(100,100));jp3[i].setLayout(new FlowLayout());
@@ -418,9 +484,16 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 				jp[3].add(jp3[2]);
 				break;
                                 
-                        case "Export Excel"   : 
+                        case "Import Excel"   : 
                             jp[3].add(jp3[3]);
                             break;
+                        case "Export Excel" :
+                            jp[3].add(jp3[4]);
+                            break;
+                        case "In PDF" :
+                            jp[3].add(jp3[5]);
+                            break;
+                        
 			default:
 				break;
 			}
@@ -512,9 +585,8 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		this.revalidate();
 	}
 	
-	public frame_them_phieunhap Frame_them_phieunhap() {
-		return this.frame_them_phieunhap;
-	}
+	
+        
 	
 	public void dinh_dang() {
 		if (clickedchinhsua) {
@@ -541,9 +613,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 	}
 	
 	
-	public frame_them_phieunhap return_frame_them_phieunhap() {
-		return this.frame_them_phieunhap;
-	}
+	
 	
 	
 	public void update_gia_thap_hon() {
@@ -581,9 +651,7 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 	}
 	
 	
-	public frame_thong_bao_phieunhap thong_bao_update_thongtin(String t) {
-		return new frame_thong_bao_phieunhap(t, this);
-	}
+	
 	
 	public void update_phieunhap() {
 		this.chitietphieunhap_GUI.update_phieunhap();
@@ -600,6 +668,8 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 			phieunhap_BUS.delete(h);
 		}
 	}
+        
+      
 	
 	
 	
@@ -653,11 +723,26 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		this.clickedchinhsua = true;
 	}
 	
-	
-	public void return_false_framethem(){
-            this.frame_them = false;
+	public frame_them_phieunhap Frame_them_phieunhap() {
+		return this.frame_them_phieunhap;
+	}
+        
+        public void return_null_frame_them_phieu_nhap(){
+            this.frame_them_phieunhap = null;
         }
+        
+	  public frame_thong_bao_phieunhap frame_thong_bao_phieunhap(){
+            return this.frame_thong_bao_phieunhap;
+        }
+        
+          public void return_null_frame_thong_bao_phieunhap(){
+              this.frame_thong_bao_phieunhap = null;
+          }
 	
+          public frame_thong_bao_phieunhap thong_bao_update_thongtin(String t) {
+              this.frame_thong_bao_phieunhap = new frame_thong_bao_phieunhap(t, this);
+		return this.frame_thong_bao_phieunhap;
+	}
 	
 	
 	
@@ -680,8 +765,16 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		///////////////////////// nút thêm phiếu nhập ///////////////////////////////////
 		if (e.getSource() == jp3[0] || e.getSource() == jl3[0] || e.getSource() == jlha[0]) {
                    
+                    
+                    
+                    if (this.frame_them_phieunhap != null){
+                        this.frame_them_phieunhap.toFront();
+                    } else {
+                         this.frame_them_phieunhap = new frame_them_phieunhap(800, 500, this, taiKhoanDTO);
+                    }
+                   
                        
-                       this.frame_them_phieunhap = new frame_them_phieunhap(800, 500, this,this.taiKhoanDTO);
+//                       
                   
                    
                         
@@ -694,8 +787,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 			if (clickedchinhsua == false) {
 				
 				if (clickedxoa) {
-					String t = "Thoát chế độ xóa và hủy các thao tác";
-					frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                                    if (frame_thong_bao_phieunhap != null){
+                                        this.frame_thong_bao_phieunhap.toFront();
+                                    } else {
+                                        String t = "Thoát chế độ xóa và hủy các thao tác";
+					this.frame_thong_bao_phieunhap = new frame_thong_bao_phieunhap(t, this);
+                                    }
+					
 					
 				} else if (!clickedxoa) {
 					clickedchinhsua = true;
@@ -710,8 +808,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 				
 				if (this.chitietphieunhap_GUI != null) {
 					if (!this.chitietphieunhap_GUI.so_sanh()) {
-						String t = "Hủy bỏ các thay đổi";
-						frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                                            if (this.frame_thong_bao_phieunhap != null){
+                                                this.frame_thong_bao_phieunhap.toFront();
+                                            } else {
+                                                String t = "Hủy bỏ các thay đổi";
+						this.frame_thong_bao_phieunhap = new frame_thong_bao_phieunhap(t, this);
+                                            }
+						
 					} else {
 						clickedchinhsua = false;
 						this.refresh_giu_ctpn();
@@ -736,8 +839,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 				
 				if (!clickedxoa) {
 					if (clickedchinhsua) {
-						String t = "Thoát trạng thái sửa và bắt đầu xóa";
-						frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                                            if (this.frame_thong_bao_phieunhap != null){
+                                                this.frame_thong_bao_phieunhap.toFront();
+                                            } else {
+                                                String t = "Thoát trạng thái sửa và bắt đầu xóa";
+						this.frame_thong_bao_phieunhap = new frame_thong_bao_phieunhap(t, this);
+                                            }
+						
 					}
 					else if (!clickedchinhsua) {
 						JOptionPane.showMessageDialog(this, "Click vào phiếu nhập bạn muốn xóa");
@@ -751,8 +859,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 						clickedxoa = false;
 						dinh_dang();
 					} else {
-						String t = "Xác nhận xóa ?";
-						frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                                            if (this.frame_thong_bao_phieunhap != null){
+                                                this.frame_thong_bao_phieunhap.toFront();
+                                            } else {
+                                                String t = "Xác nhận xóa ?";
+						this.frame_thong_bao_phieunhap = new frame_thong_bao_phieunhap(t, this);
+                                            }
+						
 					}
 					
 					
@@ -764,33 +877,47 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		if (e.getSource() == submit) {
 			if (clickedchinhsua || clickedxoa) {
-				String t = "Hủy bỏ các hoạt động và tiếp tục tìm kiếm";
-				frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                            if (this.frame_thong_bao_phieunhap != null){
+                                this.frame_thong_bao_phieunhap.toFront();
+                            } else {
+                                String t = "Hủy bỏ các hoạt động và tiếp tục tìm kiếm";
+				this.frame_thong_bao_phieunhap  = new frame_thong_bao_phieunhap(t, this);
+                            }
+				
 			} else {
 				
-				int i = jp[4].getPreferredSize().width;
+				
 				jp[4].removeAll();
 				jp[4].setLayout(new BorderLayout());
-				String MAPN = (String) option_mapn.getSelectedItem();
-				String MANV = (String) option_manv.getSelectedItem();
-				double giabe = Double.parseDouble(jt_tien[0].getText()) ;
-				double gialon = Double.parseDouble(jt_tien[1].getText()) ;
-				String mancc = (String) option_mancc.getSelectedItem();
-				String ngaydau = "0000-00-00";
-				String ngaysau = "9999-12-30";
+                                
 				
-				try {
-					LocalDate.parse(jtngay[0].getText());
-					LocalDate.parse(jtngay[1].getText());
-					ngaydau = jtngay[0].getText();
-					ngaysau = jtngay[1].getText();
-					} catch (Exception e2) {
-					// TODO: handle exception
-				}
 				
+				mancc = (String) option_mancc.getSelectedItem();
+				
+				if (!jtngay[0].getText().trim().equals("YYYY-MM-DD") && !jtngay[0].getText().trim().equals("")){
+                                    try {
+                                        String t = jtngay[0].getText().trim();
+                                        LocalDate.parse(t);
+                                        ngaydau = t;
+                                    } catch (Exception e2) {
+                                        JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ");
+                                    }
+                                }
+                                
+                                if (!jtngay[1].getText().trim().equals("YYYY-MM-DD") && !jtngay[1].getText().trim().equals("")){
+                                    try {
+                                        String t = jtngay[1].getText().trim();
+                                        LocalDate.parse(t);
+                                        ngaysau = t;
+                                        
+                                    } catch (Exception e3) {
+                                        JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ");
+                                    }
+                                }
+                                MANV = (String)option_manv.getSelectedItem();
 				
 				ArrayList<phieunhap_DTO> ds = phieunhap_BUS.search(MAPN, MANV, ngaydau, ngaysau, giabe, gialon, mancc);
-				this.panel_bang_dspn = new panel_bang_dspn1(i, ds, this);
+				this.panel_bang_dspn = new panel_bang_dspn1(w, ds, this);
 				
 				
 				jp[4].add(this.panel_bang_dspn);
@@ -803,8 +930,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		if (e.getSource() == refresh) {
 			if (clickedchinhsua || clickedxoa) {
-				String t = "Làm mới bảng danh sách và hủy bỏ tất cả hoạt dộng";
-				frame_thong_bao_phieunhap f = new frame_thong_bao_phieunhap(t, this);
+                            if (this.frame_thong_bao_phieunhap != null){
+                                this.frame_thong_bao_phieunhap.toFront();
+                            } else {
+                                String t = "Làm mới bảng danh sách và hủy bỏ tất cả hoạt dộng";
+				this.frame_thong_bao_phieunhap  = new frame_thong_bao_phieunhap(t, this);
+                            }
+				
 			} else {
 				this.Refresh_moi();
 			}
@@ -842,15 +974,27 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 				jp3[1].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
 			}
 		}
+                
 		if(e.getSource() == jlha[2] || e.getSource() == jl3[2] || e.getSource() == jp3[2] ) {
 			jp3[2].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
 		}
+                
                 if(e.getSource() == jlha[3] || e.getSource() == jl3[3] || e.getSource() == jp3[3] ) {
 			jp3[3].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
 		}
+                
+                if(e.getSource() == jlha[4] || e.getSource() == jl3[4] || e.getSource() == jp3[4] ) {
+			jp3[4].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+		}
+                
+                if(e.getSource() == jlha[5] || e.getSource() == jl3[5] || e.getSource() == jp3[5] ) {
+			jp3[5].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+		}
+                
 		if(e.getSource() == submit){
                     submit.setBackground(Color.decode("#60A3BC")); submit.setOpaque(true);
                 }
+                
                 if (e.getSource() == refresh){
                     refresh.setBackground(Color.decode("#60A3BC"));refresh.setOpaque(true);
                 }
@@ -874,11 +1018,20 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 
 			jp3[3].setBorder(border_ttac);
 		}
+                if (e.getSource() == jp3[4] || e.getSource() == jl3[4] || e.getSource() == jlha[4]) {
+
+			jp3[4].setBorder(border_ttac);
+		}
+                if (e.getSource() == jp3[5] || e.getSource() == jl3[5] || e.getSource() == jlha[5]) {
+
+			jp3[5].setBorder(border_ttac);
+		}
+                
                 if (e.getSource() == submit){
                     submit.setBackground(Color.decode("#0A3D62")); submit.setOpaque(true);
                 }
                 if (e.getSource() == refresh){
-                    refresh.setBackground(Color.decode("#60A3BC"));refresh.setOpaque(true);
+                    refresh.setBackground(Color.decode("#0A3D62"));refresh.setOpaque(true);
                 }
 	}
 }

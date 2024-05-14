@@ -38,7 +38,8 @@ public class panel_bang_dspn1 extends JPanel {
 		
 		scc.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.add(scc, BorderLayout.CENTER);
-		this.setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+//		this.setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+                this.setBackground(Color.decode("#60A3BC"));
 	}
 	public ArrayList<phieunhap_DTO> ds_chon_xoa(){
 		return this.panel_center_bang_dspn.ds_chon_xoa();

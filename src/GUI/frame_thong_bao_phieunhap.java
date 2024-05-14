@@ -8,7 +8,7 @@ public class frame_thong_bao_phieunhap extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		thong_bao_phieunhap v = new thong_bao_phieunhap( this,t,phieunhap_GUI);
+		thong_bao_phieunhap v = new thong_bao_phieunhap(t,phieunhap_GUI);
 		this.add(v);
 		
 		this.setVisible(true);

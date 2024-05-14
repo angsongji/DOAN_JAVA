@@ -32,12 +32,12 @@ public class view_them_kh extends JPanel implements MouseListener{
 	
 	
 	
-	public view_them_kh(int w,int h,view_quan_li_khach_hang view_quan_li_khach_hang,frame_themkh frame_themkh) {
+	public view_them_kh(int w,int h,view_quan_li_khach_hang view_quan_li_khach_hang) {
 		
 		this.setPreferredSize(new Dimension(w,h));
 		this.setLayout(new BorderLayout());
 		this.view_quan_li_khach_hang = view_quan_li_khach_hang;
-		this.frame_themkh = frame_themkh;
+		
 		
 		jpn = new JPanel();jpn.setPreferredSize(new Dimension(this.getPreferredSize().width,30));
 		jpn.setLayout(new FlowLayout(0));
@@ -166,7 +166,10 @@ public class view_them_kh extends JPanel implements MouseListener{
 		}
 		if (e.getSource() == jl[3]) {
 			
-			this.frame_themkh.setVisible(false);	
+			this.view_quan_li_khach_hang.return_frame_themkh().setVisible(false);
+                        this.view_quan_li_khach_hang.return_null_frame_themkh();
+                        
+                        
 			
 			
 			

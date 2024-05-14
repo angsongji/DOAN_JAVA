@@ -32,14 +32,18 @@ import BUS.BUS_qlkh;
 import DAO.DAO_qlks;
 import DTO.TaiKhoanDTO;
 import DTO.model_qlkh;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 	private BUS_qlkh BUS_qlkh = new BUS_qlkh();
 	private JPanel[] jp,jp1,jp3,jp1_lr;
 	private JLabel[] jl,jl1,jl3,jlha,jl1_r;
-	private JTextField tf;
+	private JTextField[] tf;
 	private String[] timkiem,thaotac,hinhanh,option_so,option_kitu;
-	private  Boolean clickedchinhsua,clickedxoa ;
+	private  Boolean clickedchinhsua,clickedxoa,clickedthem ;
 	private ArrayList<model_qlkh> ds_kh_update_loi;
 	private JPanel panel_north;
 	private Border border_thaotac;
@@ -48,31 +52,34 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 	private JComboBox<String> optiondtl,optiontenkh,optionmkh;
 	private frame_themkh frame_themkh;
 	private frame_thong_bao_update frame_thong_bao_update;
+        private String mkh,ten,sdt,diem;
 	
 	public view_quan_li_khach_hang(int w,int h,TaiKhoanDTO taiKhoanDTO){
 		this.setPreferredSize(new Dimension(w,h));
 		this.setLayout(new BorderLayout());
 		jp = new JPanel[5];
 		jp1 = new JPanel[4];
-		jp3 = new JPanel[3];
+		jp3 = new JPanel[6];
 		jl = new JLabel[4];
 		jl1 = new JLabel[4];
-		jl3 = new JLabel[3];
-		jlha = new JLabel[3];
+		jl3 = new JLabel[6];
+		jlha = new JLabel[6];
 		jp1_lr = new JPanel[2];
 		jl1_r = new JLabel[2];
 		timkiem = new String[] {"Theo mã khách" , "Theo tên khách","theo so dien thoai", "theo điểm tích lũy"};
-		thaotac = new String[] {"Thêm","Sửa","Xóa"};
-		hinhanh = new String[] {"./src/images/add_icon.png","./src/images/edit_icon.png","./src/images/remove_icon.png"};
+		thaotac = new String[] {"Thêm","Sửa","Xóa","Import Excel","Export Excel","In PDF"};
+		hinhanh = new String[] {"./src/images/add_icon.png","./src/images/edit_icon.png","./src/images/remove_icon.png","./src/images/import_icon.png","./src/images/export_icon.png","./src/images/pdf_icon.png"};
 		panel_north = new JPanel();
 		option_so = new String[] {"","min-max","max-min"};
 		option_kitu = new String[] {"","a-z","z-a"};
 		clickedchinhsua = false;
 		clickedxoa = false;
+                clickedthem = false; 
 		this.ds_kh_update_loi = new ArrayList<model_qlkh>();
-		
+		this.frame_thong_bao_update = null;
+                this.frame_themkh = null;
 		border_thaotac = BorderFactory.createMatteBorder(2, 0, 0, 0,Color.decode("#60A3BC") );
-		
+		 mkh = ten =sdt = diem = "";
 		
 		
 		panel_north.setLayout(new FlowLayout());
@@ -111,24 +118,138 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		
 //		*********************   option tim kiem khach hang *********************
 		
-		 optionmkh = new JComboBox<String>(option_so);
-		optionmkh.setPreferredSize(new Dimension(150,25));optionmkh.setEditable(true);
-		optiondtl = new JComboBox<String>(option_so);
-		optiondtl.setPreferredSize(new Dimension(150,25));optiondtl.setEditable(true);
-		 optiontenkh = new JComboBox<String>(option_kitu);
-		optiontenkh.setPreferredSize(new Dimension(150,25));optiontenkh.setEditable(true);
-		tf = new JTextField();tf.setPreferredSize(new Dimension(150,25));
+                    
+//		 optionmkh = new JComboBox<String>(option_so);
+//		optionmkh.setPreferredSize(new Dimension(150,25));optionmkh.setEditable(true);
+//		optiondtl = new JComboBox<String>(option_so);
+//		optiondtl.setPreferredSize(new Dimension(150,25));optiondtl.setEditable(true);
+//		 optiontenkh = new JComboBox<String>(option_kitu);
+//		optiontenkh.setPreferredSize(new Dimension(150,25));optiontenkh.setEditable(true);
+                
+                
+                
+                tf= new JTextField[4];
+                
+                tf[0] = new JTextField();
+                tf[0].setPreferredSize(new Dimension(150, 25));
+//                tf[0].setForeground(Color.GRAY);
+//                tf[0].addFocusListener(new FocusListener() {
+//                    @Override
+//                    public void focusGained(FocusEvent e) {
+//                        if (tf[0].getText().equals("min-max/max-min")){
+//                            tf[0].setText("");
+//                            tf[0].setForeground(Color.black);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void focusLost(FocusEvent e) {
+//                        if (tf[0].getText().equals("")){
+//                            tf[0].setText("min-max/max-min");
+//                            tf[0].setForeground(Color.GRAY);
+//                        }
+//                    }
+//                    
+//                });
+//                tf[0].getDocument().addDocumentListener(new DocumentListener() {
+//                    @Override
+//                    public void insertUpdate(DocumentEvent e) {
+//                        mkh = tf[0].getText();
+//                    }
+//
+//                    @Override
+//                    public void removeUpdate(DocumentEvent e) {
+//                        mkh = tf[0].getText();
+//                    }
+//
+//                    @Override
+//                    public void changedUpdate(DocumentEvent e) {
+//                        mkh = tf[0].getText();
+//                              
+//                    }
+//                });
+//                
+                
+                
+                tf[1] = new JTextField();
+                tf[1].setPreferredSize(new Dimension(150, 25));
+//                tf[1].setForeground(Color.GRAY);
+//                tf[1].addFocusListener(new FocusListener() {
+//                    @Override
+//                    public void focusGained(FocusEvent e) {
+//                        if (tf[1].getText().equals("a-z/z-a")){
+//                            tf[1].setText("");
+//                            tf[1].setForeground(Color.black);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void focusLost(FocusEvent e) {
+//                        if (tf[1].getText().equals("")){
+//                            tf[1].setText("a-z/z-a");
+//                            tf[1].setForeground(Color.GRAY);
+//                        }
+//                    }
+//                    
+//                });
+//                tf[1].getDocument().addDocumentListener(new DocumentListener() {
+//                    @Override
+//                    public void insertUpdate(DocumentEvent e) {
+//                        ten = tf[1].getText();
+//                    }
+//
+//                    @Override
+//                    public void removeUpdate(DocumentEvent e) {
+//                        ten = tf[1].getText();
+//                    }
+//
+//                    @Override
+//                    public void changedUpdate(DocumentEvent e) {
+//                        ten = tf[1].getText();
+//                              
+//                    }
+//                });
+                
+                
+                tf[2]= new JTextField();
+                        
+                tf[2].setPreferredSize(new Dimension(150, 25));
+                
+                tf[2].getDocument().addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        sdt = tf[2].getText();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        sdt = tf[2].getText();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        sdt = tf[2].getText();
+                              
+                    }
+                });
+                
+                
+                
+                
+                
+                
+                tf[3] = new JTextField();
+                tf[3].setPreferredSize(new Dimension(150, 25));
+		
 		
 		
 		
 		for (int  i = 0 ; i< 4; i++) {
 			jp1[i] = new JPanel();
 			jp1[i].setBackground(Color.white);
+                        jp1[i].add(tf[i]);
 		}
-		jp1[0].add(optionmkh);
-		jp1[1].add(optiontenkh);
-		jp1[2].add(tf);
-		jp1[3].add(optiondtl);
+		
 		
 		for (int  i = 0 ; i< 4; i++) {
 			jp1_lr[0].add(jp1[i]);
@@ -142,12 +263,12 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		//***************************************** nút SEARCH và REFRESH**************************************************
 		
 		
-		jl1_r[0] = new JLabel("SEARCH",JLabel.CENTER);jl1_r[0].setBackground(Color.decode("#0A3D62"));jl1_r[0].setOpaque(true);
+		jl1_r[0] = new JLabel("Tìm kiếm",JLabel.CENTER);jl1_r[0].setBackground(Color.decode("#0A3D62"));jl1_r[0].setOpaque(true);
 		jl1_r[0].setPreferredSize(new Dimension(jp1_lr[1].getPreferredSize().width*2/3,25));
 		ImageIcon search = new ImageIcon("./src/images/search1.png");
 		jl1_r[0].setIcon(search);
 		jl1_r[0].setForeground(Color.white);
-		jl1_r[1] = new JLabel("REFRESH",JLabel.CENTER);jl1_r[1].setBackground(Color.decode("#0A3D62"));jl1_r[1].setOpaque(true);
+		jl1_r[1] = new JLabel("Làm mới",JLabel.CENTER);jl1_r[1].setBackground(Color.decode("#0A3D62"));jl1_r[1].setOpaque(true);
 		jl1_r[1].setPreferredSize(new Dimension(jp1_lr[1].getPreferredSize().width*2/3,25));
 		ImageIcon refresh = new ImageIcon("./src/images/refresh1.png");
 		jl1_r[1].setIcon(refresh);
@@ -234,13 +355,62 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		jl3[2].addMouseListener(this);                                                                                                                                
 		jp3[2].addMouseListener(this);
 		
+		/////////////////////////////// Import Excel ////////////////////////////////////////
+                
+                ImageIcon ttac_import = new ImageIcon(hinhanh[3]);
+		jp3[3] = new JPanel();jp3[3].setPreferredSize(new Dimension(100,100));jp3[3].setLayout(new FlowLayout());
+		jp3[3].setBackground(Color.white);
+		jl3[3] = new JLabel(thaotac[3],JLabel.CENTER);jl3[3].setPreferredSize(new Dimension(100,50));
+	
+		jp3[3].setBorder(border_thaotac);
+		jlha[3] = new JLabel("",JLabel.CENTER);jlha[3].setIcon(ttac_xoa);
+		jlha[3].setPreferredSize(new Dimension(jp3[3].getPreferredSize().width,40));
+		jp3[3].add(jl3[3]);
+		jp3[3].add(jlha[3]);
 		
+		jlha[3].addMouseListener(this);
+		jl3[3].addMouseListener(this);                                                                                                                                
+		jp3[3].addMouseListener(this);
+                //////////////////////////////////////////////// Export excel ////////////////////////////////////////////////
+                
+                ImageIcon ttac_export = new ImageIcon(hinhanh[4]);
+		jp3[4] = new JPanel();jp3[4].setPreferredSize(new Dimension(100,100));jp3[4].setLayout(new FlowLayout());
+		jp3[4].setBackground(Color.white);
+		jl3[4] = new JLabel(thaotac[4],JLabel.CENTER);jl3[4].setPreferredSize(new Dimension(100,50));
+	
+		jp3[4].setBorder(border_thaotac);
+		jlha[4] = new JLabel("",JLabel.CENTER);jlha[4].setIcon(ttac_xoa);
+		jlha[4].setPreferredSize(new Dimension(jp3[4].getPreferredSize().width,40));
+		jp3[4].add(jl3[4]);
+		jp3[4].add(jlha[4]);
+		
+		jlha[4].addMouseListener(this);
+		jl3[4].addMouseListener(this);                                                                                                                                
+		jp3[4].addMouseListener(this);
+                ///////////////////////////////////////// In PDF //////////////////////////////////////////////////
+                
+                
+                ImageIcon ttac_inpdf = new ImageIcon(hinhanh[5]);
+		jp3[5] = new JPanel();jp3[5].setPreferredSize(new Dimension(100,100));jp3[5].setLayout(new FlowLayout());
+		jp3[5].setBackground(Color.white);
+		jl3[5] = new JLabel(thaotac[5],JLabel.CENTER);jl3[5].setPreferredSize(new Dimension(100,50));
+	
+		jp3[5].setBorder(border_thaotac);
+		jlha[5] = new JLabel("",JLabel.CENTER);jlha[5].setIcon(ttac_xoa);
+		jlha[5].setPreferredSize(new Dimension(jp3[5].getPreferredSize().width,40));
+		jp3[5].add(jl3[5]);
+		jp3[5].add(jlha[5]);
+		
+		jlha[5].addMouseListener(this);
+		jl3[5].addMouseListener(this);                                                                                                                                
+		jp3[5].addMouseListener(this);
 		///////////////////////////////////////////////////// hiện danh sách ///////////////////////////////////
 	
 		jp[4] = new JPanel();jp[4].setLayout(new BorderLayout());	
 		jp[4].setBackground(Color.white);
 		
 		jp[4].add(panel_bang_danh_sach_kh());
+                
 		
 		//////////////////////////////////// add các hành động thao tác theo mã quyền /////////////////////////////////////
 		
@@ -257,6 +427,15 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 			case "Xóa" :
 				jp[3].add(jp3[2]);
 				break;
+                        case "Import Excel"   : 
+                                jp[3].add(jp3[3]);
+                            break;
+                        case "Export Excel" :
+                                jp[3].add(jp3[4]);
+                            break;
+                        case "In PDF" :
+                                jp[3].add(jp3[5]);
+                            break;
 			default:
 				break;
 			}
@@ -333,6 +512,10 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 	public void return_true_clicked_xoa() {
 		clickedxoa = true;
 	}
+        
+        public void return_true_clicked_them(){
+            clickedthem = true;
+        }
 	
 	public void return_false_clicked_chinhsua() {
 		clickedchinhsua = false;
@@ -341,6 +524,27 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 	public void return_false_clicked_xoa() {
 		clickedxoa = false;
 	}
+        
+        public void return_false_clicked_them(){
+            this.clickedthem = false;
+        }
+        
+        public void return_null_framethongbao(){
+            this.frame_thong_bao_update = null;
+        }
+        
+        public void return_null_frame_themkh(){
+            this.frame_themkh = null;
+        }
+        
+        public frame_thong_bao_update return_frame_thong_bao(){
+            return this.frame_thong_bao_update;
+        }
+        
+        public frame_themkh return_frame_themkh(){
+            return this.frame_themkh;
+        }
+        
 	
 	public void dinh_dang() {
 		if (clickedchinhsua) {
@@ -434,10 +638,8 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		return this.BUS_qlkh;
 	}
 	public void search() {
-		String mkh = (String) optionmkh.getSelectedItem();
-		String ten = (String) optiontenkh.getSelectedItem();
-		String diem = (String) optiondtl.getSelectedItem();
-		String sdt = tf.getText();
+		
+		
 			BUS_qlkh.search(mkh, ten, sdt, diem);
 			ArrayList<model_qlkh> ds1 = BUS_qlkh.getlist();
 			
@@ -457,18 +659,33 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		if (e.getSource() == jlha[0] || e.getSource() == jl3[0] || e.getSource() == jp3[0]) {		
 			
 			if (clickedchinhsua) {
-				String t = "Bạn có muốn hủy bỏ chỉnh sửa";
-				frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
+                            if (this.frame_thong_bao_update != null){
+                                this.frame_thong_bao_update.toFront();
+                            } else {
+                                String t = "Bạn có muốn hủy bỏ chỉnh sửa";
+				this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                            }
+				
 				
 			}
 			if (clickedxoa) {
-				String t = "Bạn có muốn hủy bỏ xóa";
-				frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
-			}
-			if (!clickedchinhsua && !clickedxoa){
-				frame_themkh = new frame_themkh(this);
+                            if (this.frame_thong_bao_update != null){
+                                this.frame_thong_bao_update.toFront();
+                            } else {
+                                String t = "Bạn có muốn hủy bỏ xóa";
+				this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                            }
 				
 			}
+			if (!clickedchinhsua && !clickedxoa){
+                            if (this.frame_themkh != null){
+                                this.frame_themkh.toFront();
+                            } else {
+                                frame_themkh = new frame_themkh(this);
+                            }
+				
+				
+			} 
 			
 		}
 		
@@ -481,8 +698,13 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 					dinh_dang();
 				}
 				else if (clickedxoa) {
-					String t = "Bạn có muốn hủy bỏ hoạt động xóa và chuyển sang hoạt động chỉnh sửa";
-					frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
+                                    if (this.frame_thong_bao_update != null){
+                                        this.frame_thong_bao_update.toFront();
+                                    } else {
+                                        String t = "Bạn có muốn hủy bỏ hoạt động xóa và chuyển sang hoạt động chỉnh sửa";
+					this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                                    }
+					
 				}
 				
 				
@@ -500,11 +722,15 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 					
 					for (model_qlkh h : this.panel_bang_dskh.ds_kh_update()){
 						i++;
-						
 					}
-					String t = "Bạn có muốn thay đổi thông tin của " + i + " khách hàng" ;
-					frame_thong_bao_update = new frame_thong_bao_update(400, 350,t,this);
-					i = 0;	
+                                        if (this.frame_thong_bao_update != null){
+                                            this.frame_thong_bao_update.toFront();
+                                        } else {
+                                            String t = "Bạn có muốn thay đổi thông tin của " + i + " khách hàng" ;
+					this.frame_thong_bao_update = new frame_thong_bao_update(400, 350,t,this);
+                                        }
+					
+					
 				}
 				
 				
@@ -516,8 +742,13 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 			
 			if (!clickedxoa) {
 				if (clickedchinhsua) {
-					String t = "Bạn có muốn hủy bỏ hoạt động chỉnh sửa và chuyển sang hoạt động xóa";
-					frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
+                                    if (this.frame_thong_bao_update != null){
+                                        this.frame_thong_bao_update.toFront();
+                                    } else {
+                                        String t = "Bạn có muốn hủy bỏ hoạt động chỉnh sửa và chuyển sang hoạt động xóa";
+					this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                                    }
+					
 				}
 				else if (!clickedchinhsua) {	
 					clickedxoa = true;
@@ -537,8 +768,13 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 					for (model_qlkh h  : this.panel_bang_dskh.ds_kh_xoa()) {
 						i++;
 					}
-					String t = "Xác nhận xóa "+ i + " khách hàng";
-					frame_thong_bao_update = new frame_thong_bao_update(400, 350, t, this);
+                                        if (this.frame_thong_bao_update != null){
+                                            this.frame_thong_bao_update.toFront();
+                                        } else {
+                                            String t = "Xác nhận xóa "+ i + " khách hàng";
+                                            frame_thong_bao_update = new frame_thong_bao_update(400, 350, t, this);
+                                        }
+					
 								
 				}
 				if (!this.panel_bang_dskh.xac_nhan()) {
@@ -554,21 +790,30 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		if (e.getSource() == jl1_r[1]) {
 			if (clickedchinhsua) {
 				if (!this.panel_bang_dskh.sosanh_update()) {
-					String t = "Bạn có muốn hủy bỏ các thay đổi";
+                                    if (this.frame_thong_bao_update != null){
+                                        this.frame_thong_bao_update.toFront();
+                                    } else {
+                                        String t = "Bạn có muốn hủy bỏ các thay đổi";					
+					this.frame_thong_bao_update = new frame_thong_bao_update(400, 350, t, this);
+                                    }
 					
-					frame_thong_bao_update = new frame_thong_bao_update(400, 350, t, this);
 				} 
 				if (this.panel_bang_dskh.sosanh_update()) {
 					this.BUS_qlkh = new BUS_qlkh();
 					clickedchinhsua = false;
-					refresh_bang_dskh();;
+					refresh_bang_dskh();
 					this.dinh_dang();
 				}
 				
 			}
 			if (clickedxoa) {
-				String t = "Bạn có muốn hủy bỏ các thay đổi";
-				frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
+                            if (this.frame_thong_bao_update != null){
+                                this.frame_thong_bao_update.toFront();
+                            } else {
+                                String t = "Bạn có muốn hủy bỏ các thay đổi";
+				this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                            }
+				
 			}
 			if (!clickedchinhsua) {
 				this.BUS_qlkh = new BUS_qlkh();
@@ -587,8 +832,13 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 				this.search();
 			
 			} else if (clickedchinhsua || clickedxoa) {
-				String t = "Bạn có muốn hủy những thay đổi";
-				frame_thong_bao_update tb = new frame_thong_bao_update(400, 350, t, this);
+                            if (this.frame_thong_bao_update != null){
+                                this.frame_thong_bao_update.toFront();
+                            } else {
+                                String t = "Bạn có muốn hủy những thay đổi";
+				this.frame_thong_bao_update  = new frame_thong_bao_update(400, 350, t, this);
+                            }
+				
 			}
 				
 			
@@ -619,13 +869,24 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 			jp3[0].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
 		}
 		if(e.getSource() == jlha[1] || e.getSource() == jl3[1] || e.getSource() == jp3[1]) {
-			if(!clickedchinhsua) {
-				jp3[1].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
-			}
-	}
+            	jp3[1].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+			
+                }
 		if(e.getSource() == jlha[2] || e.getSource() == jl3[2] || e.getSource() == jp3[2] ) {
 			jp3[2].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
 		}
+                if(e.getSource() == jlha[3] || e.getSource() == jl3[3] || e.getSource() == jp3[3] ) {
+                    
+			jp3[3].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+		}
+                if(e.getSource() == jlha[4] || e.getSource() == jl3[4] || e.getSource() == jp3[4] ) {
+			jp3[4].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+		}
+                
+                if(e.getSource() == jlha[5] || e.getSource() == jl3[5] || e.getSource() == jp3[5] ) {
+			jp3[5].setBorder(BorderFactory.createLineBorder(Color.decode("#60A3BC"),2));
+		}
+                
 		
 		if (e.getSource() == jl1_r[0]) {
 			jl1_r[0].setBackground(Color.decode("#60A3BC"));
@@ -652,7 +913,19 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		if(e.getSource() == jlha[2] || e.getSource() == jl3[2] || e.getSource() == jp3[2] ) {
 			jp3[2].setBorder(border_thaotac);
 		}
-			
+//		 nút import 
+                   if(e.getSource() == jlha[3] || e.getSource() == jl3[3] || e.getSource() == jp3[3] ) {
+			jp3[3].setBorder(border_thaotac);
+		}
+//              nút export 
+                if(e.getSource() == jlha[4] || e.getSource() == jl3[4] || e.getSource() == jp3[4] ) {
+			jp3[4].setBorder(border_thaotac);
+		}
+//              nút in pdf
+                if(e.getSource() == jlha[5] || e.getSource() == jl3[5] || e.getSource() == jp3[5] ) {
+			jp3[5].setBorder(border_thaotac);
+		}
+                
 		for (int  i = 0; i< 2; i++) {
 			if (e.getSource() == jl1_r[i]) {
 				jl1_r[i].setBackground(Color.decode("#0A3D62"));

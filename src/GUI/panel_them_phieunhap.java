@@ -67,7 +67,7 @@ public class panel_them_phieunhap extends JPanel implements MouseListener{
         private JLabel jl_manv;
 	
 	
-	public panel_them_phieunhap(int w,int h,JFrame j,phieunhap_GUI phieunhap_GUI,TaiKhoanDTO taiKhoanDTO) {
+	public panel_them_phieunhap(int w,int h,phieunhap_GUI phieunhap_GUI,TaiKhoanDTO taiKhoanDTO) {
 		jp = new JPanel[7];
 		jt = new JTextField[6];  
 		jl = new JLabel[8]; 
@@ -548,7 +548,8 @@ public class panel_them_phieunhap extends JPanel implements MouseListener{
 		}
 		/////////////////////// hủy
 		if (e.getSource() == jl[7]) {
-			j.setVisible(false);
+			this.phieunhap_GUI.Frame_them_phieunhap().setVisible(false);
+                        this.phieunhap_GUI.return_null_frame_them_phieu_nhap();
 		}
 		
 		////////////////////////////////////////// NÚT XÁC NHẬN ///////////////////////////////////////
@@ -563,7 +564,8 @@ public class panel_them_phieunhap extends JPanel implements MouseListener{
 			}
 			else if(!this.kiem_tra_rong() && !this.kiem_tra_trung()) {
 				String t = "Hoàn thành nhập sản phẩm";
-				frame_thong_bao_phieunhap n = new frame_thong_bao_phieunhap( t, this.phieunhap_GUI);
+                                this.phieunhap_GUI.thong_bao_update_thongtin(t);
+				
 			}
 			
 		}

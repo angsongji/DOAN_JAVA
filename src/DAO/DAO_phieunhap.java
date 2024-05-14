@@ -141,20 +141,8 @@ public class DAO_phieunhap {
 	 	}
 	 	public ArrayList<phieunhap_DTO> search(String MAPN , String MANV ,String ngaytruoc,String ngaysau,double giabe, double gialon,String MANCC) {     
 	 		ArrayList<phieunhap_DTO> ds = new ArrayList<phieunhap_DTO>();
-	 		String thutuMAPN = "ASC";
-	 		String thutuMANV = "asc";
-	 		if (MAPN.trim().equals("z-a")) {
-	 			MAPN = "";
-	 			thutuMAPN = "DESC";
-	 		} else if (MAPN.trim().equals("a-z")) {
-	 			MAPN = "";
-	 		}
-	 		if (MANV.trim().equals("z-a")) {
-	 			thutuMANV = "desc";
-	 			MANV = "";
-	 		} else if(MANV.trim().equals("a-z")) {
-	 			MANV = "";
-	 		}
+	 		
+	 		
 	 		
 	 		
 	 		
@@ -167,7 +155,7 @@ public class DAO_phieunhap {
 						+ "	 AND NGAYNHAP BETWEEN '"+ ngaytruoc +"' AND '"+ngaysau +  "' "
 						+ "	 AND TONGTIEN BETWEEN "+ giabe  +" AND " + gialon  +" AND "
 						+ "	 MANCC LIKE '%"+ MANCC +"%'"
-						+ "	ORDER BY MAPN "+thutuMAPN +" , MANV "+ thutuMANV; 
+						
 						;
 				System.out.println(sql);
 				ResultSet rs = c.executeQuery(sql);

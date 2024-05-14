@@ -11,13 +11,13 @@ public class frame_them_phieunhap  extends JFrame{
 		 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 
 		 
-		 this.c = new panel_them_phieunhap(w,h,this,phieunhap_GUI,taiKhoanDTO);
+		 this.c = new panel_them_phieunhap(w,h,phieunhap_GUI,taiKhoanDTO);
 		 this.add(c);
 		 
 		 
 		 
 		 this.setVisible(true);
-                 this.setUndecorated(true);
+//                 this.setUndecorated(true);
 	 }
 	 public void them_chitietphieunhap() {
 		 this.c.them_chitietphieunhap();

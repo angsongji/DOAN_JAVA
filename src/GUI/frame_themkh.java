@@ -17,7 +17,7 @@ public class frame_themkh extends JFrame{
 		this.setVisible(true);
 	}
 	public void init() {
-		view_them_kh = new view_them_kh(300, 300,view_quan_li_khach_hang,this);
+		view_them_kh = new view_them_kh(300, 300,view_quan_li_khach_hang);
 		this.setLayout(new FlowLayout());
 		this.setSize(new Dimension(view_them_kh.getPreferredSize().width,view_them_kh.getPreferredSize().height));
 		this.add(view_them_kh);
