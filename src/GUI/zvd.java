@@ -19,12 +19,12 @@ public class zvd extends JFrame{
                 
 		DAO_phieunhap dao_phieunhap = new DAO_phieunhap();
 		TaiKhoanDTO d = new TaiKhoanDTO();
-		phieunhap_GUI phieunhap_GUI = new phieunhap_GUI(1200, 800,d);
-		panel_bang_dspn1 h = new panel_bang_dspn1(800, dao_phieunhap.select_all(), phieunhap_GUI);
+//		phieunhap_GUI phieunhap_GUI = new phieunhap_GUI(1200, 800,d);
+//		panel_bang_dspn1 h = new panel_bang_dspn1(800, dao_phieunhap.select_all(), phieunhap_GUI);
 		
                 ImageIcon ic = new ImageIcon("./src/images/edit");
                 
-		this.add(phieunhap_GUI);
+//		this.add(phieunhap_GUI);
 		this.setVisible(true);
 	}
         
