@@ -120,11 +120,11 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         pnDsAnh.add(imagePanelDefault);
 
         // Tạo JLabel để hiển thị tên hình ảnh đã chọn
-        imageNameLabel = new JLabel("Không có ảnh", JLabel.CENTER); // Mặc định là không có hình ảnh được chọn
+        imageNameLabel = new JLabel("No image selected", JLabel.CENTER); // Mặc định là không có hình ảnh được chọn
         imageNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         imageNameLabel.setPreferredSize(new Dimension(200, 30)); // Đặt kích thước cố định để tránh bị dịch chuyển
 
-        JButton chooseImageButton = new JButton("Chọn ảnh");
+        JButton chooseImageButton = new JButton("Choose File");
         chooseImageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         chooseImageButton.setPreferredSize(new Dimension(100, 30));
         chooseImageButton.addActionListener(new ActionListener() {
@@ -153,7 +153,7 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
                                     "Tên hình không được trùng !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                         } else {
                             imageName.add(selectedFile.getName());
-                            imageNameLabel.setText("Ảnh đã chọn: " + imageName); // Hiển thị tên tệp
+                            imageNameLabel.setText("Selected Image: " + imageName); // Hiển thị tên tệp
 
                             addImage(selectedFile); // Thêm hình ảnh vào pnDsAnh
                         }
@@ -293,10 +293,10 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
                 imageName.remove(file.getName());
                 if (imageName.isEmpty()) {
                     pnDsAnh.add(imagePanelDefault);
-                    imageNameLabel.setText("Không có ảnh");
+                    imageNameLabel.setText("No image selected");
 
                 } else {
-                    imageNameLabel.setText("Ảnh đã chọn: " + imageName);
+                    imageNameLabel.setText("Selected Image: " + imageName);
                 }
                 revalidate();
                 repaint();
@@ -457,7 +457,7 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
         txtDonGia.setText(spGUI.selectedSP.getPrice() + "");
         pnDsAnh.removeAll();
         if (spGUI.selectedSP.tenHinh.length == 0) {
-            imageNameLabel.setText("Không có ảnh");
+            imageNameLabel.setText("No image selected");
             pnDsAnh.add(imagePanelDefault);
         } else {
             for (int i = 0; i < spGUI.selectedSP.tenHinh.length; i++) {
@@ -465,7 +465,7 @@ public class ChucNangSanPhamGUI extends JFrame implements MouseListener {
                 File file = new File("./src/images/" + spGUI.selectedSP.tenHinh[i]);
                 addImage(file);
             }
-            imageNameLabel.setText("Ảnh đã được chọn: " + imageName);
+            imageNameLabel.setText("Selected Image: " + imageName);
         }
         revalidate();
         repaint();

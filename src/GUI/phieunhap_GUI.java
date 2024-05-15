@@ -330,13 +330,13 @@ public class phieunhap_GUI extends JPanel implements MouseListener{
 		
 		/////////////// SUBMIT va REFRESH /////////////////
 		
-		submit = new JLabel("TÌM",JLabel.CENTER);submit.setForeground(Color.white);
+		submit = new JLabel("SUBMIT",JLabel.CENTER);submit.setForeground(Color.white);
 		submit.setPreferredSize(new Dimension(o-o/5,25));
 		
 		submit.setBackground(Color.decode("#0A3D62"));submit.setOpaque(true);
 		submit.addMouseListener(this);
 		
-		refresh = new JLabel("XOÁ", JLabel.CENTER);refresh.setForeground(Color.white);
+		refresh = new JLabel("REFRESH", JLabel.CENTER);refresh.setForeground(Color.white);
 		refresh.setPreferredSize(new Dimension(o-o/5,25));
 		
 		refresh.setBackground(Color.decode("#0A3D62")); refresh.setOpaque(true);

@@ -47,7 +47,7 @@ public class panel_con_chitietphieunhap extends JPanel implements MouseListener{
 		this.h = h;
 		this.phieunhap_GUI = phieunhap_GUI;
 		this.phieunhap_BUS = new phieunhap_BUS();
-		 format_double = new DecimalFormat("#,###");
+		 format_double = new DecimalFormat("#,###.0");
 		 soluong = h.getSoluong();
 		 gianhap = h.getGianhap();
 		String thanh_tien = format_double.format(h.getThanhtien());

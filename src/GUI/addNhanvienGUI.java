@@ -147,9 +147,9 @@ public class addNhanvienGUI extends JFrame implements MouseListener {
                 case "btn_exit":
                     int r1 = JOptionPane.showConfirmDialog(null, "Những thông tin sẽ không được lưu sau khi thoát!\nBạn có muốn tiếp tục?", "Thoát", JOptionPane.YES_NO_OPTION);
                     if (r1 == JOptionPane.YES_OPTION) {
-                        dispose();
+                        
                     } else {
-                        // Thực hiện hành động khi người dùng chọn No hoặc đóng cửa sổ
+                      dispose();
                     }
 
                     break;
@@ -159,7 +159,7 @@ public class addNhanvienGUI extends JFrame implements MouseListener {
                     String dchi = addNV.getData[2].getText();
                     String email = addNV.getData[3].getText();
                     String cv = (String) addNV.comboBox.getSelectedItem();
-                    int tt = 1;
+                    
                     Nhanvien_BUS nvBUS = new Nhanvien_BUS();
                     
                     if (ten.equals("")) {
@@ -206,9 +206,9 @@ public class addNhanvienGUI extends JFrame implements MouseListener {
                     }
                     
                     if (flag_ten && flag_sdt && flag_email && flag_dc && flag_cv  ) {
-                        int r2 = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với thông tin nhập vào?", "Thêm nhân viên", JOptionPane.YES_NO_OPTION);
+                        int r2 = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với thông tin nhập vào?", "Thêm nhà cung cấp ", JOptionPane.YES_NO_OPTION);
                         if (r2 == JOptionPane.YES_OPTION) {
-                            nvBUS.add(ten, cv,  Integer.parseInt(sdt), dchi, email,tt);
+                            nvBUS.add(ten, cv,  Integer.parseInt(sdt), dchi, email);
                             nvGUI.reloadPage();
                             JOptionPane.showMessageDialog(null, "Thêm nhân viên mới thành công!");
                             dispose();

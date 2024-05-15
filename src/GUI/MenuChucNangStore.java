@@ -34,8 +34,6 @@ import DAO.chitietquyenDAO;
 import DAO.chucnangDAO;
 import DTO.chucnangDTO;
 import java.awt.Image;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class MenuChucNangStore extends JPanel implements MouseListener {
@@ -52,7 +50,7 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
     private String MAQUYEN;
     private JPanel JP_selected;
 
-    public MenuChucNangStore(String maquyen, int chieurong, int chieucao, StoreScreen s) {
+    public MenuChucNangStore(String maquyen,int chieurong, int chieucao, StoreScreen s) {
         SS_main = s;
         this.MAQUYEN = maquyen;
         this.chieurong = chieurong;
@@ -76,7 +74,7 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
         JP_inforNhanvien.setPreferredSize(new Dimension(chieurong, chieurong + chieurong / 3));
 
         //ép kích thuoc anh
-        Image originalImage = Cacthuoctinh_phuongthuc_chung.storeLogoLogin.getImage();
+ Image originalImage = Cacthuoctinh_phuongthuc_chung.storeLogoLogin.getImage();
 
         // Kích thước mới bạn muốn
         int newWidth = 170;
@@ -84,7 +82,9 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
 
         // Thay đổi kích thước của hình ảnh
         Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-
+        
+        
+        
         JLabel logoStore = new JLabel(new ImageIcon(resizedImage));
         logoStore.setPreferredSize(new Dimension(chieurong, chieurong));
         logoStore.setBackground(Cacthuoctinh_phuongthuc_chung.darkness_blue);
@@ -99,7 +99,7 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
         add(JP_inforNhanvien, BorderLayout.NORTH);
 
         repaintMenu();
-
+        
         JPanel south = new JPanel();
         south.setPreferredSize(new Dimension(chieurong, 20));
         south.setBackground(Cacthuoctinh_phuongthuc_chung.darkness_blue);
@@ -107,14 +107,13 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
         add(south, BorderLayout.SOUTH);
 
     }
-
-    private void repaintMenu() {
+    private void repaintMenu(){
         cnDTO_listByMAQUYEN = lístChucnang(this.MAQUYEN);
         if (cnDTO_listByMAQUYEN.size() < 9) {
-
+           
             JP_includeChucnangMenu = new JPanel(new FlowLayout());
         } else {
-
+         
             JP_includeChucnangMenu = new JPanel(new GridLayout(0, 1));
         }
 
@@ -169,7 +168,7 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
             }
             JPanel chucnang;
             if (cnDTO_listByMAQUYEN.size() < 9) {
-
+               
                 JP_includeChucnangMenu.setPreferredSize(new Dimension(chieurong, 40));
                 chucnang = new chucnangGUI(cnDTO_listByMAQUYEN.get(i).getTENCHUCNANG(), nameIcon, (int) JP_includeChucnangMenu.getPreferredSize().getWidth(), (int) JP_includeChucnangMenu.getPreferredSize().getHeight());
             } else {
@@ -179,15 +178,16 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
             chucnang.addMouseListener(this);
 
             JP_includeChucnangMenu.add(chucnang);
-
+ 
         }
         // JScrollPane scrollListChucnang= new JScrollPane(listChucnangMenu);
         //scrollListChucnang.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         // Luôn hiển thị thanh cuộn dọc
         //add(scrollListChucnang);
+        
         add(scrollPane, BorderLayout.CENTER);
-
+        
     }
 
     public ArrayList<chucnangDTO> lístChucnang(String MAQUYEN) {
@@ -284,44 +284,27 @@ public class MenuChucNangStore extends JPanel implements MouseListener {
 
         chucnangDTO cnSelelect = new chucnangDTO(itemChucnang.getName());
         switch (cnSelelect.getMACHUCNANG()) {
-            case "TK": {
-                try {
-                    SS_main.centerContent.changeCenterContent(new chucnangDTO("NULL" + cnSelelect.getMACHUCNANG(), "NULLTEN"), MAQUYEN);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuChucNangStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            break;
-
-            case "HD":
-                chitietquyenBUS ctqBUS = new chitietquyenBUS();
-                if (ctqBUS.search(new chitietquyenDTO(MAQUYEN, "HD", "Thêm")))
-                   try {
-                    SS_main.centerContent.changeCenterContent(new chucnangDTO("NULL" + cnSelelect.getMACHUCNANG(), "NULLTEN"), MAQUYEN);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuChucNangStore.class.getName()).log(Level.SEVERE, null, ex);
-                } else
-                   try {
-                    SS_main.centerContent.changeCenterContent(cnSelelect, MAQUYEN);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuChucNangStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            case "TK":
+          
+                SS_main.centerContent.changeCenterContent(new chucnangDTO("NULL" + cnSelelect.getMACHUCNANG(), "NULLTEN"), MAQUYEN);
                 break;
-            default: {
-                try {
-                    SS_main.centerContent.changeCenterContent(cnSelelect, MAQUYEN);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuChucNangStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
+             case "HD":
+                 chitietquyenBUS ctqBUS = new chitietquyenBUS();
+               if(ctqBUS.search(new chitietquyenDTO(MAQUYEN,"HD","Thêm")))
+                   SS_main.centerContent.changeCenterContent(new chucnangDTO("NULL" + cnSelelect.getMACHUCNANG(), "NULLTEN"), MAQUYEN);
+               else
+                   SS_main.centerContent.changeCenterContent(cnSelelect, MAQUYEN);
+                break;
+            default:{
+                 SS_main.centerContent.changeCenterContent(cnSelelect, MAQUYEN);
                 break;
             }
-
+               
         }
     }
-
     @Override
     public void mousePressed(MouseEvent e) {
-
+      
     }
 
     @Override

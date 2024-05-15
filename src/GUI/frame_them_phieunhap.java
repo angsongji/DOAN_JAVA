@@ -8,7 +8,7 @@ public class frame_them_phieunhap  extends JFrame{
 	 public frame_them_phieunhap(int w,int h,phieunhap_GUI phieunhap_GUI,TaiKhoanDTO taiKhoanDTO ) {
 		 this.setSize(w,h);
 		 this.setLocationRelativeTo(null);
-		 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		 
 		 
 		 this.c = new panel_them_phieunhap(w,h,this,phieunhap_GUI,taiKhoanDTO);

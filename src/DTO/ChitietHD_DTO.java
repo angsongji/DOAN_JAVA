@@ -2,13 +2,14 @@
 package DTO;
 
 public class ChitietHD_DTO {
-    private String  maSP, tenSP, maSize ;
+    private String  maHD, maSP, tenSP, maSize;
     private int sl;
     private double gia, tt;
     public ChitietHD_DTO() {
     }
 
-    public ChitietHD_DTO(String maSP, String tenSP, String maSize, int sl, double gia, double tt) {
+    public ChitietHD_DTO(String maHD, String maSP, String tenSP, String maSize, int sl, double gia, double tt) {
+        this.maHD = maHD;
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.maSize = maSize;
@@ -17,8 +18,12 @@ public class ChitietHD_DTO {
         this.tt = tt;
     }
 
-    public ChitietHD_DTO(String maHD, String maSP, String tenSP, String masize, int soluong, double price, double totalPrice) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String getMaHD() {
+        return maHD;
+    }
+
+    public void setMaHD(String maHD) {
+        this.maHD = maHD;
     }
 
     public String getMaSP() {

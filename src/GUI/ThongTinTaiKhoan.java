@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
@@ -34,7 +33,7 @@ public class ThongTinTaiKhoan extends JPanel implements MouseListener {
     int width, height;
     int height_row = 30;
 
-    public ThongTinTaiKhoan(StoreScreen s, int width, int height, Color backG_thisJPanel) throws SQLException {
+    public ThongTinTaiKhoan(StoreScreen s, int width, int height, Color backG_thisJPanel) {
         this.width = width;
         this.height = height;
         this.backGroundColor = backG_thisJPanel;
@@ -292,7 +291,7 @@ public class ThongTinTaiKhoan extends JPanel implements MouseListener {
         return true;
     }
 
-    public void setDuLieu() throws SQLException {
+    public void setDuLieu() {
         TaiKhoanBUS tkBUS = new TaiKhoanBUS();
         for (int i = 0; i < tkBUS.getDsTK().size(); i++) {
             if (tkBUS.getDsTK().get(i).getUsername().equals(username)) {

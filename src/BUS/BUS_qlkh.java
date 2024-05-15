@@ -90,23 +90,19 @@ public class BUS_qlkh {
 	}
 	
     public int getDiemTichLuy(String maKH) {
-        int diemTL = 0;
-        try {
-            ConnectDataBase mySQL = new ConnectDataBase();
-            mySQL.connect();
-            String query = "SELECT DIEMTICHLUY FROM khachhang WHERE MAKH ="+ maKH;
-            ResultSet resultSet = mySQL.executeQuery(query);
-
-            if (resultSet.next()) {
-                diemTL = resultSet.getInt("DIEMTICHLUY");
-            }
-          
-            mySQL.disconnect();
-        } catch (SQLException ex) {
-            Logger.getLogger(Hoadon_DAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return diemTL ;
+        DAO_qlks dao_qlks = new DAO_qlks();
+		return dao_qlks.getDiemTichLuy(maKH);
     }
+
+	public boolean increaseDTL(int maKH, int dtl) {
+		DAO_qlks dao_qlks = new DAO_qlks();
+		return dao_qlks.increaseDTL(maKH, dtl);
+	}
+
+	public boolean setDTL(int maKH, int dtl) {
+		DAO_qlks dao_qlks = new DAO_qlks();
+		return dao_qlks.setDTL(maKH, dtl);
+	}
 	
 	public static void main(String[] args) {
 		BUS_qlkh h = new BUS_qlkh();

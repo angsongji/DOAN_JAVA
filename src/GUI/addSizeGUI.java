@@ -80,8 +80,8 @@ public class addSizeGUI extends JFrame implements MouseListener{
             btn_submit = new JPanel();
             cssBtn(btn_submit, "Xác nhận", "btn_submit");
             btn_wrap.setPreferredSize(new Dimension(chieurong, (int) btn_submit.getPreferredSize().getHeight() + 20));
-            btn_wrap.add(btn_submit);
             btn_wrap.add(btn_exit);
+            btn_wrap.add(btn_submit);
             setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             add(btn_wrap);
         }
@@ -130,11 +130,11 @@ public class addSizeGUI extends JFrame implements MouseListener{
             JPanel btn = (JPanel) e.getSource();
             switch (btn.getName()) {
                 case "btn_exit":
-                    int r1 = JOptionPane.showConfirmDialog(null, "Những thông tin sẽ không được lưu sau khi thoát!\nBạn có muốn tiếp tục thoát?", "Thoát", JOptionPane.YES_NO_OPTION);
+                    int r1 = JOptionPane.showConfirmDialog(null, "Những thông tin sẽ không được lưu sau khi thoát!\nBạn có muốn tiếp tục?", "Thoát", JOptionPane.YES_NO_OPTION);
                     if (r1 == JOptionPane.YES_OPTION) {
-                        dispose();
+                       
                     } else {
-                     
+                      dispose();
                     }
 
                     break;

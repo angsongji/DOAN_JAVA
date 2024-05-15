@@ -156,7 +156,7 @@ public class nhacungcapBUS {
                             case STRING:{
                                 if((j++)==0){
                                     ten=cell.getStringCellValue();
-                                    if(!checkTENNCC(ten)) return false;
+                                    if(!checkTENNCC(sdt)) return false;
                                 }else{
                                     sdt=cell.getStringCellValue();
                                     if(!checkSDT(sdt)) return false;

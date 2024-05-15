@@ -42,7 +42,7 @@ public class Trangnhanvien_GUI extends JPanel {
         this.setPreferredSize(new Dimension(chieurong,chieucao));
         this.setLayout(new FlowLayout(0,0,0));
 
-                    String[] columnNames = {"MANV", "TEN", "CHUCVU","SDT","DIACHI","EMAIL","TTH" };
+                    String[] columnNames = {"MANV", "TENNV", "CHUCVU","SDT","DIACHI","EMAIL" };
                     
                     JPanel titlePanel = new JPanel();
                         titlePanel.setLayout(new FlowLayout(0,0,0));
@@ -58,10 +58,9 @@ public class Trangnhanvien_GUI extends JPanel {
                                 l.setForeground(Color.decode("#0A3D62"));
                         titlePanel.add(l);
                             }
-                           
-                                    else{
+                            else {
                                 JLabel l = new JLabel(col,JLabel.CENTER);
-                                l.setPreferredSize(new Dimension((chieurong)/10, 30));
+                                l.setPreferredSize(new Dimension((chieurong)/8, 30));
                                 l.setFont(new Font(l.getFont().getName(), Font.BOLD, 18));
                                 l.setForeground(Color.decode("#0A3D62"));
                         titlePanel.add(l);
@@ -81,40 +80,7 @@ public class Trangnhanvien_GUI extends JPanel {
                         }
     }
       
- public void addNV_gui( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {      
-    JPanel itemNV = new JPanel();
-    itemNV.setLayout(new FlowLayout(0, 0, 0));
-    itemNV.setPreferredSize(new Dimension(chieurong, 50));
-    itemNV.setBackground(Color.decode("#d3eaf2"));
-    itemNV.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.decode("#60A3BC")));
-    JLabel lab1 = new JLabel(nv.getManv(), JLabel.CENTER);
-    JLabel lab2 = new JLabel(nv.getTennv(), JLabel.CENTER);
-    JLabel lab3 = new JLabel(nv.getChucvu(), JLabel.CENTER);
-    JLabel lab4 = new JLabel(String.valueOf(nv.getSdt()), JLabel.CENTER);
-    JLabel lab5 = new JLabel(nv.getDiachi(), JLabel.CENTER);
-    JLabel lab6 = new JLabel(nv.getEmail(), JLabel.CENTER);
-    JLabel lab7 = new JLabel(String.valueOf(nv.getTrangthai()), JLabel.CENTER);
-   
-    lab1.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab2.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab3.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab4.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab5.setPreferredSize(new Dimension((chieurong / 4), 40));
-    lab6.setPreferredSize(new Dimension((chieurong / 4), 40));
-    lab7.setPreferredSize(new Dimension(chieurong / 10, 40));
-
-    itemNV.add(lab1);
-    itemNV.add(lab2);
-    itemNV.add(lab3);
-    itemNV.add(lab4);
-    itemNV.add(lab5);
-    itemNV.add(lab6);
-    itemNV.add(lab7);
-    
-    this.add(itemNV);
-}
-     
- public void control() throws SQLException{
+ public void control(){
         this.setPreferredSize(new Dimension(chieurong,chieucao));
         this.setLayout(new FlowLayout(0,0,0));
          JPanel Panel = new JPanel();
@@ -134,7 +100,7 @@ JPanel Pa = new JPanel();
                         Pa.setPreferredSize(new Dimension((chieurong), 10));
 this.add(Pa);
                  
-                    String[] columnNames = {"MANV", "TENNV", "CHUCVU","SDT","DIACHI","EMAIL","TTH"};
+                    String[] columnNames = {"MANV", "TENNV", "CHUCVU","SDT","DIACHI","EMAIL" };
                     
                     JPanel titlePanel = new JPanel();
                         titlePanel.setLayout(new FlowLayout(0,0,0));
@@ -152,7 +118,7 @@ this.add(Pa);
                             }
                             else {
                                 JLabel l = new JLabel(col,JLabel.CENTER);
-                                l.setPreferredSize(new Dimension((chieurong)/10, 30));
+                                l.setPreferredSize(new Dimension((chieurong)/8, 30));
                                 l.setFont(new Font(l.getFont().getName(), Font.BOLD, 18));
                                 l.setForeground(Color.decode("#0A3D62"));
                         titlePanel.add(l);
@@ -195,25 +161,19 @@ public void show_control( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {
     JLabel lab4 = new JLabel(String.valueOf(nv.getSdt()), JLabel.CENTER);
     JLabel lab5 = new JLabel(nv.getDiachi(), JLabel.CENTER);
     JLabel lab6 = new JLabel(nv.getEmail(), JLabel.CENTER);
-    JLabel lab7 = new JLabel(String.valueOf(nv.getTrangthai()), JLabel.CENTER);
-   
-    lab1.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab2.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab3.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab4.setPreferredSize(new Dimension(chieurong / 10, 40));
-    lab5.setPreferredSize(new Dimension((chieurong / 4), 40));
-    lab6.setPreferredSize(new Dimension((chieurong / 4), 40));
-    lab7.setPreferredSize(new Dimension(chieurong / 10, 40));
-
+    lab1.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab2.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab3.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab4.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab5.setPreferredSize(new Dimension(chieurong / 4, 40));
+    lab6.setPreferredSize(new Dimension(chieurong / 4, 40));
     itemNV.add(lab1);
     itemNV.add(lab2);
     itemNV.add(lab3);
     itemNV.add(lab4);
     itemNV.add(lab5);
     itemNV.add(lab6);
-    itemNV.add(lab7);
     this.add(itemNV);
-
     
     JPanel control = new JPanel();
     control.setVisible(false);
@@ -233,7 +193,7 @@ public void show_control( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {
     editButton.setForeground(Color.white);
     editButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-//            removePanel(itemNV, control);
+            removePanel(itemNV, control);
             UpdateNV_GUI k = new UpdateNV_GUI(nvGUI,nv);
             control.setVisible(false);
         }
@@ -248,22 +208,8 @@ public void show_control( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {
         public void actionPerformed(ActionEvent e) {
             int r1 = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn xóa nhân viên " + nv.getTennv() + "?", "Xóa", JOptionPane.YES_NO_OPTION);
             if (r1 == JOptionPane.YES_OPTION) {
-                try {
-                    if (dsnv.check_accNV(nv))
-                    {
-                        dsnv.update_tt(nv);
-                        try {
-                            reloadPagecontrol();
-                        } catch (SQLException ex) {
-                        }
-                    }
-                    else {
-                        removePanel(itemNV, control);
-                        dsnv.delete(nv);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Trangnhanvien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                removePanel(itemNV, control);
+                dsnv.delete(nv);
             }
         }
     });
@@ -275,6 +221,7 @@ public void show_control( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {
     cancelButton.setForeground(Color.black);
     cancelButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+      
                     control.setVisible(false);
             
         }
@@ -326,6 +273,32 @@ public void show_control( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {
 }
 
 
+public void addNV_gui( Trangnhanvien_GUI nvGUI,Nhanvien_DTO nv) {      
+    JPanel itemNV = new JPanel();
+    itemNV.setLayout(new FlowLayout(0, 0, 0));
+    itemNV.setPreferredSize(new Dimension(chieurong, 50));
+    itemNV.setBackground(Color.decode("#d3eaf2"));
+    itemNV.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.decode("#60A3BC")));
+    JLabel lab1 = new JLabel(nv.getManv(), JLabel.CENTER);
+    JLabel lab2 = new JLabel(nv.getTennv(), JLabel.CENTER);
+    JLabel lab3 = new JLabel(nv.getChucvu(), JLabel.CENTER);
+    JLabel lab4 = new JLabel(String.valueOf(nv.getSdt()), JLabel.CENTER);
+    JLabel lab5 = new JLabel(nv.getDiachi(), JLabel.CENTER);
+    JLabel lab6 = new JLabel(nv.getEmail(), JLabel.CENTER);
+    lab1.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab2.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab3.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab4.setPreferredSize(new Dimension(chieurong / 8, 40));
+    lab5.setPreferredSize(new Dimension(chieurong / 4, 40));
+    lab6.setPreferredSize(new Dimension(chieurong / 4, 40));
+    itemNV.add(lab1);
+    itemNV.add(lab2);
+    itemNV.add(lab3);
+    itemNV.add(lab4);
+    itemNV.add(lab5);
+    itemNV.add(lab6);
+    this.add(itemNV);
+}
 
 // Hàm xóa panel khỏi container
 public void removePanel(JPanel itemNV, JPanel control) {

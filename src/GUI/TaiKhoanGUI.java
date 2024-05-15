@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,9 +50,9 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     TaiKhoanDTO selectedTK = new TaiKhoanDTO();
     int choiceSua = 0;
 
-    private JPanel pnHead;
-    private JPanel pnContentParent;
-    private JPanel[] pnContent;
+    JPanel pnHead;
+    JPanel pnContentParent;
+    JPanel[] pnContent;
     private int width, height;
     private Color normal = Color.decode("#0A3D62");
     Color hover = Color.decode("#60A3BC");
@@ -94,7 +93,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         Border borderBottom = BorderFactory.createMatteBorder(0, 0, 2, 0, normal);
         pnHead.setBorder(borderBottom);
 
-        String[] thuocTinh = {"Mã nhân viên", "Tên đăng nhập", "Mật khẩu", "Ngày tạo", "Mã Quyền", "Tình Trạng", "Mở/Khoá tài khoản"};
+        String[] thuocTinh = {"Mã nhân viên", "Username", "Password", "Ngày tạo", "Mã Quyền", "Tình Trạng", "Action"};
         JLabel[] lblHead = new JLabel[thuocTinh.length];
         for (int i = 0; i < lblHead.length; i++) {
             lblHead[i] = new JLabel(thuocTinh[i], JLabel.CENTER);
@@ -121,7 +120,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             JLabel[] lblContent = new JLabel[thuocTinh.length];
             String[] value;
 
-            value = new String[]{dstk.get(i).getMaNV(), dstk.get(i).getUsername(), "********",
+            value = new String[]{dstk.get(i).getMaNV(), dstk.get(i).getUsername(), dstk.get(i).getPassword(),
                 dstk.get(i).getNgayTao(), dstk.get(i).getMaQuyen(), (dstk.get(i).getState() == 1) ? "Đang hoạt động" : "Đã khoá"};
 
             for (int j = 0; j < thuocTinh.length - 1; j++) {
@@ -132,7 +131,6 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
                 lblContent[0].setFont(new Font("Tahoma", Font.BOLD, 12));
                 pnContent[i].add(lblContent[j]);
             }
-
 
             ImageIcon icon = new ImageIcon("./src/images/User-Lock.png");
 
@@ -145,18 +143,6 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
             pnContent[i].addMouseListener(this);
             pnContentParent.add(pnContent[i]);
 
-            lblContent[lblContent.length - 5].addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 1){
-                        lblContent[lblContent.length - 5].setText("********");
-                    }
-                    if (e.getClickCount() == 2) {
-                        lblContent[lblContent.length - 5].setText(dstk.get(id).getPassword());
-                    }
-                }
-            });
-            
             lblContent[lblContent.length - 1].addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -223,7 +209,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     Color chu = Color.decode("#FFFFFF"); //mau chu cua 2 nút huy, them
     Font font_tieude = new Font("Tahoma", Font.BOLD, 18);
 
-    public void initPnThaoTacTK(int width, int height) throws SQLException {
+    public void initPnThaoTacTK(int width, int height) {
         JPanel pnThaoTacTK = new JPanel();
         pnThaoTacTK.setLayout(new BorderLayout());
         pnThaoTacTK.setPreferredSize(new Dimension(width, height));
@@ -276,7 +262,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         pnThaoTacTK_main.add(pnThaoTacTK);
     }
 
-    private void initContentThaoTac() throws SQLException {
+    private void initContentThaoTac() {
         //Mã nhân viên
         Nhanvien_BUS nv = new Nhanvien_BUS();
         cbxMaNV = new JComboBox<>();
@@ -633,12 +619,12 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
                 String maNV = dstk.get(i).getMaNV().toLowerCase();
                 String maQuyen = dstk.get(i).getMaQuyen().toLowerCase();
                 timkiem = timkiem.toLowerCase();
-                if (username.contains(timkiem) || maNV.contains(timkiem)
+                if (username.contains(timkiem)|| maNV.contains(timkiem)
                         || maQuyen.contains(timkiem)) {
                     newDS.add(dstk.get(i));
                 }
             }
-
+            
             switch (state) {
                 case "Đang hoạt động":
                     for (int i = 0; i < newDS.size(); i++) {
@@ -675,7 +661,9 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
         if (e.getSource().getClass() == JPanel.class) {
             // Xử lý các dòng tài khoản
             JPanel pn = (JPanel) e.getSource();
-            for (int i = 0; i < dstk.size(); i++) {
+            for (int i = 0;
+                    i < dstk.size();
+                    i++) {
                 if (pn == pnContent[i]) {
                     selectedTK = dstk.get(i);
                     pn.setBackground(hover);
@@ -732,7 +720,7 @@ public class TaiKhoanGUI extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         ArrayList<String> data_filter = new ArrayList<>();
         data_filter.add("");
         data_filter.add("Đã khoá");

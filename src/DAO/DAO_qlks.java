@@ -80,6 +80,50 @@ public class DAO_qlks {
 		return i;
 	}
 
+	public boolean increaseDTL(int maKH, int dtl) {
+		try {
+//			Connection conn = jdbc_do_an.getconnection();
+			c.connect();
+
+//			Statement st = conn.createStatement();
+			String sql = "update khachhang set " + 
+						"DIEMTICHLUY = DIEMTICHLUY + " + dtl + " where MAKH = " + maKH;
+			
+			c.executeUpdate(sql);
+			
+			
+//			jdbc_do_an.close_connec(conn);
+			c.disconnect();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean setDTL(int maKH, int dtl) {
+		try {
+//			Connection conn = jdbc_do_an.getconnection();
+			c.connect();
+
+//			Statement st = conn.createStatement();
+			String sql = "update khachhang set " + 
+						"DIEMTICHLUY = " + dtl + " where MAKH = " + maKH;
+			
+			c.executeUpdate(sql);
+			
+			
+//			jdbc_do_an.close_connec(conn);
+			c.disconnect();
+			return true;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	
 	public int delete(model_qlkh t) {
 		int i = 0;
@@ -100,6 +144,8 @@ public class DAO_qlks {
 		}
 		return i;
 	}
+
+	
 
 	
 	public ArrayList<model_qlkh> select_all(){

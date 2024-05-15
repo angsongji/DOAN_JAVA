@@ -142,12 +142,12 @@ public class view_quan_li_khach_hang extends JPanel implements MouseListener{
 		//***************************************** nút SEARCH và REFRESH**************************************************
 		
 		
-		jl1_r[0] = new JLabel("TÌM",JLabel.CENTER);jl1_r[0].setBackground(Color.decode("#0A3D62"));jl1_r[0].setOpaque(true);
+		jl1_r[0] = new JLabel("SEARCH",JLabel.CENTER);jl1_r[0].setBackground(Color.decode("#0A3D62"));jl1_r[0].setOpaque(true);
 		jl1_r[0].setPreferredSize(new Dimension(jp1_lr[1].getPreferredSize().width*2/3,25));
 		ImageIcon search = new ImageIcon("./src/images/search1.png");
 		jl1_r[0].setIcon(search);
 		jl1_r[0].setForeground(Color.white);
-		jl1_r[1] = new JLabel("XOÁ",JLabel.CENTER);jl1_r[1].setBackground(Color.decode("#0A3D62"));jl1_r[1].setOpaque(true);
+		jl1_r[1] = new JLabel("REFRESH",JLabel.CENTER);jl1_r[1].setBackground(Color.decode("#0A3D62"));jl1_r[1].setOpaque(true);
 		jl1_r[1].setPreferredSize(new Dimension(jp1_lr[1].getPreferredSize().width*2/3,25));
 		ImageIcon refresh = new ImageIcon("./src/images/refresh1.png");
 		jl1_r[1].setIcon(refresh);

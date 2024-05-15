@@ -9,14 +9,15 @@ public class model_qlkh {
 	private String sdt;
 
 	private int diem;
-	
+
 	public model_qlkh(String ten, String sdt) {
 		this.ten = ten;
 		this.sdt = sdt;
 		this.diem = 0;
 
 	}
-	public model_qlkh(int makh, String ten,String sdt,int diem) {
+
+	public model_qlkh(int makh, String ten, String sdt, int diem) {
 		this.makh = makh;
 		this.ten = ten;
 		this.sdt = sdt;
@@ -59,7 +60,7 @@ public class model_qlkh {
 	public String toString() {
 		return "model_qlkh [makh=" + makh + ", ten=" + ten + ", sdt=" + sdt + ", diem=" + diem + "]";
 	}
-	
+
 	public static void main(String[] args) {
 		model_qlkh k1 = new model_qlkh("long", "012");
 		System.out.println(k1.toString());

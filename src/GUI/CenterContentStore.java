@@ -90,7 +90,7 @@ public class CenterContentStore extends JPanel {
         
     }
 
-    public void changeCenterContent(chucnangDTO cnDTO, String maquyen) throws SQLException {
+    public void changeCenterContent(chucnangDTO cnDTO, String maquyen) {
         this.search.removeAll();
      this.search.revalidate();
         this.search.repaint();
@@ -158,19 +158,13 @@ public class CenterContentStore extends JPanel {
                 break;
             }
             case "NULLHD":{
-                chucnangHoadon cnhd;
-                try {
-                    cnhd = new chucnangHoadon(this, cnDTO, maquyen);
-                    ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, cnhd);
-                    showThaotac(JP_thaotac);
-                    showPageContent(cnhd);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CenterContentStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
+                String maNV = SS_main.getTaiKhoanDTO().getMaNV();
+                chucnangHoadon cnhd = new chucnangHoadon(this, cnDTO, maquyen, maNV);
+                ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, cnhd);
+                showThaotac(JP_thaotac);
+                showPageContent(cnhd);
                 break;
             }
-
                
 
             case "NCC": {
@@ -217,19 +211,13 @@ public class CenterContentStore extends JPanel {
             }
                 
             case "HD":{
-                 chucnangHoadon cnhd;
-                try {
-                    cnhd = new chucnangHoadon(this, cnDTO, maquyen);
-                    ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, cnhd);
+                String maNV = SS_main.getTaiKhoanDTO().getMaNV();
+                 chucnangHoadon cnhd = new chucnangHoadon(this, cnDTO, maquyen, maNV);
+                ThaotacInStore JP_thaotac = new ThaotacInStore(cnDTO.getMACHUCNANG(), maquyen, cnhd);
                 showThaotac(JP_thaotac);
                 showPageContent(cnhd);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CenterContentStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
                 break;
             }
-
                
             case "PQ":{
                 phanquyen pq = new phanquyen(widthPageContent, heightPageContent,SS_main.quyenUser);

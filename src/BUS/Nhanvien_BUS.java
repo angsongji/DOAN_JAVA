@@ -2,7 +2,6 @@ package BUS;
 
 import DAO.Nhanvien_DAO;
 import DTO.Nhanvien_DTO;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,11 +11,11 @@ public class Nhanvien_BUS {
 
     public ArrayList<Nhanvien_DTO> listnv;
     
-    public Nhanvien_BUS() throws SQLException{
+    public Nhanvien_BUS(){
         list();
     }
     
-    public void list() throws SQLException{
+    public void list(){
         Nhanvien_DAO dsnv = new Nhanvien_DAO();
         listnv = dsnv.list();
     }
@@ -66,25 +65,25 @@ public class Nhanvien_BUS {
     
     private String createidNV() {
         int stt = Maxid("NV") + 1;
-        return   "NV" + stt;
+        return   "NV00" + stt;
     }
     
     private String createidQL() {
         int stt = Maxid("QL") + 1;
-        return   "QL" + stt;
+        return   "QL00" + stt;
     }
     
     private String createidAD() {
         int stt = Maxid("AD") + 1;
-        return   "AD" + stt;
+        return   "AD00" + stt;
     }
     
 
-    public void add( String ten, String cv, int sdt, String dc,String e,int tt) throws SQLException {
+    public void add( String ten, String cv, int sdt, String dc,String e) {
         if ( cv == "Nhân viên")
         {
         String id = createidNV();
-        Nhanvien_DTO nv = new Nhanvien_DTO(id,ten,cv,sdt,dc,e,tt);
+        Nhanvien_DTO nv = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
         listnv.add(nv);
         Nhanvien_DAO nvDAO = new Nhanvien_DAO();
         nvDAO.add(nv);
@@ -93,14 +92,14 @@ public class Nhanvien_BUS {
             if( cv == "Quản lý bán hàng" || cv == "Quản lý kho")
             {
                 String id = createidQL();
-                Nhanvien_DTO ql = new Nhanvien_DTO(id,ten,cv,sdt,dc,e,tt);
+                Nhanvien_DTO ql = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
                 listnv.add(ql);
                 Nhanvien_DAO nvDAO = new Nhanvien_DAO();
                 nvDAO.add(ql);
             }   
             else{
                 String id = createidAD();
-                Nhanvien_DTO ad = new Nhanvien_DTO(id,ten,cv,sdt,dc,e,tt);
+                Nhanvien_DTO ad = new Nhanvien_DTO(id,ten,cv,sdt,dc,e);
                 listnv.add(ad);
                 Nhanvien_DAO nvDAO = new Nhanvien_DAO();
                 nvDAO.add(ad);
@@ -108,20 +107,18 @@ public class Nhanvien_BUS {
         }
     }
    
-    public void setTT_newnv(Nhanvien_DTO nv) throws SQLException{
-        Nhanvien_DAO nvDAO = new Nhanvien_DAO();
-        nvDAO.update_tt(nv, 1);
-    }
-    public void update(Nhanvien_DTO nv) throws SQLException {
+    
+    public void update(Nhanvien_DTO nv) {
         Nhanvien_DAO nvDAO = new Nhanvien_DAO();
         nvDAO.update(nv);
     }
+     
     
-    public boolean check_accNV(Nhanvien_DTO nv) throws SQLException{
+    public void delete(Nhanvien_DTO nv) {
         Nhanvien_DAO nvDAO = new Nhanvien_DAO();
-        return nvDAO.check_accNV(nv.getManv());
+        nvDAO.delete(nv.getManv());
     }
-    
+     
     public ArrayList<Nhanvien_DTO> search(ArrayList<String> data_filter){
         ArrayList<Nhanvien_DTO> re = new ArrayList<>();
         for(String i : data_filter){
@@ -133,18 +130,7 @@ public class Nhanvien_BUS {
     }
         return re;
     }
-    public void delete(Nhanvien_DTO nv) throws SQLException
-    {
-        Nhanvien_DAO nvDAO = new Nhanvien_DAO();
-        nvDAO.delete(nv.getManv());
-    }
     
-    public void update_tt(Nhanvien_DTO nv) throws SQLException
-    {
-        Nhanvien_DAO nvDAO = new Nhanvien_DAO();
-        nvDAO.update_tt(nv, 0);
-
-    }
     public boolean checkNewListNV(ArrayList<Nhanvien_DTO> newList) {
         boolean flag = true;
         for (int i = 0; i < listnv.size(); i++) {
@@ -164,21 +150,11 @@ public class Nhanvien_BUS {
         return flag;
     }
     
-         public static void main(String[] args) throws SQLException {
+         public static void main(String[] args) {
         Nhanvien_BUS nv = new Nhanvien_BUS();
-        nv.add("UYEN","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com",1);
-//        Nhanvien_DTO n2 = new Nhanvien_DTO("QL1","Phương Uyên","Nhân viên bán hàng",987666789 ,"Quận 8 TPHCM","uyen123@gmail.com",1);
-////        nv.update(n2);
-////        nv.list(); 
-//        if (nv.check_accNV(n2))
-//        {
-//            System.out.println("NV có tài khoản");
-//            nv.update_tt(n2);
-//        }
-//        else 
-//        {
-//            System.out.println("NV khong có tài khoản");
-//            nv.delete(n2);
-//        }
+        nv.add("haha","Nhân viên",987690009 ,"HCM","638ejn@gmail.com");
+//        Nhanvien_DTO n2 = new Nhanvien_DTO("NV005","kkkk","Nhân viên",987666789 ,"TP HCM","6383uyejn@gmail.com");
+//        nv.update(n2);
+//        nv.list(); 
          };
 }

@@ -380,21 +380,20 @@ CREATE TABLE `nhanvien` (
   `CHUCVU` varchar(50) NOT NULL,
   `SDT` int(11) NOT NULL,
   `DIACHI` varchar(255) NOT NULL,
-  `EMAIL` varchar(255) NOT NULL,
-  `TRANGTHAI` int(11) NOT NULL
+  `EMAIL` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `nhanvien`
 --
 
-INSERT INTO `nhanvien` (`MANV`, `TENNV`, `CHUCVU`, `SDT`, `DIACHI`, `EMAIL`,`TRANGTHAI`) VALUES
-('AD1', 'Thanh Sang', 'Quản lí ứng dụng', 907665456, '273 An Dương Vương Quận 5 TPHCM', 'ngthanhsangsgu@gmail.com',1),
-('NV1', 'Thanh Phương', 'Nhân viên bán hàng', 909332432, '18 Nguyễn Tri Phương Quận 8 TPHCM', 'thanhphuong22@gmail.com',1),
-('NV2', 'Nhật Long', 'Nhân viên bán hàng', 908332112, '23/1 Lê Hồng Phong TPHCM', 'ntLong@gmail.com',1),
-('NV3', 'Oanh Le', 'Nhân viên bán hàng', 907665512, 'Quận 2 TPHCM', 'Oanhle204@gmail.com',1),
-('QL1', 'Phương Uyên', 'Quản lí kho', 338653321, 'Quận 3 TPHCM', 'phuongUyen11@gmail.com',1),
-('QL2', 'Trí Anh', 'Quản lí bán hàng', 901132445, 'Quận 5 TPHCM', 'triANH@gmail.com',1);
+INSERT INTO `nhanvien` (`MANV`, `TENNV`, `CHUCVU`, `SDT`, `DIACHI`, `EMAIL`) VALUES
+('AD1', 'Thanh Sang', 'Quản lí ứng dụng', 907665456, '273 An Dương Vương Quận 5 TPHCM', 'ngthanhsangsgu@gmail.com'),
+('NV1', 'Thanh Phương', 'Nhân viên bán hàng', 909332432, '18 Nguyễn Tri Phương Quận 8 TPHCM', 'thanhphuong22@gmail.com'),
+('NV2', 'Nhật Long', 'Nhân viên bán hàng', 908332112, '23/1 Lê Hồng Phong TPHCM', 'ntLong@gmail.com'),
+('NV3', 'Oanh Le', 'Nhân viên bán hàng', 907665512, 'Quận 2 TPHCM', 'Oanhle204@gmail.com'),
+('QL1', 'Phương Uyên', 'Quản lí kho', 338653321, 'Quận 3 TPHCM', 'phuongUyen11@gmail.com'),
+('QL2', 'Trí Anh', 'Quản lí bán hàng', 901132445, 'Quận 5 TPHCM', 'triANH@gmail.com');
 
 -- --------------------------------------------------------
 

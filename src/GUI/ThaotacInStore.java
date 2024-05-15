@@ -37,10 +37,6 @@ import DTO.TaiKhoanDTO;
 import DTO.loaiSP;
 import DTO.nhacungcapDTO;
 import java.awt.Container;
-import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellEditor;
@@ -174,13 +170,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 switch (ctqDTO.getHANHDONG()) {
                     case "Thêm":
                         TaiKhoanGUI a = new TaiKhoanGUI(widthTK, heightTK);
-                    {
-                        try {
-                            a.initPnThaoTacTK(450, 600);
-                        } catch (SQLException ex) {
-                            java.util.logging.Logger.getLogger(ThaotacInStore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
-                    }
+                        a.initPnThaoTacTK(450, 600);
                         a.initThem();
                         cntk_p.JP_contentCuaNameChucnangCon.removeAll();
                         cntk_p.JP_contentCuaNameChucnangCon.add(a, BorderLayout.CENTER);
@@ -188,22 +178,14 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                         cntk_p.JP_contentCuaNameChucnangCon.repaint();
                         cntk_p.tkGUI = a;
                         break;
-
                     case "Sửa":
-                        cntk_p.tkGUI.remove(cntk_p.tkGUI.pnThaoTacTK_main);
-                        cntk_p.tkGUI.revalidate(); // Cập nhật lại container
-                        cntk_p.tkGUI.repaint();
                         if (cntk_p.tkGUI.selectedTK.getMaNV() == null) {
                             JOptionPane.showMessageDialog(null,
                                     "Xin vui lòng chọn tài khoản cần sửa !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                         } else {
                             TaiKhoanGUI b = new TaiKhoanGUI(widthTK, heightTK);
                             b.selectedTK = cntk_p.tkGUI.selectedTK;
-                    try {
-                        b.initPnThaoTacTK(450, 600);
-                    } catch (SQLException ex) {
-                        java.util.logging.Logger.getLogger(ThaotacInStore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                    }
+                            b.initPnThaoTacTK(450, 600);
                             b.initSua();
                             cntk_p.JP_contentCuaNameChucnangCon.removeAll();
                             cntk_p.JP_contentCuaNameChucnangCon.add(b, BorderLayout.CENTER);
@@ -260,68 +242,13 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 break;
             }
             case "NV": {
-            try {
                 thaotacNV(ctqDTO.getHANHDONG(), itemClicked);
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ThaotacInStore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }
                 break;
             }
-
             case "SP": {
                 thaotacSP(ctqDTO.getHANHDONG(), itemClicked);
                 break;
             }
-            case "HD": {            
-                chucnangHoadon hdGUI = (chucnangHoadon) pageContent;
-                JPanel jp_content = hdGUI.JP_contentCuaNameChucnangCon;
-                Component[] jp_con = jp_content.getComponents();
-                TrangLichsuHD lshd = (TrangLichsuHD) jp_con[0];
-                switch (ctqDTO.getHANHDONG()) {
-                    case "Xóa":
-                        JOptionPane.showMessageDialog(null, "Click vào dòng cần xóa hóa đơn!");
-                    {
-                        try {
-                            lshd.reloadPagecontrol();
-                        } catch (SQLException ex) {
-                            java.util.logging.Logger.getLogger(ThaotacInStore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
-                        break;
-                    }
-                    
-
-                    case "Sửa":
-                        JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa hóa đơn!");
-                    {
-                        try {
-                            lshd.reloadPagecontrol();
-                        } catch (SQLException ex) {
-                            java.util.logging.Logger.getLogger(ThaotacInStore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                        }
-                         break;
-                    }
-                   
-                    case "In PDF":{
-                    
-                        if(!lshd.inHD){
-                            JOptionPane.showMessageDialog(null, "Click vào hóa đơn cần in!\nSau đó ấn In PDF");
-                            
-                        }else{
-                           
-                            try {
-                                inPDF in = new inPDF(lshd.MAHDSelect);
-                                lshd.inHD=false;
-                                 JOptionPane.showMessageDialog(null, "In hóa đơn thành công!");
-                            } catch (SQLException ex) {
-                               JOptionPane.showMessageDialog(null, "In hóa đơn thất bại!");
-                            } catch (IOException ex) {
-                                 JOptionPane.showMessageDialog(null, "In hóa đơn thất bại!");
-                            }
-                     
-                        }
-                        break;
-                    }  
-                }   }
         }
     }
 
@@ -445,11 +372,13 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                             ctqBUS.updateChitietquyen(pq.getListUpdateCtqTheoMAUQYEN(), pq.currentQuyen.getMAQUYEN());
                             pq.isEditingEnabled = false;
 
-                            JOptionPane.showMessageDialog(null, "Lưu chỉnh sửa thành công!");
+
+                            JOptionPane.showMessageDialog(null,"Lưu chỉnh sửa thành công!");
                             s.menu.removeAll();
                             s.menu.init();
                             s.menu.revalidate();
                             s.menu.repaint();
+
 
                         } else {
                             int r2_1 = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục chỉnh sửa?", "Sửa quyền ", JOptionPane.YES_NO_OPTION);
@@ -703,7 +632,7 @@ public class ThaotacInStore extends JPanel implements MouseListener {
         }
     }
 
-    public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) throws SQLException {
+    public void thaotacNV(String hanhdong, hanhdongGUI itemClicked) {
         Trangnhanvien_GUI nvGUI = (Trangnhanvien_GUI) pageContent;
         Nhanvien_BUS loaiBUS = new Nhanvien_BUS();
         switch (hanhdong) {
@@ -712,18 +641,15 @@ public class ThaotacInStore extends JPanel implements MouseListener {
                 break;
             }
             case "Sửa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên\n và bấm \"Hoàn tất\" khi hoàn thành thao tác!");
-                nvGUI.reloadPagecontrol();
-                        break;}
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần sửa thông tin nhân viên");
+                break;
+            }
             case "Xóa": {
-                JOptionPane.showMessageDialog(null, "Click vào dòng cần xóa thông tin nhân viên\n và bấm \"Hoàn tất\" khi hoàn thành thao tác!");
-                nvGUI.reloadPagecontrol();
-                        break;}        
+                JOptionPane.showMessageDialog(null, "Click vào dòng cần Xóa nhân viên");
+                break;
+            }
         }
-}
-
-
-
+    }
 
     public void thaotacSIZE(String hanhdong, hanhdongGUI itemClicked) {
 

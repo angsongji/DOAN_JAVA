@@ -189,7 +189,7 @@ public class chitietphieunhap_GUI extends JPanel implements MouseListener {
 		this.DAO_chiChitietphieunhap = new DAO_chitietphieunhap();
 		this.clicked_chinhsua = false;
 		Font f = new Font(TOOL_TIP_TEXT_KEY, 1, 20);
-		 d = new DecimalFormat("#,###") ;
+		 d = new DecimalFormat("#,###.00") ;
 		this.phieunhap_GUI = phieunhap_GUI;
 		Color mau = Color.decode("#60A3BC");
 		
